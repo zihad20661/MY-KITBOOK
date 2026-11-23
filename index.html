@@ -6,14 +6,14 @@ body{margin:0;background:#f3f6f8;color:#172033;font-family:system-ui,"Noto Sans 
 <p class="muted">প্রাপ্যতার নিয়ম তুমি নিজে নির্ধারণ করবে।</p></main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
 // Supabase Project URL এবং Publishable Key বসাও। Secret key কখনো এখানে বসাবে না।
-const SUPABASE_URL="PASTE_PROJECT_URL";
-const SUPABASE_PUBLISHABLE_KEY="PASTE_PUBLISHABLE_KEY";
-const ready=SUPABASE_URL.startsWith("https://")&&!SUPABASE_URL.includes("PASTE_")&&!SUPABASE_PUBLISHABLE_KEY.includes("PASTE_");
-const sb=ready?supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY):null;
+const SUPABASE_URL="https://szzmkzjruxcqpxkfzbne.supabase.co/rest/v1/";
+const SUPABASE_PUBLISHABLE_KEY="sb_publishable_s16dseU385UQt78r5uaRKA_xRo7RZH8";
+const ready=SUPABASE_URL.startsWith("https://")&&!SUPABASE_URL.includes("https://szzmkzjruxcqpxkfzbne.supabase.co/rest/v1/")&&!SUPABASE_PUBLISHABLE_KEY.includes("sb_publishable_s16dseU385UQt78r5uaRKA_xRo7RZH8");
+const sb=ready?supabase.createClient(https://szzmkzjruxcqpxkfzbne.supabase.co/rest/v1/,sb_publishable_s16dseU385UQt78r5uaRKA_xRo7RZH8):null;
 const $=x=>document.getElementById(x);let editing=null,rows=[];
 function message(t){$("msg").textContent=t}
-$("signup").onclick=async()=>{if(!ready)return message("আগে Project URL ও Publishable Key বসাতে হবে.");let {data,error}=await sb.auth.signUp({email:$("email").value.trim(),password:$("password").value});if(error)return message(error.message);if(data.session)openApp(data.user);else message("অ্যাকাউন্ট তৈরি হয়েছে। Email confirmation চালু থাকলে inbox দেখুন।")};
-$("signin").onclick=async()=>{if(!ready)return message("আগে Project URL ও Publishable Key বসাতে হবে.");let {data,error}=await sb.auth.signInWithPassword({email:$("email").value.trim(),password:$("password").value});if(error)return message(error.message);openApp(data.user)};
+$("signup").onclick=async()=>{if(!ready)return message("https://szzmkzjruxcqpxkfzbne.supabase.co/rest/v1/sb_publishable_s16dseU385UQt78r5uaRKA_xRo7RZH8");let {data,error}=await sb.auth.signUp({email:$("email").value.trim(),password:$("password").value});if(error)return message(error.message);if(data.session)openApp(data.user);else message("অ্যাকাউন্ট তৈরি হয়েছে। Email confirmation চালু থাকলে inbox দেখুন।")};
+$("signin").onclick=async()=>{if(!ready)return message("https://szzmkzjruxcqpxkfzbne.supabase.co/rest/v1/sb_publishable_s16dseU385UQt78r5uaRKA_xRo7RZH8");let {data,error}=await sb.auth.signInWithPassword({email:$("email").value.trim(),password:$("password").value});if(error)return message(error.message);openApp(data.user)};
 function openApp(u){$("auth").classList.add("hidden");$("app").classList.remove("hidden");$("user").textContent=u.email;load()}
 $("logout").onclick=async()=>{await sb.auth.signOut();$("app").classList.add("hidden");$("auth").classList.remove("hidden")};
 const bn=n=>String(n).replace(/\d/g,d=>"০১২৩৪৫৬৭৮৯"[d]);
