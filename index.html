@@ -4,43 +4,112 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MY KITBOOK</title>
+<title>MY KITBOOK 3.0</title>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#f1f5f9;font-family:Arial,sans-serif;color:#172b35}
-header{background:#123b35;color:white;padding:20px}
+body{
+ margin:0;
+ background:#f1f5f9;
+ font-family:Arial,sans-serif;
+ color:#172b35
+}
+header{
+ background:#123b35;
+ color:white;
+ padding:20px
+}
 header h2{margin:0}
 header p{margin:6px 0 0;color:#c9e6dc}
-.container{max-width:1000px;margin:auto;padding:18px}
-.card{background:white;border-radius:13px;padding:18px;margin-bottom:16px;box-shadow:0 3px 12px #0000000c}
+.container{max-width:1100px;margin:auto;padding:18px}
+.card{
+ background:white;
+ border-radius:13px;
+ padding:18px;
+ margin-bottom:16px;
+ box-shadow:0 3px 12px #0000000c
+}
 h3{margin-top:0;color:#164d40}
-input,textarea{width:100%;padding:12px;margin:7px 0;border:1px solid #d1d5db;border-radius:7px;font-size:15px}
-button{padding:11px 15px;border:0;border-radius:7px;background:#176b50;color:white;font-size:14px;cursor:pointer;margin:4px}
-button:disabled{opacity:.5}
+input,textarea{
+ width:100%;
+ padding:12px;
+ margin:7px 0;
+ border:1px solid #d1d5db;
+ border-radius:7px;
+ font-size:15px
+}
+label{font-size:14px;font-weight:bold}
+button{
+ padding:11px 15px;
+ border:0;
+ border-radius:7px;
+ background:#176b50;
+ color:white;
+ font-size:14px;
+ cursor:pointer;
+ margin:4px
+}
+button:disabled{opacity:.5;cursor:not-allowed}
 .secondary{background:#475569}
 .danger{background:#c0392b}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.stat{background:#e4f3ed;padding:17px;border-radius:10px;text-align:center}
-.stat strong{font-size:25px;display:block;color:#176b50}
+.receive{background:#2563eb}
+.stats{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:10px
+}
+.stat{
+ background:#e4f3ed;
+ padding:17px;
+ border-radius:10px;
+ text-align:center
+}
+.stat strong{
+ font-size:25px;
+ display:block;
+ color:#176b50
+}
 .stat span{font-size:12px}
-table{width:100%;border-collapse:collapse;min-width:620px}
-th,td{padding:12px;text-align:left;border-bottom:1px solid #e5e7eb;font-size:14px}
+table{
+ width:100%;
+ border-collapse:collapse;
+ min-width:850px
+}
+th,td{
+ padding:11px;
+ text-align:left;
+ border-bottom:1px solid #e5e7eb;
+ font-size:13px
+}
 th{background:#eaf3ef}
 .table-wrap{overflow-x:auto}
 #app{display:none}
 #auth{max-width:400px;margin:50px auto}
-#message{font-size:14px;margin:12px 0}
+#message,#kitMessage{font-size:14px;margin:12px 0}
 .small{font-size:12px;color:#64748b}
-@media(max-width:500px){.stats{grid-template-columns:1fr 1fr}header{padding:17px}}
+.status-due{color:#d97706;font-weight:bold}
+.status-overdue{color:#dc2626;font-weight:bold}
+.status-upcoming{color:#15803d;font-weight:bold}
+.status-none{color:#64748b}
+@media(max-width:500px){
+ .stats{grid-template-columns:1fr 1fr}
+ header{padding:17px}
+ .container{padding:10px}
+ .card{padding:14px}
+}
 </style>
 </head>
+
 <body>
 
 <header>
 <h2>MY KITBOOK</h2>
 <p>Police Kit Management System</p>
 </header>
+
+<!-- LOGIN -->
 
 <div id="auth" class="container card">
 <h2>Welcome Back</h2>
@@ -53,9 +122,12 @@ th{background:#eaf3ef}
 </form>
 
 <button class="secondary" id="signupBtn">Create New Account</button>
+
 <div id="message"></div>
 <p class="small">Your kit records are private to your account.</p>
 </div>
+
+<!-- MAIN APP -->
 
 <div id="app">
 <div class="container">
@@ -70,46 +142,91 @@ th{background:#eaf3ef}
 </div>
 </div>
 
+<!-- STATISTICS -->
+
 <div class="stats">
-<div class="stat"><strong id="total">0</strong><span>Total Items</span></div>
-<div class="stat"><strong id="quantity">0</strong><span>Total Quantity</span></div>
-<div class="stat"><strong id="due">0</strong><span>Due / Overdue</span></div>
+<div class="stat">
+<strong id="total">0</strong>
+<span>Total Items</span>
 </div>
 
+<div class="stat">
+<strong id="quantity">0</strong>
+<span>Total Quantity</span>
+</div>
+
+<div class="stat">
+<strong id="due">0</strong>
+<span>Due / Overdue Quantity</span>
+</div>
+</div>
+
+<!-- ADD KIT FORM -->
+
 <div class="card" style="margin-top:16px">
+
 <h3 id="formTitle">Add New Kit</h3>
+
 <form id="kitForm">
-<input id="itemName" placeholder="Kit item name" required>
-<input id="qty" type="number" min="1" value="1" placeholder="Quantity" required>
-<label>Received Date</label>
+
+<label>Kit Item Name</label>
+<input id="itemName" placeholder="Example: Shirt, Pant, Shoe" required>
+
+<label>Quantity per Interval</label>
+<input id="qty" type="number" min="1" value="1" required>
+
+<label>Interval (Days)</label>
+<input id="interval" type="number" min="1" value="365" required>
+
+<p class="small">Example: 365 = 1 year, 180 = 6 months, 90 = 3 months, 30 = 1 month.</p>
+
+<label>Last Received Date</label>
 <input id="received" type="date">
+
 <label>Next Kit Due Date</label>
 <input id="nextDue" type="date">
+
+<p class="small">Next Due Date না দিলে Last Received Date এবং Interval অনুযায়ী নিজে থেকে হিসাব হবে।</p>
+
+<label>Notes / Details</label>
 <textarea id="notes" placeholder="Notes / Details"></textarea>
+
 <button id="saveBtn" type="submit">Save Kit</button>
 <button type="button" class="secondary" id="cancelBtn" style="display:none">Cancel Edit</button>
+
 </form>
+
 <div id="kitMessage" class="small"></div>
 </div>
 
+<!-- KIT LIST -->
+
 <div class="card">
-<h3>My Kit List</h3>
+
+<h3>My Kit Inventory</h3>
+
 <input id="search" placeholder="Search kit item...">
+
 <div class="table-wrap">
 <table>
+
 <thead>
 <tr>
 <th>Kit Name</th>
-<th>Quantity</th>
-<th>Received</th>
+<th>Qty / Period</th>
+<th>Interval</th>
+<th>Last Received</th>
 <th>Next Due</th>
+<th>Due Qty</th>
 <th>Status</th>
 <th>Action</th>
 </tr>
 </thead>
+
 <tbody id="kitList">
-<tr><td colspan="6">Loading...</td></tr>
+<tr><td colspan="8">Loading...</td></tr>
 </tbody>
+
 </table>
 </div>
 </div>
@@ -118,6 +235,11 @@ th{background:#eaf3ef}
 </div>
 
 <script>
+
+// =================================
+// SUPABASE CONFIGURATION
+// =================================
+
 const SUPABASE_URL =
 "https://szzmkzjruxcqpxkfzbne.supabase.co";
 
@@ -125,7 +247,8 @@ const SUPABASE_KEY =
 "sb_publishable_s16dseU385UQt78r5uaRKA_xRo7RZH8";
 
 const db = window.supabase.createClient(
-SUPABASE_URL, SUPABASE_KEY
+ SUPABASE_URL,
+ SUPABASE_KEY
 );
 
 let currentUser = null;
@@ -134,12 +257,66 @@ let editingId = null;
 
 const $ = id => document.getElementById(id);
 
+// =================================
+// DATE FUNCTIONS
+// =================================
+
+function todayDate(){
+ const d = new Date();
+ const y = d.getFullYear();
+ const m = String(d.getMonth()+1).padStart(2,"0");
+ const day = String(d.getDate()).padStart(2,"0");
+ return `${y}-${m}-${day}`;
+}
+
+function addDays(date,days){
+ const d = new Date(date+"T00:00:00Z");
+ d.setUTCDate(d.getUTCDate()+Number(days));
+ return d.toISOString().slice(0,10);
+}
+
+function daysBetween(date1,date2){
+ const a = new Date(date1+"T00:00:00Z");
+ const b = new Date(date2+"T00:00:00Z");
+ return Math.floor((b-a)/86400000);
+}
+
+function duePeriods(item){
+ const interval = Number(item.interval_days);
+ const next = item.next_due_date;
+ const today = todayDate();
+
+ if(!next || !interval || next>today) return 0;
+
+ return Math.floor(daysBetween(next,today)/interval)+1;
+}
+
+function dueQuantity(item){
+ return duePeriods(item)*Number(item.quantity||0);
+}
+
+function calculatedNextDate(received,interval){
+ if(!received || !interval) return null;
+ return addDays(received,interval);
+}
+
+// =================================
+// HTML SECURITY
+// =================================
+
 function escapeHTML(value){
- return String(value ?? "").replace(/[&<>"']/g, c => ({
- "&":"&amp;","<":"&lt;",">":"&gt;",
- '"':"&quot;","'":"&#39;"
+ return String(value??"").replace(/[&<>"']/g,c=>({
+  "&":"&amp;",
+  "<":"&lt;",
+  ">":"&gt;",
+  '"':"&quot;",
+  "'":"&#39;"
  }[c]));
 }
+
+// =================================
+// MESSAGES
+// =================================
 
 function showMessage(text,color="red"){
  $("message").style.color=color;
@@ -151,8 +328,13 @@ function kitMessage(text,color="#176b50"){
  $("kitMessage").textContent=text;
 }
 
+// =================================
+// LOGIN
+// =================================
+
 $("authForm").addEventListener("submit",async e=>{
  e.preventDefault();
+
  $("authBtn").disabled=true;
  showMessage("Please wait...","#176b50");
 
@@ -161,27 +343,38 @@ $("authForm").addEventListener("submit",async e=>{
    email:$("email").value.trim(),
    password:$("password").value
   });
+
   if(error) throw error;
-  showMessage("Login successful","green");
+
   await loadApp(data.user);
+
  }catch(error){
   showMessage(error.message);
  }
+
  $("authBtn").disabled=false;
 });
+
+// =================================
+// SIGNUP
+// =================================
 
 $("signupBtn").onclick=async()=>{
  const email=$("email").value.trim();
  const password=$("password").value;
 
  if(!email || password.length<6){
-  showMessage("Enter email and a password of at least 6 characters");
+  showMessage("Enter email and password (minimum 6 characters)");
   return;
  }
 
  $("signupBtn").disabled=true;
+
  try{
-  const {data,error}=await db.auth.signUp({email,password});
+  const {data,error}=await db.auth.signUp({
+   email,password
+  });
+
   if(error) throw error;
 
   if(data.session){
@@ -189,28 +382,48 @@ $("signupBtn").onclick=async()=>{
   }else{
    showMessage("Account created. Check your email for verification.","green");
   }
+
  }catch(error){
   showMessage(error.message);
  }
+
  $("signupBtn").disabled=false;
 };
 
+// =================================
+// LOAD APPLICATION
+// =================================
+
 async function loadApp(user){
  currentUser=user;
+
  $("auth").style.display="none";
  $("app").style.display="block";
+
  $("userEmail").textContent=user.email;
+
  await loadItems();
 }
 
-async function loadItems(){
- $("kitList").innerHTML="<tr><td colspan='6'>Loading...</td></tr>";
+// =================================
+// LOAD KIT ITEMS
+// =================================
 
- const {data,error}=await db.from("kit_items")
- .select("*").order("created_at",{ascending:false});
+async function loadItems(){
+
+ $("kitList").innerHTML=
+ "<tr><td colspan='8'>Loading...</td></tr>";
+
+ const {data,error}=await db
+ .from("kit_items")
+ .select("*")
+ .eq("user_id",currentUser.id)
+ .order("created_at",{ascending:false});
 
  if(error){
   kitMessage(error.message,"red");
+  $("kitList").innerHTML=
+  "<tr><td colspan='8'>Could not load items</td></tr>";
   return;
  }
 
@@ -218,126 +431,325 @@ async function loadItems(){
  render();
 }
 
+// =================================
+// RENDER INVENTORY
+// =================================
+
 function render(){
+
  const search=$("search").value.toLowerCase();
 
  const filtered=items.filter(x=>
-  x.item_name.toLowerCase().includes(search)
+  String(x.item_name||"").toLowerCase().includes(search)
  );
 
- let totalQty=items.reduce((s,x)=>s+Number(x.quantity),0);
- const today=new Date().toISOString().slice(0,10);
+ const totalQty=items.reduce(
+  (s,x)=>s+Number(x.quantity||0),0
+ );
 
- const dueItems=items.filter(x=>
-  x.next_due_date && x.next_due_date<=today
+ const totalDueQty=items.reduce(
+  (s,x)=>s+dueQuantity(x),0
  );
 
  $("total").textContent=items.length;
  $("quantity").textContent=totalQty;
- $("due").textContent=dueItems.length;
+ $("due").textContent=totalDueQty;
 
  if(!filtered.length){
-  $("kitList").innerHTML="<tr><td colspan='6'>No kit found</td></tr>";
+  $("kitList").innerHTML=
+  "<tr><td colspan='8'>No kit found</td></tr>";
   return;
  }
 
  $("kitList").innerHTML=filtered.map(x=>{
-  let status="Not set";
-  if(x.next_due_date){
-   status=x.next_due_date<today?"Overdue":
-   x.next_due_date===today?"Due today":"Upcoming";
+
+  const periods=duePeriods(x);
+  const dueQty=dueQuantity(x);
+
+  let status="Upcoming";
+  let statusClass="status-upcoming";
+
+  if(!x.next_due_date){
+   status="Not set";
+   statusClass="status-none";
+  }else if(periods>0){
+   status=x.next_due_date<todayDate()?"Overdue":"Due Today";
+   statusClass=x.next_due_date<todayDate()?"status-overdue":"status-due";
   }
 
-  return `<tr>
-   <td>${escapeHTML(x.item_name)}
-   <div class="small">${escapeHTML(x.notes||"")}</div></td>
-   <td>${Number(x.quantity)}</td>
-   <td>${escapeHTML(x.received_date||"-")}</td>
-   <td>${escapeHTML(x.next_due_date||"-")}</td>
-   <td>${status}</td>
+  return `
+  <tr>
+
    <td>
-    <button onclick="editItem(${x.id})">Edit</button>
-    <button class="danger" onclick="deleteItem(${x.id})">Delete</button>
+    <strong>${escapeHTML(x.item_name)}</strong>
+    <div class="small">${escapeHTML(x.notes||"")}</div>
    </td>
-  </tr>`;
+
+   <td>${Number(x.quantity)}</td>
+
+   <td>${Number(x.interval_days)} Days</td>
+
+   <td>${escapeHTML(x.last_received||"-")}</td>
+
+   <td>${escapeHTML(x.next_due_date||"-")}</td>
+
+   <td><strong>${dueQty}</strong></td>
+
+   <td class="${statusClass}">${status}</td>
+
+   <td>
+    <button data-action="receive" data-id="${escapeHTML(x.id)}" class="receive">Receive</button>
+
+    <button data-action="edit" data-id="${escapeHTML(x.id)}">Edit</button>
+
+    <button data-action="delete" data-id="${escapeHTML(x.id)}" class="danger">Delete</button>
+   </td>
+
+  </tr>
+  `;
  }).join("");
 }
 
+// =================================
+// SEARCH
+// =================================
+
 $("search").addEventListener("input",render);
 
+// =================================
+// ADD / UPDATE KIT
+// =================================
+
 $("kitForm").addEventListener("submit",async e=>{
+
  e.preventDefault();
+
+ if(!currentUser) return;
+
+ const interval=Number($("interval").value);
+ const quantity=Number($("qty").value);
+
+ if(!Number.isInteger(interval)||interval<1){
+  kitMessage("Interval must be at least 1 day","red");
+  return;
+ }
+
+ if(!Number.isInteger(quantity)||quantity<1){
+  kitMessage("Quantity must be at least 1","red");
+  return;
+ }
+
  $("saveBtn").disabled=true;
  kitMessage("Saving...");
+
+ const received=$("received").value||null;
+
+ let nextDue=$("nextDue").value||null;
+
+ if(!nextDue && received){
+  nextDue=calculatedNextDate(received,interval);
+ }
 
  const record={
   user_id:currentUser.id,
   item_name:$("itemName").value.trim(),
-  quantity:Number($("qty").value),
-  received_date:$("received").value||null,
-  next_due_date:$("nextDue").value||null,
+  quantity:quantity,
+  interval_days:interval,
+  last_received:received,
+  next_due_date:nextDue,
   notes:$("notes").value.trim()
  };
 
  try{
+
   let result;
 
   if(editingId){
-   result=await db.from("kit_items")
+
+   result=await db
+    .from("kit_items")
     .update(record)
     .eq("id",editingId)
     .eq("user_id",currentUser.id);
+
   }else{
-   result=await db.from("kit_items").insert(record);
+
+   result=await db
+    .from("kit_items")
+    .insert(record);
+
   }
 
   if(result.error) throw result.error;
 
-  kitMessage(editingId?"Kit updated successfully":"Kit added successfully");
+  kitMessage(
+   editingId?"Kit updated successfully":"Kit added successfully"
+  );
+
   resetForm();
+
   await loadItems();
 
  }catch(error){
+
   kitMessage(error.message,"red");
+
  }
 
  $("saveBtn").disabled=false;
+
 });
 
-window.editItem=function(id){
+// =================================
+// EDIT KIT
+// =================================
+
+function editItem(id){
+
  const x=items.find(i=>i.id===id);
- if(!x)return;
+ if(!x) return;
 
  editingId=id;
- $("itemName").value=x.item_name;
- $("qty").value=x.quantity;
- $("received").value=x.received_date||"";
+
+ $("itemName").value=x.item_name||"";
+ $("qty").value=x.quantity||1;
+ $("interval").value=x.interval_days||365;
+ $("received").value=x.last_received||"";
  $("nextDue").value=x.next_due_date||"";
  $("notes").value=x.notes||"";
+
  $("formTitle").textContent="Edit Kit";
  $("saveBtn").textContent="Update Kit";
  $("cancelBtn").style.display="inline-block";
+
  window.scrollTo({top:0,behavior:"smooth"});
-};
+}
 
-window.deleteItem=async function(id){
- if(!confirm("Are you sure you want to delete this kit?"))return;
+// =================================
+// DELETE KIT
+// =================================
 
- const {error}=await db.from("kit_items")
- .delete().eq("id",id).eq("user_id",currentUser.id);
+async function deleteItem(id){
+
+ if(!confirm("Are you sure you want to delete this kit?")){
+  return;
+ }
+
+ const {error}=await db
+  .from("kit_items")
+  .delete()
+  .eq("id",id)
+  .eq("user_id",currentUser.id);
 
  if(error){
   kitMessage(error.message,"red");
  }else{
-  kitMessage("Kit deleted");
+  kitMessage("Kit deleted successfully");
   await loadItems();
  }
-};
+}
+
+// =================================
+// RECEIVE KIT
+// =================================
+
+async function receiveItem(id){
+
+ const x=items.find(i=>i.id===id);
+ if(!x) return;
+
+ const interval=Number(x.interval_days);
+ const quantity=Number(x.quantity);
+
+ if(!interval || interval<1){
+  kitMessage("Please set a valid interval first","red");
+  return;
+ }
+
+ if(!confirm(
+  "Receive "+dueQuantity(x)+" due kit quantity? Continue?"
+ )){
+  return;
+ }
+
+ const today=todayDate();
+ let next;
+
+ if(!x.next_due_date){
+  next=addDays(today,interval);
+ }else if(x.next_due_date<=today){
+
+  const periods=duePeriods(x);
+
+  next=addDays(
+   x.next_due_date,
+   periods*interval
+  );
+
+ }else{
+
+  next=addDays(today,interval);
+
+ }
+
+ const {error}=await db
+  .from("kit_items")
+  .update({
+   last_received:today,
+   next_due_date:next
+  })
+  .eq("id",id)
+  .eq("user_id",currentUser.id);
+
+ if(error){
+  kitMessage(error.message,"red");
+ }else{
+  kitMessage(
+   "Kit received successfully. Next due: "+next
+  );
+  await loadItems();
+ }
+}
+
+// =================================
+// TABLE BUTTON ACTIONS
+// =================================
+
+$("kitList").addEventListener("click",async e=>{
+
+ const button=e.target.closest("button[data-action]");
+ if(!button) return;
+
+ const id=button.dataset.id;
+ const action=button.dataset.action;
+
+ if(action==="edit"){
+  editItem(id);
+ }
+
+ if(action==="delete"){
+  await deleteItem(id);
+ }
+
+ if(action==="receive"){
+  await receiveItem(id);
+ }
+
+});
+
+// =================================
+// RESET FORM
+// =================================
 
 function resetForm(){
+
  $("kitForm").reset();
+
  $("qty").value=1;
+ $("interval").value=365;
+
  editingId=null;
+
  $("formTitle").textContent="Add New Kit";
  $("saveBtn").textContent="Save Kit";
  $("cancelBtn").style.display="none";
@@ -345,22 +757,50 @@ function resetForm(){
 
 $("cancelBtn").onclick=resetForm;
 
+// =================================
+// LOGOUT
+// =================================
+
 $("logoutBtn").onclick=async()=>{
+
  await db.auth.signOut();
+
  currentUser=null;
  items=[];
+ editingId=null;
+
  $("app").style.display="none";
  $("auth").style.display="block";
+
  $("authForm").reset();
+
  showMessage("Logged out successfully","green");
 };
 
+// =================================
+// AUTO LOGIN
+// =================================
+
 (async()=>{
- const {data}=await db.auth.getSession();
- if(data.session){
-  await loadApp(data.session.user);
+
+ try{
+
+  const {data,error}=await db.auth.getSession();
+
+  if(error) throw error;
+
+  if(data.session){
+   await loadApp(data.session.user);
+  }
+
+ }catch(error){
+
+  showMessage(error.message);
+
  }
+
 })();
+
 </script>
 
 </body>
