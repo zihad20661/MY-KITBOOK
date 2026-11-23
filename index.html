@@ -1,27 +1,367 @@
-<!doctype html><html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MY KITBOOK</title><style>
-body{margin:0;background:#f3f6f8;color:#172033;font-family:system-ui,"Noto Sans Bengali",sans-serif}header{background:#14532d;color:white;padding:22px;font-size:24px;font-weight:bold}main{max-width:900px;margin:22px auto;padding:0 14px}.box{background:white;border:1px solid #ddd;border-radius:14px;padding:16px;margin-bottom:14px}input{display:block;width:100%;box-sizing:border-box;padding:12px;margin:7px 0 13px;border:1px solid #bbb;border-radius:9px;font:inherit}button{padding:11px 15px;border:0;border-radius:9px;background:#14532d;color:white;font:inherit;margin:4px}button.alt{background:#e6f1e9;color:#14532d}.hidden{display:none}.item{border:1px solid #ddd;border-radius:10px;padding:12px;margin:9px 0}.muted{color:#667085;font-size:13px}.grid{display:grid;grid-template-columns:1.2fr .8fr;gap:12px}@media(max-width:650px){.grid{grid-template-columns:1fr}}
-</style></head><body><header>🛡️ MY KITBOOK</header><main>
-<section id="auth" class="box"><h2>লগইন / নতুন অ্যাকাউন্ট</h2><label>Gmail</label><input id="email" type="email" placeholder="আপনার Gmail"><label>Password</label><input id="password" type="password" placeholder="কমপক্ষে ৬ অক্ষর"><button id="signup">নতুন অ্যাকাউন্ট</button><button id="signin" class="alt">লগইন</button><p id="msg" class="muted"></p></section>
-<section id="app" class="hidden"><div class="box"><button id="logout" class="alt">লগআউট</button><h2>আমার কিট</h2><p id="user" class="muted"></p><p id="summary"></p></div><div class="grid"><section class="box"><h3>কিটের তালিকা</h3><div id="items"></div></section><section class="box"><h3 id="formtitle">নতুন কিট যোগ</h3><label>মালামালের নাম</label><input id="name" placeholder="যেমন: চাদর"><label>প্রতি বার পরিমাণ</label><input id="qty" type="number" min="1"><label>কত দিন পর পর প্রাপ্য</label><input id="days" type="number" min="1"><label>সর্বশেষ পাওয়ার তারিখ</label><input id="last" type="date"><button id="save">সংরক্ষণ</button><button id="cancel" class="alt">বাতিল</button></section></div></section>
-<p class="muted">প্রাপ্যতার নিয়ম তুমি নিজে নির্ধারণ করবে।</p></main>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
-// Supabase Project URL এবং Publishable Key বসাও। Secret key কখনো এখানে বসাবে না।
-const SUPABASE_URL="https://szzmkzjruxcqpxkfzbne.supabase.co/rest/v1/";
-const SUPABASE_PUBLISHABLE_KEY="sb_publishable_s16dseU385UQt78r5uaRKA_xRo7RZH8";
-const ready=SUPABASE_URL.startsWith("https://")&&!SUPABASE_URL.includes("https://szzmkzjruxcqpxkfzbne.supabase.co/rest/v1/")&&!SUPABASE_PUBLISHABLE_KEY.includes("sb_publishable_s16dseU385UQt78r5uaRKA_xRo7RZH8");
-const sb=ready?supabase.createClient(https://szzmkzjruxcqpxkfzbne.supabase.co/rest/v1/,sb_publishable_s16dseU385UQt78r5uaRKA_xRo7RZH8):null;
-const $=x=>document.getElementById(x);let editing=null,rows=[];
-function message(t){$("msg").textContent=t}
-$("signup").onclick=async()=>{if(!ready)return message("https://szzmkzjruxcqpxkfzbne.supabase.co/rest/v1/sb_publishable_s16dseU385UQt78r5uaRKA_xRo7RZH8");let {data,error}=await sb.auth.signUp({email:$("email").value.trim(),password:$("password").value});if(error)return message(error.message);if(data.session)openApp(data.user);else message("অ্যাকাউন্ট তৈরি হয়েছে। Email confirmation চালু থাকলে inbox দেখুন।")};
-$("signin").onclick=async()=>{if(!ready)return message("https://szzmkzjruxcqpxkfzbne.supabase.co/rest/v1/sb_publishable_s16dseU385UQt78r5uaRKA_xRo7RZH8");let {data,error}=await sb.auth.signInWithPassword({email:$("email").value.trim(),password:$("password").value});if(error)return message(error.message);openApp(data.user)};
-function openApp(u){$("auth").classList.add("hidden");$("app").classList.remove("hidden");$("user").textContent=u.email;load()}
-$("logout").onclick=async()=>{await sb.auth.signOut();$("app").classList.add("hidden");$("auth").classList.remove("hidden")};
-const bn=n=>String(n).replace(/\d/g,d=>"০১২৩৪৫৬৭৮৯"[d]);
-function plus(d,n){let x=new Date(d+"T12:00:00");x.setDate(x.getDate()+Number(n));return x}
-function datefmt(d){return d.toLocaleDateString("bn-BD",{year:"numeric",month:"short",day:"numeric"})}
-async function load(){let {data,error}=await sb.from("kit_items").select("*").order("created_at",{ascending:false});if(error)return alert(error.message);rows=data||[];draw()}
-function draw(){let today=new Date();today.setHours(0,0,0,0);let upcoming=0,late=0;$("items").innerHTML="";if(!rows.length)$("items").textContent="এখনো কোনো কিট যোগ করা হয়নি।";rows.forEach(r=>{let due=plus(r.last_received,r.interval_days),left=Math.ceil((due-today)/86400000);if(left>=0&&left<=30)upcoming++;if(left<0)late++;let d=document.createElement("div");d.className="item";d.innerHTML='<b class="nm"></b><div class="muted desc"></div><p class="due"></p><button class="alt edit">সম্পাদনা</button><button class="del">মুছুন</button>';d.querySelector(".nm").textContent=r.item_name;d.querySelector(".desc").textContent="প্রতি বার "+bn(r.quantity)+"টি · প্রতি "+bn(r.interval_days)+" দিন";d.querySelector(".due").textContent=left<0?"তারিখ পেরিয়েছে "+bn(-left)+" দিন":"পরবর্তী প্রাপ্য "+datefmt(due)+" · বাকি "+bn(left)+" দিন";d.querySelector(".edit").onclick=()=>{editing=r.id;$("name").value=r.item_name;$("qty").value=r.quantity;$("days").value=r.interval_days;$("last").value=r.last_received};d.querySelector(".del").onclick=async()=>{if(confirm("মুছবেন?")){let z=await sb.from("kit_items").delete().eq("id",r.id);if(z.error)alert(z.error.message);else load()}};$("items").append(d)});$("summary").textContent="মোট "+bn(rows.length)+"টি আইটেম · ৩০ দিনের মধ্যে প্রাপ্য "+bn(upcoming)+"টি · মেয়াদ পেরিয়েছে "+bn(late)+"টি"}
-$("save").onclick=async()=>{let p={item_name:$("name").value.trim(),quantity:+$("qty").value,interval_days:+$("days").value,last_received:$("last").value};if(!p.item_name||p.quantity<1||p.interval_days<1||!p.last_received)return alert("সব তথ্য পূরণ করুন।");let z=editing?await sb.from("kit_items").update(p).eq("id",editing):await sb.from("kit_items").insert(p);if(z.error)return alert(z.error.message);editing=null;$("name").value=$("qty").value=$("days").value=$("last").value="";load()};
-$("cancel").onclick=()=>{editing=null;$("name").value=$("qty").value=$("days").value=$("last").value=""};
-(async()=>{if(!ready)return message("সেটআপ বাকি: HTML-এ Supabase URL ও Publishable Key বসাতে হবে।");let {data}=await sb.auth.getSession();if(data.session)openApp(data.session.user)})();
-</script></body></html>
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MY KITBOOK</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f1f5f9;font-family:Arial,sans-serif;color:#172b35}
+header{background:#123b35;color:white;padding:20px}
+header h2{margin:0}
+header p{margin:6px 0 0;color:#c9e6dc}
+.container{max-width:1000px;margin:auto;padding:18px}
+.card{background:white;border-radius:13px;padding:18px;margin-bottom:16px;box-shadow:0 3px 12px #0000000c}
+h3{margin-top:0;color:#164d40}
+input,textarea{width:100%;padding:12px;margin:7px 0;border:1px solid #d1d5db;border-radius:7px;font-size:15px}
+button{padding:11px 15px;border:0;border-radius:7px;background:#176b50;color:white;font-size:14px;cursor:pointer;margin:4px}
+button:disabled{opacity:.5}
+.secondary{background:#475569}
+.danger{background:#c0392b}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat{background:#e4f3ed;padding:17px;border-radius:10px;text-align:center}
+.stat strong{font-size:25px;display:block;color:#176b50}
+.stat span{font-size:12px}
+table{width:100%;border-collapse:collapse;min-width:620px}
+th,td{padding:12px;text-align:left;border-bottom:1px solid #e5e7eb;font-size:14px}
+th{background:#eaf3ef}
+.table-wrap{overflow-x:auto}
+#app{display:none}
+#auth{max-width:400px;margin:50px auto}
+#message{font-size:14px;margin:12px 0}
+.small{font-size:12px;color:#64748b}
+@media(max-width:500px){.stats{grid-template-columns:1fr 1fr}header{padding:17px}}
+</style>
+</head>
+<body>
+
+<header>
+<h2>MY KITBOOK</h2>
+<p>Police Kit Management System</p>
+</header>
+
+<div id="auth" class="container card">
+<h2>Welcome Back</h2>
+<p>Login to MY KITBOOK</p>
+
+<form id="authForm">
+<input id="email" type="email" placeholder="Gmail / Email" required>
+<input id="password" type="password" placeholder="Password (minimum 6 characters)" required>
+<button id="authBtn" type="submit">Login</button>
+</form>
+
+<button class="secondary" id="signupBtn">Create New Account</button>
+<div id="message"></div>
+<p class="small">Your kit records are private to your account.</p>
+</div>
+
+<div id="app">
+<div class="container">
+
+<div class="card">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+<div>
+<h3>My Dashboard</h3>
+<div id="userEmail" class="small"></div>
+</div>
+<button class="danger" id="logoutBtn">Logout</button>
+</div>
+</div>
+
+<div class="stats">
+<div class="stat"><strong id="total">0</strong><span>Total Items</span></div>
+<div class="stat"><strong id="quantity">0</strong><span>Total Quantity</span></div>
+<div class="stat"><strong id="due">0</strong><span>Due / Overdue</span></div>
+</div>
+
+<div class="card" style="margin-top:16px">
+<h3 id="formTitle">Add New Kit</h3>
+<form id="kitForm">
+<input id="itemName" placeholder="Kit item name" required>
+<input id="qty" type="number" min="1" value="1" placeholder="Quantity" required>
+<label>Received Date</label>
+<input id="received" type="date">
+<label>Next Kit Due Date</label>
+<input id="nextDue" type="date">
+<textarea id="notes" placeholder="Notes / Details"></textarea>
+<button id="saveBtn" type="submit">Save Kit</button>
+<button type="button" class="secondary" id="cancelBtn" style="display:none">Cancel Edit</button>
+</form>
+<div id="kitMessage" class="small"></div>
+</div>
+
+<div class="card">
+<h3>My Kit List</h3>
+<input id="search" placeholder="Search kit item...">
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Kit Name</th>
+<th>Quantity</th>
+<th>Received</th>
+<th>Next Due</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody id="kitList">
+<tr><td colspan="6">Loading...</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+</div>
+
+<script>
+const SUPABASE_URL =
+"https://szzmkzjruxcqpxkfzbne.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_s16dseU385UQt78r5uaRKA_xRo7RZH8";
+
+const db = window.supabase.createClient(
+SUPABASE_URL, SUPABASE_KEY
+);
+
+let currentUser = null;
+let items = [];
+let editingId = null;
+
+const $ = id => document.getElementById(id);
+
+function escapeHTML(value){
+ return String(value ?? "").replace(/[&<>"']/g, c => ({
+ "&":"&amp;","<":"&lt;",">":"&gt;",
+ '"':"&quot;","'":"&#39;"
+ }[c]));
+}
+
+function showMessage(text,color="red"){
+ $("message").style.color=color;
+ $("message").textContent=text;
+}
+
+function kitMessage(text,color="#176b50"){
+ $("kitMessage").style.color=color;
+ $("kitMessage").textContent=text;
+}
+
+$("authForm").addEventListener("submit",async e=>{
+ e.preventDefault();
+ $("authBtn").disabled=true;
+ showMessage("Please wait...","#176b50");
+
+ try{
+  const {data,error}=await db.auth.signInWithPassword({
+   email:$("email").value.trim(),
+   password:$("password").value
+  });
+  if(error) throw error;
+  showMessage("Login successful","green");
+  await loadApp(data.user);
+ }catch(error){
+  showMessage(error.message);
+ }
+ $("authBtn").disabled=false;
+});
+
+$("signupBtn").onclick=async()=>{
+ const email=$("email").value.trim();
+ const password=$("password").value;
+
+ if(!email || password.length<6){
+  showMessage("Enter email and a password of at least 6 characters");
+  return;
+ }
+
+ $("signupBtn").disabled=true;
+ try{
+  const {data,error}=await db.auth.signUp({email,password});
+  if(error) throw error;
+
+  if(data.session){
+   await loadApp(data.user);
+  }else{
+   showMessage("Account created. Check your email for verification.","green");
+  }
+ }catch(error){
+  showMessage(error.message);
+ }
+ $("signupBtn").disabled=false;
+};
+
+async function loadApp(user){
+ currentUser=user;
+ $("auth").style.display="none";
+ $("app").style.display="block";
+ $("userEmail").textContent=user.email;
+ await loadItems();
+}
+
+async function loadItems(){
+ $("kitList").innerHTML="<tr><td colspan='6'>Loading...</td></tr>";
+
+ const {data,error}=await db.from("kit_items")
+ .select("*").order("created_at",{ascending:false});
+
+ if(error){
+  kitMessage(error.message,"red");
+  return;
+ }
+
+ items=data||[];
+ render();
+}
+
+function render(){
+ const search=$("search").value.toLowerCase();
+
+ const filtered=items.filter(x=>
+  x.item_name.toLowerCase().includes(search)
+ );
+
+ let totalQty=items.reduce((s,x)=>s+Number(x.quantity),0);
+ const today=new Date().toISOString().slice(0,10);
+
+ const dueItems=items.filter(x=>
+  x.next_due_date && x.next_due_date<=today
+ );
+
+ $("total").textContent=items.length;
+ $("quantity").textContent=totalQty;
+ $("due").textContent=dueItems.length;
+
+ if(!filtered.length){
+  $("kitList").innerHTML="<tr><td colspan='6'>No kit found</td></tr>";
+  return;
+ }
+
+ $("kitList").innerHTML=filtered.map(x=>{
+  let status="Not set";
+  if(x.next_due_date){
+   status=x.next_due_date<today?"Overdue":
+   x.next_due_date===today?"Due today":"Upcoming";
+  }
+
+  return `<tr>
+   <td>${escapeHTML(x.item_name)}
+   <div class="small">${escapeHTML(x.notes||"")}</div></td>
+   <td>${Number(x.quantity)}</td>
+   <td>${escapeHTML(x.received_date||"-")}</td>
+   <td>${escapeHTML(x.next_due_date||"-")}</td>
+   <td>${status}</td>
+   <td>
+    <button onclick="editItem(${x.id})">Edit</button>
+    <button class="danger" onclick="deleteItem(${x.id})">Delete</button>
+   </td>
+  </tr>`;
+ }).join("");
+}
+
+$("search").addEventListener("input",render);
+
+$("kitForm").addEventListener("submit",async e=>{
+ e.preventDefault();
+ $("saveBtn").disabled=true;
+ kitMessage("Saving...");
+
+ const record={
+  user_id:currentUser.id,
+  item_name:$("itemName").value.trim(),
+  quantity:Number($("qty").value),
+  received_date:$("received").value||null,
+  next_due_date:$("nextDue").value||null,
+  notes:$("notes").value.trim()
+ };
+
+ try{
+  let result;
+
+  if(editingId){
+   result=await db.from("kit_items")
+    .update(record)
+    .eq("id",editingId)
+    .eq("user_id",currentUser.id);
+  }else{
+   result=await db.from("kit_items").insert(record);
+  }
+
+  if(result.error) throw result.error;
+
+  kitMessage(editingId?"Kit updated successfully":"Kit added successfully");
+  resetForm();
+  await loadItems();
+
+ }catch(error){
+  kitMessage(error.message,"red");
+ }
+
+ $("saveBtn").disabled=false;
+});
+
+window.editItem=function(id){
+ const x=items.find(i=>i.id===id);
+ if(!x)return;
+
+ editingId=id;
+ $("itemName").value=x.item_name;
+ $("qty").value=x.quantity;
+ $("received").value=x.received_date||"";
+ $("nextDue").value=x.next_due_date||"";
+ $("notes").value=x.notes||"";
+ $("formTitle").textContent="Edit Kit";
+ $("saveBtn").textContent="Update Kit";
+ $("cancelBtn").style.display="inline-block";
+ window.scrollTo({top:0,behavior:"smooth"});
+};
+
+window.deleteItem=async function(id){
+ if(!confirm("Are you sure you want to delete this kit?"))return;
+
+ const {error}=await db.from("kit_items")
+ .delete().eq("id",id).eq("user_id",currentUser.id);
+
+ if(error){
+  kitMessage(error.message,"red");
+ }else{
+  kitMessage("Kit deleted");
+  await loadItems();
+ }
+};
+
+function resetForm(){
+ $("kitForm").reset();
+ $("qty").value=1;
+ editingId=null;
+ $("formTitle").textContent="Add New Kit";
+ $("saveBtn").textContent="Save Kit";
+ $("cancelBtn").style.display="none";
+}
+
+$("cancelBtn").onclick=resetForm;
+
+$("logoutBtn").onclick=async()=>{
+ await db.auth.signOut();
+ currentUser=null;
+ items=[];
+ $("app").style.display="none";
+ $("auth").style.display="block";
+ $("authForm").reset();
+ showMessage("Logged out successfully","green");
+};
+
+(async()=>{
+ const {data}=await db.auth.getSession();
+ if(data.session){
+  await loadApp(data.session.user);
+ }
+})();
+</script>
+
+</body>
+</html>
