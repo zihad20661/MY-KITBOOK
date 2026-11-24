@@ -78,7 +78,6 @@ th{color:var(--muted);font-weight:700}
 .tabs button.active{background:var(--primary);color:white}
 .hidden{display:none!important}
 .profile{width:42px;height:42px;border-radius:50%;object-fit:cover;background:#dbeafe}
-.profile-placeholder{width:42px;height:42px;border-radius:50%;background:#dbeafe;color:#123b70;display:grid;place-items:center;font-size:20px}
 #toast{
  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
  background:#172554;color:white;padding:12px 18px;border-radius:10px;
@@ -87,12 +86,13 @@ th{color:var(--muted);font-weight:700}
 .settings-panel{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 hr{border:0;border-top:1px solid var(--border);margin:17px 0}
 footer{text-align:center;color:var(--muted);padding:20px;font-size:12px}
-.search-area{
- display:flex;gap:8px;align-items:center;flex-wrap:wrap;
- margin-bottom:10px
-}
+.search-area{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
 .search-area input{flex:1;min-width:160px;margin:0}
 .search-info{font-size:12px;color:var(--muted);margin-bottom:12px}
+.account-note{
+ padding:12px;border-radius:10px;background:var(--bg);
+ border:1px solid var(--border);font-size:13px;margin-bottom:14px
+}
 @media(max-width:650px){
  .stats{grid-template-columns:1fr 1fr}
  .grid2,.settings-panel{grid-template-columns:1fr}
@@ -121,7 +121,6 @@ footer{text-align:center;color:var(--muted);padding:20px;font-size:12px}
 
 <div class="container">
 
-<!-- AUTH -->
 <section id="authSection" class="card" style="max-width:430px;margin:45px auto">
  <h3>🛡️ MY-KITBOOK Login</h3>
  <p class="muted">তোমার অ্যাকাউন্টে প্রবেশ করো</p>
@@ -136,7 +135,6 @@ footer{text-align:center;color:var(--muted);padding:20px;font-size:12px}
  <p id="authMessage" class="muted"></p>
 </section>
 
-<!-- APP -->
 <section id="appSection" class="hidden">
 
  <div class="card" style="display:flex;align-items:center;gap:12px">
@@ -158,14 +156,12 @@ footer{text-align:center;color:var(--muted);padding:20px;font-size:12px}
   <button class="active" id="tabInventory" onclick="showTab('inventory')">📦 Inventory</button>
   <button id="tabAdd" onclick="showTab('add')">➕ Add Kit</button>
   <button id="tabHistory" onclick="showTab('history')">📋 History</button>
+  <button id="tabAccounting" onclick="showTab('accounting')">📊 Kit হিসাব</button>
   <button id="tabSettings" onclick="showSettings()">⚙ Settings</button>
  </div>
 
- <!-- INVENTORY -->
  <div id="inventoryTab" class="card">
   <h3>📦 My Kit Inventory</h3>
-
-  <!-- NEW KIT SEARCH -->
   <div class="search-area">
    <input id="kitSearch" type="search"
     placeholder="🔍 Kit-এর নাম লিখে খুঁজুন..."
@@ -175,7 +171,6 @@ footer{text-align:center;color:var(--muted);padding:20px;font-size:12px}
    <button class="secondary" onclick="clearKitSearch()">✖ Clear</button>
   </div>
   <div id="searchResult" class="search-info"></div>
-
   <div class="tablewrap">
    <table>
     <thead><tr>
@@ -189,7 +184,6 @@ footer{text-align:center;color:var(--muted);padding:20px;font-size:12px}
   </div>
  </div>
 
- <!-- ADD / EDIT -->
  <div id="addTab" class="card hidden">
   <h3 id="formTitle">➕ Add New Kit</h3>
   <input id="editId" type="hidden">
@@ -222,7 +216,6 @@ footer{text-align:center;color:var(--muted);padding:20px;font-size:12px}
   </div>
  </div>
 
- <!-- HISTORY -->
  <div id="historyTab" class="card hidden">
   <h3>📋 Kit Receipt History</h3>
   <div class="tablewrap">
@@ -233,7 +226,83 @@ footer{text-align:center;color:var(--muted);padding:20px;font-size:12px}
   </div>
  </div>
 
- <!-- SETTINGS -->
+ <!-- NEW ACCOUNTING TAB -->
+ <div id="accountingTab" class="hidden">
+  <div class="card">
+   <h3>📊 Kit পাওনা ও প্রাপ্তির হিসাব</h3>
+   <div class="account-note">
+    এই হিসাব <b>First Due Date</b> থেকে নির্ধারিত পাওনা এবং Receipt History ব্যবহার করে তৈরি হয়।
+    আগাম পাওয়া কিট ভবিষ্যতের পাওনা থেকে ক্রেডিট হিসেবে বাদ যাবে।
+   </div>
+   <div class="stats">
+    <div class="stat">
+     <small>এখন পর্যন্ত নির্ধারিত পাওনা</small>
+     <b id="accDue">0</b>
+    </div>
+    <div class="stat">
+     <small>মোট প্রাপ্তি*</small>
+     <b id="accReceived">0</b>
+    </div>
+    <div class="stat">
+     <small>আগাম প্রাপ্তি / ক্রেডিট</small>
+     <b id="accAdvance">0</b>
+    </div>
+    <div class="stat">
+     <small>বকেয়া পাওনা</small>
+     <b id="accRemaining">0</b>
+    </div>
+   </div>
+   <p class="muted" style="font-size:12px">
+    *মোট প্রাপ্তি = প্রাথমিক বরাদ্দের পরিমাণ + সংরক্ষিত Receipt History।
+    বকেয়া = এখন পর্যন্ত নির্ধারিত পাওনা থেকে History-তে থাকা প্রাপ্তি বাদ।
+   </p>
+  </div>
+
+  <div class="card">
+   <h3>📋 প্রতিটি কিটের আলাদা হিসাব</h3>
+   <div class="tablewrap">
+    <table>
+     <thead>
+      <tr>
+       <th>Kit Name</th>
+       <th>Cycle Quantity</th>
+       <th>এখন পর্যন্ত পাওনা</th>
+       <th>History-তে প্রাপ্তি</th>
+       <th>আগাম ক্রেডিট</th>
+       <th>বকেয়া</th>
+       <th>পরবর্তী Due-তে বাকি</th>
+      </tr>
+     </thead>
+     <tbody id="accountingBody"></tbody>
+    </table>
+   </div>
+  </div>
+
+  <div class="card">
+   <h3>➕ নতুন Receipt / আগাম Receipt যোগ করো</h3>
+   <label>Kit Item</label>
+   <select id="receiptItem"></select>
+   <div class="grid2">
+    <div>
+     <label>প্রাপ্তির তারিখ</label>
+     <input id="receiptDate" type="date">
+    </div>
+    <div>
+     <label>প্রাপ্তির পরিমাণ</label>
+     <input id="receiptQty" type="number" min="1" value="1">
+    </div>
+   </div>
+   <label>Notes (Optional)</label>
+   <textarea id="receiptNotes" rows="2" placeholder="যেমন: আগাম পেয়েছি"></textarea>
+   <div class="actions" style="margin-top:14px">
+    <button class="green" onclick="saveAdvanceReceipt()">Save Receipt</button>
+   </div>
+   <p class="muted" style="font-size:12px">
+    এই ফর্মে Receipt যোগ করলে মূল Due Schedule পরিবর্তন হবে না।
+   </p>
+  </div>
+ </div>
+
  <div id="settingsTab" class="card hidden">
   <h3>⚙️ Settings</h3>
   <div class="settings-panel">
@@ -359,7 +428,6 @@ function getDueCount(item){
  let count=0,cursor=next;
  const value=Number(item.interval_value||1);
  const unit=item.interval_unit||"day";
-
  while(cursor<=today() && count<3000){
   count++;
   cursor=addInterval(cursor,value,unit);
@@ -383,14 +451,14 @@ function resetForm(){
 }
 
 function showTab(tab){
- ["inventory","add","history","settings"].forEach(x=>{
+ ["inventory","add","history","accounting","settings"].forEach(x=>{
   $(x+"Tab").classList.toggle("hidden",x!==tab);
   const btn=$("tab"+x.charAt(0).toUpperCase()+x.slice(1));
   if(btn)btn.classList.toggle("active",x===tab);
  });
-
  if(tab==="history")loadHistory();
  if(tab==="inventory")renderItems();
+ if(tab==="accounting")renderAccounting();
 }
 
 function showSettings(){
@@ -404,9 +472,7 @@ async function login(){
   email:$("email").value.trim(),
   password:$("password").value
  });
-
  if(error)return $("authMessage").textContent=error.message;
-
  currentUser=data.user;
  await startApp();
 }
@@ -416,9 +482,7 @@ async function signup(){
   email:$("email").value.trim(),
   password:$("password").value
  });
-
  if(error)return $("authMessage").textContent=error.message;
-
  if(data.session){
   currentUser=data.user;
   await startApp();
@@ -442,7 +506,6 @@ async function startApp(){
  $("authSection").classList.add("hidden");
  $("appSection").classList.remove("hidden");
  $("headerActions").style.display="flex";
-
  await applyPreferences();
  await loadItems();
  await loadHistory();
@@ -453,19 +516,14 @@ async function loadItems(){
   .select("*")
   .eq("user_id",currentUser.id)
   .order("created_at",{ascending:false});
-
  if(error){
   toast("Kit load error: "+error.message);
   return;
  }
-
  items=data||[];
  renderItems();
+ renderAccounting();
 }
-
-/* =========================
-   KIT SEARCH SYSTEM
-========================= */
 
 function searchKit(){
  searchQuery=$("kitSearch").value.trim().toLowerCase();
@@ -479,74 +537,49 @@ function clearKitSearch(){
  renderItems();
 }
 
-/* =========================
-   INVENTORY RENDER
-========================= */
-
 function renderItems(){
  const body=$("inventoryBody");
-
  const filteredItems=items.filter(item=>
   String(item.item_name||"").toLowerCase().includes(searchQuery)
  );
 
- if(searchQuery){
-  $("searchResult").textContent=
-   `${filteredItems.length} টি Kit পাওয়া গেছে`;
- }else{
-  $("searchResult").textContent="";
- }
+ $("searchResult").textContent=searchQuery
+  ?`${filteredItems.length} টি Kit পাওয়া গেছে`:"";
 
  if(!filteredItems.length){
   body.innerHTML=searchQuery
    ?'<tr><td colspan="7">কোনো Kit পাওয়া যায়নি।</td></tr>'
    :'<tr><td colspan="7">এখনো কোনো Kit যোগ করা হয়নি। Add Kit থেকে যোগ করো।</td></tr>';
  }else{
-
   body.innerHTML=filteredItems.map(item=>{
    const count=getDueCount(item);
    const quantity=count*Number(item.quantity||1);
-
    const status=count
     ?`<span class="badge due">${count} Cycle Due · ${quantity} টি</span>`
     :'<span class="badge ok">Up to date</span>';
 
    return `<tr>
-    <td><b>${safe(item.item_name)}</b><br>
-    <small>${safe(item.notes||"")}</small></td>
-
+    <td><b>${safe(item.item_name)}</b><br><small>${safe(item.notes||"")}</small></td>
     <td>${safe(item.quantity)} টি</td>
-
-    <td>${safe(item.interval_value||1)}
-    ${unitName(item.interval_unit||"day")} পরপর</td>
-
+    <td>${safe(item.interval_value||1)} ${unitName(item.interval_unit||"day")} পরপর</td>
     <td>${safe(item.last_received||"-")}</td>
-
     <td>${safe(getNext(item))}</td>
-
     <td>${status}</td>
-
     <td><div class="actions">
      ${count?`<button class="green" onclick="receiveDue('${item.id}')">Receive ${quantity}</button>`:""}
-
      <button class="secondary" onclick="editItem('${item.id}')">Edit</button>
-
      <button class="red" onclick="deleteItem('${item.id}')">Delete</button>
     </div></td>
    </tr>`;
   }).join("");
  }
 
- // Dashboard হিসাব সব Kit থেকে হবে, Search Result থেকে নয়
  const allDue=items.filter(i=>getDueCount(i)>0);
-
  $("totalItems").textContent=items.length;
  $("dueItems").textContent=allDue.length;
-
  $("dueQty").textContent=items.reduce(
   (sum,i)=>sum+getDueCount(i)*Number(i.quantity||1),0
  );
-
  $("okItems").textContent=items.length-allDue.length;
 }
 
@@ -564,6 +597,7 @@ async function saveItem(){
  }
 
  const next=addInterval(last,intervalValue,unit);
+ const oldItem=id?items.find(x=>x.id===id):null;
 
  const payload={
   user_id:currentUser.id,
@@ -575,11 +609,11 @@ async function saveItem(){
    unit==="month"?intervalValue*30:intervalValue*365,
   last_received:last,
   next_due_date:next,
+  first_due_date:oldItem?.first_due_date||next,
   notes:$("notes").value.trim()
  };
 
  let result;
-
  if(id){
   result=await db.from("kit_items")
    .update(payload)
@@ -595,7 +629,6 @@ async function saveItem(){
  }
 
  toast(id?"Kit Updated":"Kit Added Successfully");
-
  resetForm();
  await loadItems();
  showTab("inventory");
@@ -604,7 +637,6 @@ async function saveItem(){
 function editItem(id){
  const item=items.find(x=>x.id===id);
  if(!item)return;
-
  $("editId").value=id;
  $("itemName").value=item.item_name;
  $("qty").value=item.quantity;
@@ -613,81 +645,45 @@ function editItem(id){
  $("lastReceived").value=item.last_received||today();
  $("notes").value=item.notes||"";
  $("formTitle").textContent="✏️ Edit Kit";
-
  showTab("add");
 }
 
-/* =========================
-   FIXED DELETE SYSTEM
-========================= */
-
 async function deleteItem(id){
-
  const item=items.find(x=>x.id===id);
  if(!item)return;
-
- const confirmed=confirm(
-  `"${item.item_name}" এবং এর সব History স্থায়ীভাবে মুছে ফেলবে?`
- );
-
- if(!confirmed)return;
+ if(!confirm(`"${item.item_name}" এবং এর সব History স্থায়ীভাবে মুছে ফেলবে?`))return;
 
  try{
-
   toast("Deleting Kit...");
-
-  // প্রথমে সংশ্লিষ্ট History Delete
   const child=await db.from("kit_receipts")
    .delete()
    .eq("kit_item_id",id)
    .eq("user_id",currentUser.id)
    .select("id");
+  if(child.error)throw new Error("History Delete Failed: "+child.error.message);
 
-  if(child.error){
-   throw new Error("History Delete Failed: "+child.error.message);
-  }
-
-  // History Delete হয়েছে কি না যাচাই
   const checkHistory=await db.from("kit_receipts")
    .select("id")
    .eq("kit_item_id",id)
    .eq("user_id",currentUser.id);
+  if(checkHistory.error)throw new Error(checkHistory.error.message);
+  if(checkHistory.data?.length)throw new Error("History এখনো আছে। Permission পরীক্ষা করো।");
 
-  if(checkHistory.error){
-   throw new Error("History Verify Failed: "+checkHistory.error.message);
-  }
-
-  if(checkHistory.data && checkHistory.data.length>0){
-   throw new Error("History এখনো আছে। Supabase Permission পরীক্ষা করো।");
-  }
-
-  // এবার মূল Kit Delete
   const result=await db.from("kit_items")
    .delete()
    .eq("id",id)
    .eq("user_id",currentUser.id)
    .select("id");
+  if(result.error)throw new Error("Kit Delete Failed: "+result.error.message);
+  if(!result.data?.length)throw new Error("Kit Delete হয়নি। Permission পরীক্ষা করো।");
 
-  if(result.error){
-   throw new Error("Kit Delete Failed: "+result.error.message);
-  }
-
-  if(!result.data || result.data.length===0){
-   throw new Error("Kit Delete হয়নি। Supabase RLS Permission পরীক্ষা করো।");
-  }
-
-  toast("✅ Kit এবং History সফলভাবে Deleted");
-
+  toast("✅ Kit এবং History Deleted");
   clearKitSearch();
-
   await loadItems();
   await loadHistory();
-
  }catch(error){
-
-  console.error("Delete Error:",error);
+  console.error(error);
   toast("❌ "+error.message);
-
  }
 }
 
@@ -699,49 +695,35 @@ async function addReceipt(itemId,receivedDate,quantity,note){
   quantity,
   notes:note||""
  });
-
  if(error)throw error;
 }
 
 async function receiveDue(id){
  const item=items.find(x=>x.id===id);
  if(!item)return;
-
  const count=getDueCount(item);
- if(!count){
-  toast("এখন কোনো Due নেই");
-  return;
- }
+ if(!count)return toast("এখন কোনো Due নেই");
 
  const quantity=count*Number(item.quantity||1);
-
  if(!confirm(`${item.item_name}: মোট ${quantity} টি Receive হিসেবে যোগ করবে?`))return;
 
  try{
-
   await addReceipt(id,today(),quantity,"Automatic Due Receive");
 
   let next=getNext(item);
-
   for(let i=0;i<count;i++){
    next=addInterval(next,item.interval_value||1,item.interval_unit||"day");
   }
 
   const {error}=await db.from("kit_items")
-   .update({
-    last_received:today(),
-    next_due_date:next
-   })
+   .update({last_received:today(),next_due_date:next})
    .eq("id",id)
    .eq("user_id",currentUser.id);
-
   if(error)throw error;
 
   toast(`${quantity} টি Receive হয়েছে`);
-
   await loadItems();
   await loadHistory();
-
  }catch(e){
   toast("Receive error: "+e.message);
  }
@@ -749,23 +731,18 @@ async function receiveDue(id){
 
 async function loadHistory(){
  if(!currentUser)return;
-
  const {data,error}=await db.from("kit_receipts")
   .select("*")
   .eq("user_id",currentUser.id)
   .order("received_date",{ascending:false});
 
  if(error){
-  $("historyBody").innerHTML=
-   `<tr><td colspan="4">${safe(error.message)}</td></tr>`;
+  $("historyBody").innerHTML=`<tr><td colspan="4">${safe(error.message)}</td></tr>`;
   return;
  }
 
  receipts=data||[];
-
- const names=Object.fromEntries(
-  items.map(i=>[i.id,i.item_name])
- );
+ const names=Object.fromEntries(items.map(i=>[i.id,i.item_name]));
 
  $("historyBody").innerHTML=receipts.length
   ?receipts.map(r=>`
@@ -774,9 +751,10 @@ async function loadHistory(){
     <td>${safe(r.received_date)}</td>
     <td>${safe(r.quantity)}</td>
     <td>${safe(r.notes||"")}</td>
-   </tr>
-  `).join("")
+   </tr>`).join("")
   :'<tr><td colspan="4">এখনো কোনো Receipt History নেই।</td></tr>';
+
+ renderAccounting();
 }
 
 async function addOldHistory(){
@@ -784,90 +762,155 @@ async function addOldHistory(){
   "কোন Kit-এর পুরোনো Receipt যোগ করবে? Kit নাম লিখো:\n"+
   items.map(i=>i.item_name).join(", ")
  );
-
  if(!id)return;
 
  const item=items.find(
   x=>x.item_name.toLowerCase()===id.trim().toLowerCase()
  );
-
- if(!item){
-  toast("Kit নাম মেলেনি");
-  return;
- }
+ if(!item)return toast("Kit নাম মেলেনি");
 
  const date=prompt("প্রাপ্তির তারিখ লিখো (YYYY-MM-DD):");
-
- if(!date||!/^\d{4}-\d{2}-\d{2}$/.test(date)){
-  return toast("তারিখ সঠিক নয়");
- }
+ if(!date||!/^\d{4}-\d{2}-\d{2}$/.test(date))return toast("তারিখ সঠিক নয়");
 
  const q=Number(prompt("কতটি পেয়েছিলে?"));
-
- if(!Number.isInteger(q)||q<1){
-  return toast("Quantity সঠিক নয়");
- }
+ if(!Number.isInteger(q)||q<1)return toast("Quantity সঠিক নয়");
 
  const note=prompt("Notes (Optional):")||"Old receipt";
 
  try{
-
   await addReceipt(item.id,date,q,note);
-
-  if(!item.last_received||date>item.last_received){
-
-   const next=addInterval(
-    date,item.interval_value||1,item.interval_unit||"day"
-   );
-
-   const {error}=await db.from("kit_items")
-    .update({
-     last_received:date,
-     next_due_date:next
-    })
-    .eq("id",item.id)
-    .eq("user_id",currentUser.id);
-
-   if(error)throw error;
-  }
-
   toast("Old History যোগ হয়েছে");
-
   await loadItems();
   await loadHistory();
-
  }catch(e){
   toast("History error: "+e.message);
  }
 }
 
+/* NEW ACCOUNTING SYSTEM */
+
+function getFirstDue(item){
+ return item.first_due_date ||
+  item.next_due_date ||
+  addInterval(item.last_received,item.interval_value||1,item.interval_unit||"day");
+}
+
+function getScheduledCycles(item,until=today()){
+ const first=getFirstDue(item);
+ if(!first||first>until)return 0;
+
+ const value=Number(item.interval_value||1);
+ const unit=item.interval_unit||"day";
+ let cursor=first,count=0;
+
+ while(cursor<=until && count<3000){
+  count++;
+  cursor=addInterval(cursor,value,unit);
+ }
+ return count;
+}
+
+function getItemAccounting(item){
+ const qty=Number(item.quantity||1);
+ const cycles=getScheduledCycles(item);
+ const scheduled=cycles*qty;
+
+ const historyReceived=receipts
+  .filter(r=>r.kit_item_id===item.id)
+  .reduce((sum,r)=>sum+Number(r.quantity||0),0);
+
+ const overdueRemaining=Math.max(0,scheduled-historyReceived);
+ const advance=Math.max(0,historyReceived-scheduled);
+ const nextDueRemaining=Math.max(0,qty-advance);
+
+ return {
+  cycles,
+  scheduled,
+  historyReceived,
+  advance,
+  overdueRemaining,
+  nextDueRemaining,
+  lifetimeReceived:qty+historyReceived
+ };
+}
+
+function renderAccounting(){
+ if(!$("accountingBody"))return;
+
+ let totalDue=0,totalReceived=0,totalAdvance=0,totalRemaining=0;
+
+ $("accountingBody").innerHTML=items.length
+  ?items.map(item=>{
+   const a=getItemAccounting(item);
+   totalDue+=a.scheduled;
+   totalReceived+=a.lifetimeReceived;
+   totalAdvance+=a.advance;
+   totalRemaining+=a.overdueRemaining+a.nextDueRemaining;
+
+   return `<tr>
+    <td><b>${safe(item.item_name)}</b></td>
+    <td>${safe(item.quantity)}</td>
+    <td>${a.scheduled}</td>
+    <td>${a.historyReceived}</td>
+    <td>${a.advance}</td>
+    <td>${a.overdueRemaining}</td>
+    <td>${a.nextDueRemaining}</td>
+   </tr>`;
+  }).join("")
+  :'<tr><td colspan="7">কোনো Kit নেই।</td></tr>';
+
+ $("accDue").textContent=totalDue;
+ $("accReceived").textContent=totalReceived;
+ $("accAdvance").textContent=totalAdvance;
+ $("accRemaining").textContent=totalRemaining;
+
+ const select=$("receiptItem");
+ const previous=select.value;
+ select.innerHTML=items.map(i=>
+  `<option value="${safe(i.id)}">${safe(i.item_name)}</option>`
+ ).join("");
+ if(items.some(i=>i.id===previous))select.value=previous;
+}
+
+async function saveAdvanceReceipt(){
+ const id=$("receiptItem").value;
+ const date=$("receiptDate").value;
+ const qty=Number($("receiptQty").value);
+ const note=$("receiptNotes").value.trim();
+
+ if(!id)return toast("একটি Kit নির্বাচন করো");
+ if(!date)return toast("প্রাপ্তির তারিখ দাও");
+ if(!Number.isInteger(qty)||qty<1)return toast("সঠিক Quantity দাও");
+ if(date>today())return toast("ভবিষ্যতের তারিখে Receipt যোগ করা যাবে না");
+
+ try{
+  await addReceipt(id,date,qty,note||"Advance / Manual Receipt");
+  $("receiptQty").value=1;
+  $("receiptNotes").value="";
+  $("receiptDate").value=today();
+  await loadHistory();
+  renderAccounting();
+  toast("✅ Receipt সংরক্ষণ হয়েছে");
+ }catch(e){
+  toast("Receipt error: "+e.message);
+ }
+}
+
 async function saveDisplayName(){
  const name=$("displayName").value.trim();
-
- const {data,error}=await db.auth.updateUser({
-  data:{display_name:name}
- });
-
+ const {data,error}=await db.auth.updateUser({data:{display_name:name}});
  if(error)return toast(error.message);
-
  currentUser=data.user;
  $("welcomeName").textContent=name||"Welcome";
-
  toast("Name saved");
 }
 
 async function saveTheme(){
  const theme=$("themeSelect").value;
-
- const {data,error}=await db.auth.updateUser({
-  data:{theme}
- });
-
+ const {data,error}=await db.auth.updateUser({data:{theme}});
  if(error)return toast(error.message);
-
  currentUser=data.user;
  applyTheme(theme);
-
  toast("Theme saved");
 }
 
@@ -878,85 +921,50 @@ function applyTheme(theme){
 async function uploadImage(type){
  const input=$(type==="profile"?"profileFile":"backgroundFile");
  const file=input.files[0];
-
  if(!file)return toast("আগে একটি ছবি নির্বাচন করো");
+ if(!file.type.startsWith("image/"))return toast("শুধু Image ফাইল নির্বাচন করো");
+ if(file.size>5*1024*1024)return toast("ছবির সাইজ 5MB-এর কম হতে হবে");
 
- if(!file.type.startsWith("image/")){
-  return toast("শুধু Image ফাইল নির্বাচন করো");
- }
-
- if(file.size>5*1024*1024){
-  return toast("ছবির সাইজ 5MB-এর কম হতে হবে");
- }
-
- const ext=(file.name.split(".").pop()||"jpg")
-  .toLowerCase().replace(/[^a-z0-9]/g,"");
-
+ const ext=(file.name.split(".").pop()||"jpg").toLowerCase().replace(/[^a-z0-9]/g,"");
  const path=`${currentUser.id}/${type}.${ext}`;
 
  const {error:uploadError}=await db.storage
   .from("kitbook-media")
-  .upload(path,file,{
-   upsert:true,
-   contentType:file.type
-  });
-
- if(uploadError){
-  return toast("Upload error: "+uploadError.message);
- }
+  .upload(path,file,{upsert:true,contentType:file.type});
+ if(uploadError)return toast("Upload error: "+uploadError.message);
 
  const oldPath=currentUser.user_metadata?.[type+"_path"];
  const metadata={ [type+"_path"]:path };
-
- const {data,error}=await db.auth.updateUser({
-  data:metadata
- });
-
+ const {data,error}=await db.auth.updateUser({data:metadata});
  if(error)return toast("Profile save error: "+error.message);
 
  currentUser=data.user;
-
  if(oldPath&&oldPath!==path){
   await db.storage.from("kitbook-media").remove([oldPath]);
  }
-
  await applyPreferences();
-
  input.value="";
-
  toast(type==="profile"?"Profile picture uploaded":"Background uploaded");
 }
 
 async function signedImage(path){
  if(!path)return null;
-
  const {data,error}=await db.storage
-  .from("kitbook-media")
-  .createSignedUrl(path,3600);
-
- if(error){
-  console.log(error);
-  return null;
- }
-
+  .from("kitbook-media").createSignedUrl(path,3600);
+ if(error){console.log(error);return null;}
  return data.signedUrl;
 }
 
 async function applyPreferences(){
  const meta=currentUser.user_metadata||{};
-
- $("welcomeName").textContent=
-  meta.display_name||currentUser.email;
-
+ $("welcomeName").textContent=meta.display_name||currentUser.email;
  $("displayName").value=meta.display_name||"";
 
  const theme=meta.theme||"light";
-
  $("themeSelect").value=theme;
  applyTheme(theme);
 
  const profile=await signedImage(meta.profile_path);
-
  if(profile){
   $("headerPhoto").src=profile;
   $("headerPhoto").classList.remove("hidden");
@@ -967,7 +975,6 @@ async function applyPreferences(){
  }
 
  const bg=await signedImage(meta.background_path);
-
  if(bg){
   document.body.style.backgroundImage=
    `linear-gradient(#f1f5f988,#f1f5f988),url("${bg}")`;
@@ -978,34 +985,22 @@ async function applyPreferences(){
 
 async function removeBackground(){
  const path=currentUser.user_metadata?.background_path;
-
  if(!path)return toast("কোনো Background সেট করা নেই");
 
- const {data,error}=await db.auth.updateUser({
-  data:{background_path:null}
- });
-
+ const {data,error}=await db.auth.updateUser({data:{background_path:null}});
  if(error)return toast(error.message);
 
  await db.storage.from("kitbook-media").remove([path]);
-
  currentUser=data.user;
  document.body.style.backgroundImage="";
-
  toast("Background removed");
 }
 
 async function changePassword(){
  const p=$("newPassword").value;
+ if(p.length<6)return toast("কমপক্ষে ৬ অক্ষরের Password দাও");
 
- if(p.length<6){
-  return toast("কমপক্ষে ৬ অক্ষরের Password দাও");
- }
-
- const {error}=await db.auth.updateUser({
-  password:p
- });
-
+ const {error}=await db.auth.updateUser({password:p});
  if(error)return toast(error.message);
 
  $("newPassword").value="";
@@ -1018,74 +1013,50 @@ function exportBackup(){
   kit_items:items,
   kit_receipts:receipts
  };
-
- const blob=new Blob(
-  [JSON.stringify(backup,null,2)],
-  {type:"application/json"}
- );
-
+ const blob=new Blob([JSON.stringify(backup,null,2)],{type:"application/json"});
  const url=URL.createObjectURL(blob);
  const a=document.createElement("a");
-
  a.href=url;
  a.download="MY-KITBOOK-backup.json";
  a.click();
-
  URL.revokeObjectURL(url);
 }
 
 async function resetAppearance(){
+ const path=currentUser.user_metadata?.background_path;
  const {data,error}=await db.auth.updateUser({
-  data:{
-   theme:"light",
-   background_path:null
-  }
+  data:{theme:"light",background_path:null}
  });
-
  if(error)return toast(error.message);
 
- const path=currentUser.user_metadata?.background_path;
-
- if(path){
-  await db.storage.from("kitbook-media").remove([path]);
- }
-
+ if(path)await db.storage.from("kitbook-media").remove([path]);
  currentUser=data.user;
-
  applyTheme("light");
  $("themeSelect").value="light";
  document.body.style.backgroundImage="";
-
  toast("Appearance reset");
 }
 
 async function enableNotifications(){
- if(!("Notification" in window)){
-  return toast("এই Browser Notification support করে না");
- }
-
+ if(!("Notification" in window))return toast("এই Browser Notification support করে না");
  const permission=await Notification.requestPermission();
-
- if(permission!=="granted"){
-  return toast("Notification permission দেওয়া হয়নি");
- }
+ if(permission!=="granted")return toast("Notification permission দেওয়া হয়নি");
 
  const due=items.filter(i=>getDueCount(i)>0);
-
  if(due.length){
   new Notification("MY-KITBOOK: Due Items",{
    body:`তোমার ${due.length} ধরনের Kit Due হয়েছে। অ্যাপ খুলে দেখো।`
   });
  }else{
-  new Notification("MY-KITBOOK",{
-   body:"এখন কোনো Kit Due নেই।"
-  });
+  new Notification("MY-KITBOOK",{body:"এখন কোনো Kit Due নেই।"});
  }
-
  toast("Browser notification enabled");
 }
 
-// পুরোনো Login session থাকলে স্বয়ংক্রিয়ভাবে প্রবেশ
+// Initial setup
+$("lastReceived").value=today();
+$("receiptDate").value=today();
+
 db.auth.getSession().then(async({data})=>{
  if(data.session){
   currentUser=data.session.user;
@@ -1100,18 +1071,13 @@ db.auth.onAuthStateChange(async(event,session)=>{
  }
 });
 
-// History tab-এ পুরোনো Receipt যোগ করার সুবিধা
+// History-তে পুরোনো Receipt যোগ করার সুবিধা
 const oldHistoryButton=document.createElement("button");
-
 oldHistoryButton.textContent="＋ Add Old Receipt";
 oldHistoryButton.className="secondary";
 oldHistoryButton.style.marginBottom="12px";
 oldHistoryButton.onclick=addOldHistory;
-
-$("historyTab").insertBefore(
- oldHistoryButton,
- $("historyTab").children[1]
-);
+$("historyTab").insertBefore(oldHistoryButton,$("historyTab").children[1]);
 </script>
 </body>
 </html>
