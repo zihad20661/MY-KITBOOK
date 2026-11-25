@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="bn">
 <head>
@@ -125,14 +124,14 @@ header h2{font-size:17px}
 <h3>🛡️ MY-KITBOOK Login</h3>
 <p class="muted">তোমার অ্যাকাউন্টে প্রবেশ করো</p>
 <label>Gmail</label>
-<input id="Gmail" type="email" placeholder="Gmail id">
+<input id="Gmail" type="email" placeholder="Gmail id" autocomplete="username">
 <label>Password</label>
-<input id="password" type="password" placeholder="Password">
+<input id="password" type="password" placeholder="Password" autocomplete="current-password">
 <div class="actions" style="margin-top:16px">
-<button onclick="login()">Login</button>
-<button class="secondary" onclick="signup()">Create Account</button>
+<button id="loginButton" onclick="login()">Login</button>
+<button id="signupButton" class="secondary" onclick="signup()">Create Account</button>
 </div>
-<p id="authMessage" class="muted"></p>
+<p id="authMessage" class="muted" aria-live="polite"></p>
 </section>
 
 <section id="appSection" class="hidden">
@@ -163,10 +162,7 @@ header h2{font-size:17px}
 <div id="inventoryTab" class="card">
 <h3>📦 My Kit Inventory</h3>
 <div class="search-area">
-<input id="kitSearch" type="search"
-placeholder="🔍 Kit-এর নাম লিখে খুঁজুন..."
-oninput="searchKit()"
-onkeydown="if(event.key==='Enter')searchKit()">
+<input id="kitSearch" type="search" placeholder="🔍 Kit-এর নাম লিখে খুঁজুন..." oninput="searchKit()" onkeydown="if(event.key==='Enter')searchKit()">
 <button onclick="searchKit()">🔍 Search</button>
 <button class="secondary" onclick="clearKitSearch()">✖ Clear</button>
 </div>
@@ -220,15 +216,7 @@ onkeydown="if(event.key==='Enter')searchKit()">
 <h3>📋 Kit Receipt History</h3>
 <div class="tablewrap">
 <table>
-<thead>
-<tr>
-<th>Kit</th>
-<th>Received Date</th>
-<th>Quantity</th>
-<th>Notes</th>
-<th>Actions</th>
-</tr>
-</thead>
+<thead><tr><th>Kit</th><th>Received Date</th><th>Quantity</th><th>Notes</th><th>Actions</th></tr></thead>
 <tbody id="historyBody"></tbody>
 </table>
 </div>
@@ -257,18 +245,11 @@ onkeydown="if(event.key==='Enter')searchKit()">
 <h3>📋 প্রতিটি কিটের আলাদা হিসাব</h3>
 <div class="tablewrap">
 <table>
-<thead>
-<tr>
-<th>Kit Name</th>
-<th>Cycle Quantity</th>
-<th>এখন পর্যন্ত পাওনা</th>
-<th>History-তে প্রাপ্তি</th>
-<th>আগাম ক্রেডিট</th>
-<th>বকেয়া</th>
-<th>পরবর্তী Due-তে বাকি</th>
-<th>Actions</th>
-</tr>
-</thead>
+<thead><tr>
+<th>Kit Name</th><th>Cycle Quantity</th><th>এখন পর্যন্ত পাওনা</th>
+<th>History-তে প্রাপ্তি</th><th>আগাম ক্রেডিট</th><th>বকেয়া</th>
+<th>পরবর্তী Due-তে বাকি</th><th>Actions</th>
+</tr></thead>
 <tbody id="accountingBody"></tbody>
 </table>
 </div>
@@ -279,23 +260,15 @@ onkeydown="if(event.key==='Enter')searchKit()">
 <label>Kit Item</label>
 <select id="receiptItem"></select>
 <div class="grid2">
-<div>
-<label>প্রাপ্তির তারিখ</label>
-<input id="receiptDate" type="date">
-</div>
-<div>
-<label>প্রাপ্তির পরিমাণ</label>
-<input id="receiptQty" type="number" min="1" value="1">
-</div>
+<div><label>প্রাপ্তির তারিখ</label><input id="receiptDate" type="date"></div>
+<div><label>প্রাপ্তির পরিমাণ</label><input id="receiptQty" type="number" min="1" value="1"></div>
 </div>
 <label>Notes (Optional)</label>
 <textarea id="receiptNotes" rows="2" placeholder="যেমন: আগাম পেয়েছি"></textarea>
 <div class="actions" style="margin-top:14px">
 <button class="green" onclick="saveAdvanceReceipt()">Save Receipt</button>
 </div>
-<p class="muted" style="font-size:12px">
-এই ফর্মে Receipt যোগ করলে মূল Due Schedule পরিবর্তন হবে না।
-</p>
+<p class="muted" style="font-size:12px">এই ফর্মে Receipt যোগ করলে মূল Due Schedule পরিবর্তন হবে না।</p>
 </div>
 </div>
 
@@ -463,50 +436,86 @@ $("displayName").value=currentUser?.user_metadata?.display_name||"";
 $("themeSelect").value=currentUser?.user_metadata?.theme||"light";
 }
 
+/* FIXED LOGIN AND SIGNUP */
+
 async function login(){
-  const email = $("email").value.trim();
-  const password = $("password").value;
+const email=$("Gmail").value.trim();
+const password=$("password").value;
+const button=$("loginButton");
 
-  if(!email || !password){
-    $("authMessage").textContent = "Gmail ও Password দাও";
-    return;
-  }
+$("authMessage").textContent="";
 
-  const {data,error} = await db.auth.signInWithPassword({
-    email: email,
-    password: password
-  });
+if(!email||!password){
+$("authMessage").textContent="Gmail ও Password দাও";
+return;
+}
 
-  if(error){
-    $("authMessage").textContent = error.message;
-    return;
-  }
+button.disabled=true;
+$("authMessage").textContent="Login হচ্ছে...";
 
-  currentUser = data.user;
-  await startApp();
+try{
+const {data,error}=await db.auth.signInWithPassword({
+email:email,
+password:password
+});
+
+if(error){
+$("authMessage").textContent=error.message;
+return;
+}
+
+currentUser=data.user;
+await startApp();
+
+}catch(error){
+$("authMessage").textContent="Login Error: "+error.message;
+}finally{
+button.disabled=false;
+}
 }
 
 async function signup(){
-  const email = $("email").value.trim();
-  const password = $("password").value;
+const email=$("Gmail").value.trim();
+const password=$("password").value;
+const button=$("signupButton");
 
-  if(!email || !password){
-    $("authMessage").textContent = "Gmail ও Password দাও";
-    return;
-  }
+$("authMessage").textContent="";
 
-  const {data,error} = await db.auth.signUp({
-    email: email,
-    password: password
-  });
+if(!email||!password){
+$("authMessage").textContent="Gmail ও Password দাও";
+return;
+}
 
-  if(error){
-    $("authMessage").textContent = error.message;
-    return;
-  }
+if(password.length<6){
+$("authMessage").textContent="Password কমপক্ষে ৬ অক্ষরের হতে হবে";
+return;
+}
 
-  $("authMessage").textContent =
-    "Account তৈরি হয়েছে। Email confirmation প্রয়োজন হলে Gmail যাচাই করো।";
+button.disabled=true;
+$("authMessage").textContent="Account তৈরি হচ্ছে...";
+
+try{
+const {data,error}=await db.auth.signUp({
+email:email,
+password:password
+});
+
+if(error){
+$("authMessage").textContent=error.message;
+return;
+}
+
+if(data.session){
+currentUser=data.user;
+await startApp();
+}else{
+$("authMessage").textContent="Account তৈরি হয়েছে। Gmail-এ Confirmation Link যাচাই করে তারপর Login করো।";
+}
+}catch(error){
+$("authMessage").textContent="Signup Error: "+error.message;
+}finally{
+button.disabled=false;
+}
 }
 
 async function logout(){
@@ -518,6 +527,7 @@ searchQuery="";
 $("appSection").classList.add("hidden");
 $("authSection").classList.remove("hidden");
 $("headerActions").style.display="none";
+$("authMessage").textContent="Logout সফল হয়েছে।";
 }
 
 async function startApp(){
@@ -729,7 +739,7 @@ toast("Receive error: "+e.message);
 }
 }
 
-/* HISTORY LOAD + EDIT + DELETE */
+/* HISTORY */
 
 async function loadHistory(){
 if(!currentUser)return;
@@ -753,12 +763,10 @@ $("historyBody").innerHTML=receipts.length
 <td>${safe(r.received_date)}</td>
 <td>${safe(r.quantity)}</td>
 <td>${safe(r.notes||"")}</td>
-<td>
-<div class="actions">
+<td><div class="actions">
 <button class="secondary" onclick="editReceipt('${r.id}')">✏️ Edit</button>
 <button class="red" onclick="deleteReceipt('${r.id}')">🗑 Delete</button>
-</div>
-</td>
+</div></td>
 </tr>`).join("")
 :'<tr><td colspan="5">এখনো কোনো Receipt History নেই।</td></tr>';
 
@@ -806,7 +814,6 @@ toast("✅ History Updated Successfully");
 async function deleteReceipt(id){
 const r=receipts.find(x=>x.id===id);
 if(!r)return toast("History পাওয়া যায়নি");
-
 if(!confirm("এই Receipt History স্থায়ীভাবে Delete করবে?"))return;
 
 const {data,error}=await db.from("kit_receipts")
@@ -904,12 +911,10 @@ return `<tr>
 <td>${a.advance}</td>
 <td>${a.overdueRemaining}</td>
 <td>${a.nextDueRemaining}</td>
-<td>
-<div class="actions">
+<td><div class="actions">
 <button class="secondary" onclick="editItem('${item.id}')">✏️ Edit</button>
 <button class="red" onclick="deleteItem('${item.id}')">🗑 Delete</button>
-</div>
-</td>
+</div></td>
 </tr>`;
 }).join("")
 :'<tr><td colspan="8">কোনো Kit নেই।</td></tr>';
@@ -1103,7 +1108,11 @@ toast("Browser notification enabled");
 $("lastReceived").value=today();
 $("receiptDate").value=today();
 
-db.auth.getSession().then(async({data})=>{
+db.auth.getSession().then(async({data,error})=>{
+if(error){
+console.error("Session error:",error);
+return;
+}
 if(data.session){
 currentUser=data.session.user;
 await startApp();
@@ -1111,9 +1120,19 @@ await startApp();
 });
 
 db.auth.onAuthStateChange(async(event,session)=>{
-if(event==="SIGNED_IN"&&session&&!currentUser){
+if(event==="SIGNED_IN"&&session){
 currentUser=session.user;
+if($("appSection").classList.contains("hidden")){
 await startApp();
+}
+}
+if(event==="SIGNED_OUT"){
+currentUser=null;
+items=[];
+receipts=[];
+$("appSection").classList.add("hidden");
+$("authSection").classList.remove("hidden");
+$("headerActions").style.display="none";
 }
 });
 
