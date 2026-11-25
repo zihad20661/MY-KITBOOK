@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="bn">
 <head>
@@ -80,7 +81,7 @@ th{color:var(--muted);font-weight:700}
 #toast{
 position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
 background:#172554;color:white;padding:12px 18px;border-radius:10px;
-z-index:20;display:none;max-width:90%;text-align:center
+z-index:1200;display:none;max-width:90%;text-align:center
 }
 .settings-panel{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 hr{border:0;border-top:1px solid var(--border);margin:17px 0}
@@ -92,6 +93,49 @@ footer{text-align:center;color:var(--muted);padding:20px;font-size:12px}
 padding:12px;border-radius:10px;background:var(--bg);
 border:1px solid var(--border);font-size:13px;margin-bottom:14px
 }
+
+/* DUE POPUP */
+.due-stat{cursor:pointer;transition:.2s}
+.due-stat:hover{border-color:var(--accent);transform:translateY(-2px)}
+#duePopup{
+position:fixed;inset:0;background:rgba(0,0,0,.65);
+z-index:1100;display:flex;align-items:center;
+justify-content:center;padding:15px
+}
+#duePopup.hidden{display:none!important}
+.due-popup-box{
+background:var(--card);color:var(--text);
+width:100%;max-width:500px;max-height:82vh;
+overflow-y:auto;border-radius:15px;padding:20px;
+box-shadow:0 10px 40px #0005;
+animation:popupIn .2s ease
+}
+@keyframes popupIn{
+from{opacity:0;transform:translateY(15px)}
+to{opacity:1;transform:translateY(0)}
+}
+.due-popup-header{
+display:flex;justify-content:space-between;
+align-items:center;gap:10px;margin-bottom:15px
+}
+.due-popup-header h3{margin:0}
+.due-detail{
+border:1px solid var(--border);border-radius:10px;
+padding:13px;margin-top:10px;background:var(--bg)
+}
+.due-detail-name{font-weight:bold;font-size:16px}
+.due-detail-info{
+display:flex;justify-content:space-between;
+align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px
+}
+.due-total{
+margin-top:15px;padding:14px;background:var(--bg);
+border-radius:10px;display:flex;
+justify-content:space-between;align-items:center
+}
+.due-empty{text-align:center;padding:30px 10px}
+.due-empty .emoji{font-size:42px;margin-bottom:10px}
+
 @media(max-width:650px){
 .stats{grid-template-columns:1fr 1fr}
 .grid2,.settings-panel{grid-template-columns:1fr}
@@ -146,7 +190,15 @@ header h2{font-size:17px}
 
 <div class="stats">
 <div class="stat"><small>Total Items</small><b id="totalItems">0</b></div>
-<div class="stat"><small>Due Items</small><b id="dueItems">0</b></div>
+
+<!-- CLICKABLE DUE ITEMS -->
+<div class="stat due-stat" onclick="openDuePopup()" role="button" tabindex="0"
+onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openDuePopup()}">
+<small>Due Items 👆</small>
+<b id="dueItems">0</b>
+<small>Click to view details</small>
+</div>
+
 <div class="stat"><small>Due Quantity</small><b id="dueQty">0</b></div>
 <div class="stat"><small>Up to Date</small><b id="okItems">0</b></div>
 </div>
@@ -322,6 +374,24 @@ header h2{font-size:17px}
 </div>
 
 <footer>MY-KITBOOK 5.0 · Personal Kit Management</footer>
+
+<!-- DUE DETAILS POPUP -->
+<div id="duePopup" class="hidden" onclick="closeDuePopup(event)">
+<div class="due-popup-box" onclick="event.stopPropagation()">
+
+<div class="due-popup-header">
+<h3>📋 Due Kit Details</h3>
+<button class="red" onclick="closeDuePopup()">✖</button>
+</div>
+
+<div id="duePopupContent"></div>
+
+<button class="secondary" style="width:100%;margin-top:15px"
+onclick="closeDuePopup()">Close</button>
+
+</div>
+</div>
+
 <div id="toast"></div>
 
 <script>
@@ -436,7 +506,7 @@ $("displayName").value=currentUser?.user_metadata?.display_name||"";
 $("themeSelect").value=currentUser?.user_metadata?.theme||"light";
 }
 
-/* FIXED LOGIN AND SIGNUP */
+/* LOGIN AND SIGNUP */
 
 async function login(){
 const email=$("Gmail").value.trim();
@@ -455,8 +525,7 @@ $("authMessage").textContent="Login হচ্ছে...";
 
 try{
 const {data,error}=await db.auth.signInWithPassword({
-email:email,
-password:password
+email:email,password:password
 });
 
 if(error){
@@ -495,10 +564,7 @@ button.disabled=true;
 $("authMessage").textContent="Account তৈরি হচ্ছে...";
 
 try{
-const {data,error}=await db.auth.signUp({
-email:email,
-password:password
-});
+const {data,error}=await db.auth.signUp({email:email,password:password});
 
 if(error){
 $("authMessage").textContent=error.message;
@@ -528,6 +594,7 @@ $("appSection").classList.add("hidden");
 $("authSection").classList.remove("hidden");
 $("headerActions").style.display="none";
 $("authMessage").textContent="Logout সফল হয়েছে।";
+closeDuePopup();
 }
 
 async function startApp(){
@@ -552,6 +619,76 @@ items=data||[];
 renderItems();
 renderAccounting();
 }
+
+/* NEW DUE POPUP */
+
+function openDuePopup(){
+
+if(!currentUser)return;
+
+const dueList=items.filter(item=>getDueCount(item)>0);
+const content=$("duePopupContent");
+
+if(!dueList.length){
+
+content.innerHTML=`
+<div class="due-empty">
+<div class="emoji">✅</div>
+<h3>No Due Items</h3>
+<p class="muted">এখন কোনো Kit Due নেই।</p>
+</div>`;
+
+}else{
+
+let totalQuantity=0;
+
+content.innerHTML=dueList.map(item=>{
+
+const cycles=getDueCount(item);
+const quantity=cycles*Number(item.quantity||1);
+
+totalQuantity+=quantity;
+
+return `
+<div class="due-detail">
+<div class="due-detail-name">
+📦 ${safe(item.item_name)}
+</div>
+
+<div class="due-detail-info">
+<span class="badge due">${cycles} Cycle Due</span>
+<b style="color:var(--danger);font-size:16px">
+${quantity} টি Due
+</b>
+</div>
+
+<div class="muted" style="font-size:12px;margin-top:9px">
+প্রতি Cycle: ${safe(item.quantity)} টি
+</div>
+
+<div class="muted" style="font-size:12px;margin-top:4px">
+Next Due Date: ${safe(getNext(item))}
+</div>
+</div>`;
+
+}).join("");
+
+content.innerHTML+=`
+<div class="due-total">
+<b>মোট Due Quantity</b>
+<b style="color:var(--danger);font-size:18px">${totalQuantity} টি</b>
+</div>`;
+}
+
+$("duePopup").classList.remove("hidden");
+}
+
+function closeDuePopup(event){
+if(event&&event.target!==$("duePopup"))return;
+$("duePopup").classList.add("hidden");
+}
+
+/* SEARCH AND INVENTORY */
 
 function searchKit(){
 searchQuery=$("kitSearch").value.trim().toLowerCase();
@@ -1130,6 +1267,7 @@ if(event==="SIGNED_OUT"){
 currentUser=null;
 items=[];
 receipts=[];
+closeDuePopup();
 $("appSection").classList.add("hidden");
 $("authSection").classList.remove("hidden");
 $("headerActions").style.display="none";
@@ -1144,6 +1282,11 @@ oldHistoryButton.className="secondary";
 oldHistoryButton.style.marginBottom="12px";
 oldHistoryButton.onclick=addOldHistory;
 $("historyTab").insertBefore(oldHistoryButton,$("historyTab").children[1]);
+
+/* ESC KEY CLOSES POPUP */
+document.addEventListener("keydown",function(event){
+if(event.key==="Escape")closeDuePopup();
+});
 
 </script>
 </body>
