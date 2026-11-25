@@ -93,8 +93,6 @@ footer{text-align:center;color:var(--muted);padding:20px;font-size:12px}
 padding:12px;border-radius:10px;background:var(--bg);
 border:1px solid var(--border);font-size:13px;margin-bottom:14px
 }
-
-/* DUE POPUP */
 .due-stat{cursor:pointer;transition:.2s}
 .due-stat:hover{border-color:var(--accent);transform:translateY(-2px)}
 #duePopup{
@@ -135,7 +133,6 @@ justify-content:space-between;align-items:center
 }
 .due-empty{text-align:center;padding:30px 10px}
 .due-empty .emoji{font-size:42px;margin-bottom:10px}
-
 @media(max-width:650px){
 .stats{grid-template-columns:1fr 1fr}
 .grid2,.settings-panel{grid-template-columns:1fr}
@@ -190,15 +187,12 @@ header h2{font-size:17px}
 
 <div class="stats">
 <div class="stat"><small>Total Items</small><b id="totalItems">0</b></div>
-
-<!-- CLICKABLE DUE ITEMS -->
 <div class="stat due-stat" onclick="openDuePopup()" role="button" tabindex="0"
 onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openDuePopup()}">
 <small>Due Items 👆</small>
 <b id="dueItems">0</b>
 <small>Click to view details</small>
 </div>
-
 <div class="stat"><small>Due Quantity</small><b id="dueQty">0</b></div>
 <div class="stat"><small>Up to Date</small><b id="okItems">0</b></div>
 </div>
@@ -375,20 +369,15 @@ onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openD
 
 <footer>MY-KITBOOK 5.0 · Personal Kit Management</footer>
 
-<!-- DUE DETAILS POPUP -->
 <div id="duePopup" class="hidden" onclick="closeDuePopup(event)">
 <div class="due-popup-box" onclick="event.stopPropagation()">
-
 <div class="due-popup-header">
 <h3>📋 Due Kit Details</h3>
 <button class="red" onclick="closeDuePopup()">✖</button>
 </div>
-
 <div id="duePopupContent"></div>
-
 <button class="secondary" style="width:100%;margin-top:15px"
 onclick="closeDuePopup()">Close</button>
-
 </div>
 </div>
 
@@ -512,30 +501,21 @@ async function login(){
 const email=$("Gmail").value.trim();
 const password=$("password").value;
 const button=$("loginButton");
-
 $("authMessage").textContent="";
-
 if(!email||!password){
 $("authMessage").textContent="Gmail ও Password দাও";
 return;
 }
-
 button.disabled=true;
 $("authMessage").textContent="Login হচ্ছে...";
-
 try{
-const {data,error}=await db.auth.signInWithPassword({
-email:email,password:password
-});
-
+const {data,error}=await db.auth.signInWithPassword({email:email,password:password});
 if(error){
 $("authMessage").textContent=error.message;
 return;
 }
-
 currentUser=data.user;
 await startApp();
-
 }catch(error){
 $("authMessage").textContent="Login Error: "+error.message;
 }finally{
@@ -547,30 +527,23 @@ async function signup(){
 const email=$("Gmail").value.trim();
 const password=$("password").value;
 const button=$("signupButton");
-
 $("authMessage").textContent="";
-
 if(!email||!password){
 $("authMessage").textContent="Gmail ও Password দাও";
 return;
 }
-
 if(password.length<6){
 $("authMessage").textContent="Password কমপক্ষে ৬ অক্ষরের হতে হবে";
 return;
 }
-
 button.disabled=true;
 $("authMessage").textContent="Account তৈরি হচ্ছে...";
-
 try{
 const {data,error}=await db.auth.signUp({email:email,password:password});
-
 if(error){
 $("authMessage").textContent=error.message;
 return;
 }
-
 if(data.session){
 currentUser=data.user;
 await startApp();
@@ -620,66 +593,46 @@ renderItems();
 renderAccounting();
 }
 
-/* NEW DUE POPUP */
+/* DUE POPUP */
 
 function openDuePopup(){
-
 if(!currentUser)return;
-
 const dueList=items.filter(item=>getDueCount(item)>0);
 const content=$("duePopupContent");
-
 if(!dueList.length){
-
 content.innerHTML=`
 <div class="due-empty">
 <div class="emoji">✅</div>
 <h3>No Due Items</h3>
 <p class="muted">এখন কোনো Kit Due নেই।</p>
 </div>`;
-
 }else{
-
 let totalQuantity=0;
-
 content.innerHTML=dueList.map(item=>{
-
 const cycles=getDueCount(item);
 const quantity=cycles*Number(item.quantity||1);
-
 totalQuantity+=quantity;
-
 return `
 <div class="due-detail">
-<div class="due-detail-name">
-📦 ${safe(item.item_name)}
-</div>
-
+<div class="due-detail-name">📦 ${safe(item.item_name)}</div>
 <div class="due-detail-info">
 <span class="badge due">${cycles} Cycle Due</span>
-<b style="color:var(--danger);font-size:16px">
-${quantity} টি Due
-</b>
+<b style="color:var(--danger);font-size:16px">${quantity} টি Due</b>
 </div>
-
 <div class="muted" style="font-size:12px;margin-top:9px">
 প্রতি Cycle: ${safe(item.quantity)} টি
 </div>
-
 <div class="muted" style="font-size:12px;margin-top:4px">
 Next Due Date: ${safe(getNext(item))}
 </div>
 </div>`;
-
 }).join("");
-
 content.innerHTML+=`
 <div class="due-total">
 <b>মোট Due Quantity</b>
 <b style="color:var(--danger);font-size:18px">${totalQuantity} টি</b>
 </div>`;
 }
-
 $("duePopup").classList.remove("hidden");
 }
 
@@ -743,6 +696,8 @@ $("dueItems").textContent=allDue.length;
 $("dueQty").textContent=items.reduce((sum,i)=>sum+getDueCount(i)*Number(i.quantity||1),0);
 $("okItems").textContent=items.length-allDue.length;
 }
+
+/* SAVE KIT */
 
 async function saveItem(){
 const id=$("editId").value;
@@ -810,7 +765,6 @@ async function deleteItem(id){
 const item=items.find(x=>x.id===id);
 if(!item)return;
 if(!confirm(`"${item.item_name}" এবং এর সব History স্থায়ীভাবে মুছে ফেলবে?`))return;
-
 try{
 toast("Deleting Kit...");
 const child=await db.from("kit_receipts")
@@ -849,28 +803,56 @@ notes:note||""
 if(error)throw error;
 }
 
+/* UPDATED RECEIVE SYSTEM
+   প্রতিবার Receive করার তারিখ থেকে নতুন Interval শুরু হবে।
+   আগের Due Date বা First Due Date দিয়ে নতুন Due গণনা হবে না।
+*/
+
 async function receiveDue(id){
 const item=items.find(x=>x.id===id);
 if(!item)return;
+
 const count=getDueCount(item);
 if(!count)return toast("এখন কোনো Due নেই");
 
 const quantity=count*Number(item.quantity||1);
+
 if(!confirm(`${item.item_name}: মোট ${quantity} টি Receive হিসেবে যোগ করবে?`))return;
 
 try{
-await addReceipt(id,today(),quantity,"Automatic Due Receive");
-let next=getNext(item);
-for(let i=0;i<count;i++){
-next=addInterval(next,item.interval_value||1,item.interval_unit||"day");
-}
+const receivedDate=today();
+
+// Receive History সংরক্ষণ
+await addReceipt(
+id,
+receivedDate,
+quantity,
+"Automatic Due Receive"
+);
+
+// নতুন Receive Date থেকে পরবর্তী Due Date
+const next=addInterval(
+receivedDate,
+Number(item.interval_value||1),
+item.interval_unit||"day"
+);
+
+// Database-এ নতুন তারিখ সংরক্ষণ
 const {error}=await db.from("kit_items")
-.update({last_received:today(),next_due_date:next})
-.eq("id",id).eq("user_id",currentUser.id);
+.update({
+last_received:receivedDate,
+next_due_date:next
+})
+.eq("id",id)
+.eq("user_id",currentUser.id);
+
 if(error)throw error;
-toast(`${quantity} টি Receive হয়েছে`);
+
+toast(`${quantity} টি Receive হয়েছে। নতুন Due Date: ${next}`);
+
 await loadItems();
 await loadHistory();
+
 }catch(e){
 toast("Receive error: "+e.message);
 }
@@ -1284,10 +1266,10 @@ oldHistoryButton.onclick=addOldHistory;
 $("historyTab").insertBefore(oldHistoryButton,$("historyTab").children[1]);
 
 /* ESC KEY CLOSES POPUP */
+
 document.addEventListener("keydown",function(event){
 if(event.key==="Escape")closeDuePopup();
 });
-
 </script>
 </body>
 </html>
