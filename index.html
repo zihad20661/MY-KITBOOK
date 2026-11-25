@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MY-KITBOOK 5.0</title>
+<title>MY-KITBOOK</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{
@@ -67,7 +67,7 @@ h3{margin:0 0 14px}
 .actions{display:flex;gap:7px;flex-wrap:wrap}
 .actions button{padding:8px 10px;font-size:12px}
 .tablewrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;min-width:720px}
+table{width:100%;border-collapse:collapse;min-width:850px}
 th,td{padding:11px 9px;border-bottom:1px solid var(--border);text-align:left;font-size:13px}
 th{color:var(--muted);font-weight:700}
 .badge{padding:4px 8px;border-radius:20px;font-size:11px;font-weight:bold}
@@ -148,7 +148,7 @@ header h2{font-size:17px}
 <div class="brand">
 <div class="shield">🛡️</div>
 <div>
-<h2>MY-KITBOOK <small>5.0</small></h2>
+<h2>MY-KITBOOK <small>5.1</small></h2>
 <small>Personal Kit Management System</small>
 </div>
 </div>
@@ -217,10 +217,10 @@ onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openD
 <table>
 <thead><tr>
 <th>Kit Name</th><th>Quantity / Cycle</th><th>Interval</th>
-<th>Last Received</th><th>Next Due</th><th>Status</th><th>Actions</th>
+<th>First Receive</th><th>Last Received</th><th>Next Due</th><th>Status</th><th>Actions</th>
 </tr></thead>
 <tbody id="inventoryBody">
-<tr><td colspan="7">Loading...</td></tr>
+<tr><td colspan="8">Loading...</td></tr>
 </tbody>
 </table>
 </div>
@@ -247,9 +247,17 @@ onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openD
 <option value="month">মাস (Month)</option>
 <option value="year" selected>বছর (Year)</option>
 </select>
+<div class="grid2">
+<div>
+<label>First Receive Date</label>
+<input id="firstReceived" type="date">
+</div>
+<div>
 <label>Last Received Date</label>
 <input id="lastReceived" type="date">
-<small>আগে পাওয়া কিট হলে প্রকৃত পুরোনো তারিখ দাও। পরবর্তী Due তারিখ অটোমেটিক হিসাব হবে।</small>
+</div>
+</div>
+<small>প্রথমবার কবে পেয়েছিলে এবং সর্বশেষ কবে পেয়েছ—দুটি তারিখ আলাদাভাবে দাও। নতুন কিটের ক্ষেত্রে দুটি তারিখ একই হতে পারে।</small>
 <label>Notes (Optional)</label>
 <textarea id="notes" rows="2" placeholder="অতিরিক্ত তথ্য"></textarea>
 <div class="actions" style="margin-top:15px">
@@ -274,6 +282,7 @@ onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openD
 <div class="account-note">
 এই হিসাব <b>First Due Date</b> থেকে নির্ধারিত পাওনা এবং Receipt History ব্যবহার করে তৈরি হয়।
 আগাম পাওয়া কিট ভবিষ্যতের পাওনা থেকে ক্রেডিট হিসেবে বাদ যাবে।
+Partial Receive করলে বাকি পরিমাণ Due হিসেবে থাকবে।
 </div>
 <div class="stats">
 <div class="stat"><small>এখন পর্যন্ত নির্ধারিত পাওনা</small><b id="accDue">0</b></div>
@@ -367,7 +376,7 @@ onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openD
 </section>
 </div>
 
-<footer>MY-KITBOOK 5.0 · Personal Kit Management</footer>
+<footer>MY-KITBOOK 5.1 · Personal Kit Management</footer>
 
 <div id="duePopup" class="hidden" onclick="closeDuePopup(event)">
 <div class="due-popup-box" onclick="event.stopPropagation()">
@@ -394,6 +403,7 @@ let receipts=[];
 let searchQuery="";
 
 const $=id=>document.getElementById(id);
+const AUTO_DUE_MARKER="[KITBOOK_AUTO_DUE]";
 
 const today=()=>{
 const d=new Date();
@@ -463,6 +473,24 @@ cursor=addInterval(cursor,value,unit);
 return count;
 }
 
+/* Partial Receive হিসাব */
+function getPartialReceived(item){
+const startDate=getNext(item);
+return receipts
+.filter(r=>
+r.kit_item_id===item.id &&
+String(r.notes||"").startsWith(AUTO_DUE_MARKER) &&
+r.received_date>=startDate &&
+r.received_date<=today()
+)
+.reduce((sum,r)=>sum+Number(r.quantity||0),0);
+}
+
+function getDueQuantity(item){
+const total=getDueCount(item)*Number(item.quantity||1);
+return Math.max(0,total-getPartialReceived(item));
+}
+
 function unitName(unit){
 return {day:"দিন",month:"মাস",year:"বছর"}[unit]||unit;
 }
@@ -473,6 +501,7 @@ $("itemName").value="";
 $("qty").value=1;
 $("intervalValue").value=1;
 $("intervalUnit").value="year";
+$("firstReceived").value=today();
 $("lastReceived").value=today();
 $("notes").value="";
 $("formTitle").textContent="➕ Add New Kit";
@@ -597,7 +626,7 @@ renderAccounting();
 
 function openDuePopup(){
 if(!currentUser)return;
-const dueList=items.filter(item=>getDueCount(item)>0);
+const dueList=items.filter(item=>getDueQuantity(item)>0);
 const content=$("duePopupContent");
 if(!dueList.length){
 content.innerHTML=`
@@ -610,7 +639,7 @@ content.innerHTML=`
 let totalQuantity=0;
 content.innerHTML=dueList.map(item=>{
 const cycles=getDueCount(item);
-const quantity=cycles*Number(item.quantity||1);
+const quantity=getDueQuantity(item);
 totalQuantity+=quantity;
 return `
 <div class="due-detail">
@@ -665,24 +694,26 @@ $("searchResult").textContent=searchQuery
 
 if(!filteredItems.length){
 body.innerHTML=searchQuery
-?'<tr><td colspan="7">কোনো Kit পাওয়া যায়নি।</td></tr>'
-:'<tr><td colspan="7">এখনো কোনো Kit যোগ করা হয়নি। Add Kit থেকে যোগ করো।</td></tr>';
+?'<tr><td colspan="8">কোনো Kit পাওয়া যায়নি।</td></tr>'
+:'<tr><td colspan="8">এখনো কোনো Kit যোগ করা হয়নি। Add Kit থেকে যোগ করো।</td></tr>';
 }else{
 body.innerHTML=filteredItems.map(item=>{
 const count=getDueCount(item);
-const quantity=count*Number(item.quantity||1);
-const status=count
+const quantity=getDueQuantity(item);
+const firstDate=item.first_received_date||item.last_received||"-";
+const status=quantity>0
 ?`<span class="badge due">${count} Cycle Due · ${quantity} টি</span>`
 :'<span class="badge ok">Up to date</span>';
 return `<tr>
 <td><b>${safe(item.item_name)}</b><br><small>${safe(item.notes||"")}</small></td>
 <td>${safe(item.quantity)} টি</td>
 <td>${safe(item.interval_value||1)} ${unitName(item.interval_unit||"day")} পরপর</td>
+<td>${safe(firstDate)}</td>
 <td>${safe(item.last_received||"-")}</td>
 <td>${safe(getNext(item))}</td>
 <td>${status}</td>
 <td><div class="actions">
-${count?`<button class="green" onclick="receiveDue('${item.id}')">Receive ${quantity}</button>`:""}
+${quantity>0?`<button class="green" onclick="receiveDue('${item.id}')">Receive ${quantity}</button>`:""}
 <button class="secondary" onclick="editItem('${item.id}')">Edit</button>
 <button class="red" onclick="deleteItem('${item.id}')">Delete</button>
 </div></td>
@@ -690,10 +721,10 @@ ${count?`<button class="green" onclick="receiveDue('${item.id}')">Receive ${quan
 }).join("");
 }
 
-const allDue=items.filter(i=>getDueCount(i)>0);
+const allDue=items.filter(i=>getDueQuantity(i)>0);
 $("totalItems").textContent=items.length;
 $("dueItems").textContent=allDue.length;
-$("dueQty").textContent=items.reduce((sum,i)=>sum+getDueCount(i)*Number(i.quantity||1),0);
+$("dueQty").textContent=items.reduce((sum,i)=>sum+getDueQuantity(i),0);
 $("okItems").textContent=items.length-allDue.length;
 }
 
@@ -705,12 +736,14 @@ const name=$("itemName").value.trim();
 const quantity=Number($("qty").value);
 const intervalValue=Number($("intervalValue").value);
 const unit=$("intervalUnit").value;
+const first=$("firstReceived").value;
 const last=$("lastReceived").value;
 
-if(!name||!last||!Number.isInteger(quantity)||quantity<1||
+if(!name||!first||!last||!Number.isInteger(quantity)||quantity<1||
 !Number.isInteger(intervalValue)||intervalValue<1){
 return toast("সব তথ্য সঠিকভাবে পূরণ করো");
 }
+if(first>last)return toast("First Receive Date, Last Receive Date-এর পরে হতে পারবে না");
 
 const next=addInterval(last,intervalValue,unit);
 const oldItem=id?items.find(x=>x.id===id):null;
@@ -723,6 +756,7 @@ interval_value:intervalValue,
 interval_unit:unit,
 interval_days:unit==="day"?intervalValue:
 unit==="month"?intervalValue*30:intervalValue*365,
+first_received_date:first,
 last_received:last,
 next_due_date:next,
 first_due_date:oldItem?.first_due_date||next,
@@ -755,6 +789,7 @@ $("itemName").value=item.item_name;
 $("qty").value=item.quantity;
 $("intervalValue").value=item.interval_value||1;
 $("intervalUnit").value=item.interval_unit||"day";
+$("firstReceived").value=item.first_received_date||item.last_received||today();
 $("lastReceived").value=item.last_received||today();
 $("notes").value=item.notes||"";
 $("formTitle").textContent="✏️ Edit Kit";
@@ -803,55 +838,85 @@ notes:note||""
 if(error)throw error;
 }
 
-/* UPDATED RECEIVE SYSTEM
-   প্রতিবার Receive করার তারিখ থেকে নতুন Interval শুরু হবে।
-   আগের Due Date বা First Due Date দিয়ে নতুন Due গণনা হবে না।
-*/
+/* PARTIAL AND FULL RECEIVE */
 
 async function receiveDue(id){
 const item=items.find(x=>x.id===id);
 if(!item)return;
 
-const count=getDueCount(item);
-if(!count)return toast("এখন কোনো Due নেই");
+const dueQuantity=getDueQuantity(item);
+if(dueQuantity<=0)return toast("এখন কোনো Due নেই");
 
-const quantity=count*Number(item.quantity||1);
+const input=prompt(
+`${item.item_name}\nবর্তমানে মোট ${dueQuantity} টি Due আছে।\nএখন কতটি পেয়েছ?`,
+String(dueQuantity)
+);
+if(input===null)return;
 
-if(!confirm(`${item.item_name}: মোট ${quantity} টি Receive হিসেবে যোগ করবে?`))return;
+const quantity=Number(input);
+if(!Number.isInteger(quantity)||quantity<1){
+return toast("সঠিক পরিমাণ লিখো");
+}
+if(quantity>dueQuantity){
+return toast(`সর্বোচ্চ ${dueQuantity} টি Receive করতে পারবে`);
+}
 
-try{
+const remaining=dueQuantity-quantity;
 const receivedDate=today();
 
-// Receive History সংরক্ষণ
+const confirmMessage=remaining>0
+?`${quantity} টি Receive করবে?\nবাকি ${remaining} টি Due থাকবে।`
+:`${quantity} টি Receive করবে?\nসব Due সম্পন্ন হবে।`;
+
+if(!confirm(confirmMessage))return;
+
+try{
+const isComplete=remaining===0;
+
+// History-তে বিশেষ Marker রাখা হয়, যাতে Partial Receive
+// পরবর্তীবার Due Quantity থেকে বাদ দেওয়া যায়।
+const historyNote=AUTO_DUE_MARKER+
+(quantity===dueQuantity?" FULL":" PARTIAL")+
+" | "+(remaining>0?`বাকি ${remaining} টি Due`:"সম্পূর্ণ Receive") ;
+
 await addReceipt(
 id,
 receivedDate,
 quantity,
-"Automatic Due Receive"
+historyNote
 );
 
-// নতুন Receive Date থেকে পরবর্তী Due Date
-const next=addInterval(
+const updateData={
+last_received:receivedDate
+};
+
+// সম্পূর্ণ Due Receive হলে নতুন Interval শুরু হবে।
+// আংশিক Receive হলে পুরোনো Due Date অপরিবর্তিত থাকবে।
+if(isComplete){
+updateData.next_due_date=addInterval(
 receivedDate,
 Number(item.interval_value||1),
 item.interval_unit||"day"
 );
+}
 
-// Database-এ নতুন তারিখ সংরক্ষণ
 const {error}=await db.from("kit_items")
-.update({
-last_received:receivedDate,
-next_due_date:next
-})
+.update(updateData)
 .eq("id",id)
 .eq("user_id",currentUser.id);
 
 if(error)throw error;
 
-toast(`${quantity} টি Receive হয়েছে। নতুন Due Date: ${next}`);
+if(isComplete){
+toast(`${quantity} টি Receive সম্পন্ন। নতুন Due Date: ${updateData.next_due_date}`);
+}else{
+toast(`${quantity} টি Receive হয়েছে। বাকি ${remaining} টি Due আছে।`);
+}
 
 await loadItems();
 await loadHistory();
+
+if(!$("duePopup").classList.contains("hidden"))openDuePopup();
 
 }catch(e){
 toast("Receive error: "+e.message);
@@ -859,6 +924,11 @@ toast("Receive error: "+e.message);
 }
 
 /* HISTORY */
+
+function cleanHistoryNote(note){
+return String(note||"")
+.replace(/^\[KITBOOK_AUTO_DUE\](?: FULL| PARTIAL)?\s*\|\s*/,"");
+}
 
 async function loadHistory(){
 if(!currentUser)return;
@@ -881,7 +951,7 @@ $("historyBody").innerHTML=receipts.length
 <td>${safe(names[r.kit_item_id]||"Deleted Kit")}</td>
 <td>${safe(r.received_date)}</td>
 <td>${safe(r.quantity)}</td>
-<td>${safe(r.notes||"")}</td>
+<td>${safe(cleanHistoryNote(r.notes))}</td>
 <td><div class="actions">
 <button class="secondary" onclick="editReceipt('${r.id}')">✏️ Edit</button>
 <button class="red" onclick="deleteReceipt('${r.id}')">🗑 Delete</button>
@@ -911,13 +981,20 @@ if(qText===null)return;
 const quantity=Number(qText);
 if(!Number.isInteger(quantity)||quantity<1)return toast("সঠিক Quantity লিখো");
 
-const notes=prompt("Notes:",r.notes||"");
+const notes=prompt("Notes:",cleanHistoryNote(r.notes));
 if(notes===null)return;
+
+// Partial/Automatic Receive-এর Marker সংরক্ষণ করা হচ্ছে।
+const wasAuto=String(r.notes||"").startsWith(AUTO_DUE_MARKER);
+const autoType=String(r.notes||"").includes(" PARTIAL")?" PARTIAL":" FULL";
+const finalNotes=wasAuto
+?AUTO_DUE_MARKER+autoType+" | "+notes.trim()
+:notes.trim();
 
 if(!confirm("এই History পরিবর্তন করবে?"))return;
 
 const {data,error}=await db.from("kit_receipts")
-.update({received_date:date,quantity,notes:notes.trim()})
+.update({received_date:date,quantity,notes:finalNotes})
 .eq("id",id).eq("user_id",currentUser.id)
 .select("id");
 
@@ -925,7 +1002,7 @@ if(error)return toast("Edit Error: "+error.message);
 if(!data?.length)return toast("History পরিবর্তন হয়নি। Permission পরীক্ষা করো।");
 
 await loadHistory();
-renderItems();
+await loadItems();
 renderAccounting();
 toast("✅ History Updated Successfully");
 }
@@ -943,7 +1020,7 @@ if(error)return toast("Delete Error: "+error.message);
 if(!data?.length)return toast("Delete হয়নি। Permission পরীক্ষা করো।");
 
 await loadHistory();
-renderItems();
+await loadItems();
 renderAccounting();
 toast("✅ History Deleted Successfully");
 }
@@ -1211,7 +1288,7 @@ async function enableNotifications(){
 if(!("Notification" in window))return toast("এই Browser Notification support করে না");
 const permission=await Notification.requestPermission();
 if(permission!=="granted")return toast("Notification permission দেওয়া হয়নি");
-const due=items.filter(i=>getDueCount(i)>0);
+const due=items.filter(i=>getDueQuantity(i)>0);
 if(due.length){
 new Notification("MY-KITBOOK: Due Items",{
 body:`তোমার ${due.length} ধরনের Kit Due হয়েছে। অ্যাপ খুলে দেখো।`
@@ -1224,6 +1301,7 @@ toast("Browser notification enabled");
 
 /* INITIAL SETUP */
 
+$("firstReceived").value=today();
 $("lastReceived").value=today();
 $("receiptDate").value=today();
 
