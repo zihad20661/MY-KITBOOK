@@ -125,7 +125,7 @@ header h2{font-size:17px}
 <h3>🛡️ MY-KITBOOK Login</h3>
 <p class="muted">তোমার অ্যাকাউন্টে প্রবেশ করো</p>
 <label>Gmail</label>
-<input id="Gmail" type="Gmail" placeholder="Gmail id">
+<input id="Gmail" type="email" placeholder="Gmail id">
 <label>Password</label>
 <input id="password" type="password" placeholder="Password">
 <div class="actions" style="margin-top:16px">
@@ -464,27 +464,49 @@ $("themeSelect").value=currentUser?.user_metadata?.theme||"light";
 }
 
 async function login(){
-const {data,error}=await db.auth.signInWithPassword({
-email:$("email").value.trim(),
-password:$("password").value
-});
-if(error)return $("authMessage").textContent=error.message;
-currentUser=data.user;
-await startApp();
+  const email = $("email").value.trim();
+  const password = $("password").value;
+
+  if(!email || !password){
+    $("authMessage").textContent = "Gmail ও Password দাও";
+    return;
+  }
+
+  const {data,error} = await db.auth.signInWithPassword({
+    email: email,
+    password: password
+  });
+
+  if(error){
+    $("authMessage").textContent = error.message;
+    return;
+  }
+
+  currentUser = data.user;
+  await startApp();
 }
 
 async function signup(){
-const {data,error}=await db.auth.signUp({
-email:$("email").value.trim(),
-password:$("password").value
-});
-if(error)return $("authMessage").textContent=error.message;
-if(data.session){
-currentUser=data.user;
-await startApp();
-}else{
-$("authMessage").textContent="Account তৈরি হয়েছে। Email confirmation থাকলে Email যাচাই করে Login করো।";
-}
+  const email = $("email").value.trim();
+  const password = $("password").value;
+
+  if(!email || !password){
+    $("authMessage").textContent = "Gmail ও Password দাও";
+    return;
+  }
+
+  const {data,error} = await db.auth.signUp({
+    email: email,
+    password: password
+  });
+
+  if(error){
+    $("authMessage").textContent = error.message;
+    return;
+  }
+
+  $("authMessage").textContent =
+    "Account তৈরি হয়েছে। Email confirmation প্রয়োজন হলে Gmail যাচাই করো।";
 }
 
 async function logout(){
