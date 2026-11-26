@@ -268,7 +268,7 @@ function closeInspector(e){
   $("inspectorModal").classList.add("hidden");
 }
 function inspectorDateValid(value){
-  if(typeof value!=="string"||!/^\\d{4}-\\d{2}-\\d{2}$/.test(value))return false;
+  if(typeof value!=="string"||!/^\d{4}-\d{2}-\d{2}$/.test(value))return false;
   const d=dateObj(value);
   return dateStr(d)===value;
 }
@@ -289,14 +289,14 @@ async function runInspector(){
   try{
     add("Login session",currentUser&&currentUser.id?"pass":"fail",currentUser&&currentUser.id?"বর্তমানে Login session পাওয়া গেছে।":"Login session পাওয়া যায়নি।");
     const interactive=Array.from(document.querySelectorAll("[onclick],[onchange],[oninput]"));
-    const declared=new Set(Array.from(document.scripts).map(s=>s.textContent).join("\n").match(/(?:async\\s+)?function\\s+([A-Za-z_$][\\w$]*)\\s*\\(/g)||[]);
-    const fnNames=new Set(Array.from(declared).map(x=>x.replace(/^(?:async\\s+)?function\\s+/,"").replace(/\\s*\\($/,"")));
+    const declared=new Set(Array.from(document.scripts).map(s=>s.textContent).join("\n").match(/(?:async\s+)?function\s+([A-Za-z_$][\w$]*)\s*\(/g)||[]);
+    const fnNames=new Set(Array.from(declared).map(x=>x.replace(/^(?:async\s+)?function\s+/,"").replace(/\s*\($/,"")));
     const missingHandlers=[];
     interactive.forEach(el=>{
       ["onclick","onchange","oninput"].forEach(attr=>{
         const code=el.getAttribute(attr);
         if(!code)return;
-        const m=code.match(/^\\s*([A-Za-z_$][\\w$]*)\\s*\\(/);
+        const m=code.match(/^\s*([A-Za-z_$][\w$]*)\s*\(/);
         if(!m||m[1]==="event")return;
         if(!fnNames.has(m[1]))missingHandlers.push(m[1]+"() — "+(el.id||el.tagName));
       });
@@ -305,7 +305,7 @@ async function runInspector(){
     const scriptText=Array.from(document.scripts).map(s=>s.textContent).join("\n");
     const usedIds=new Set();
     let idMatch;
-    const idPattern=/\\$\\("([A-Za-z0-9_-]+)"\\)/g;
+    const idPattern=/\$\("([A-Za-z0-9_-]+)"\)/g;
     while((idMatch=idPattern.exec(scriptText))!==null)usedIds.add(idMatch[1]);
     const missingIds=Array.from(usedIds).filter(id=>!$(id));
     add("Required page elements",missingIds.length?"fail":"pass",missingIds.length?"HTML-এ element পাওয়া যায়নি: "+missingIds.join(", "):usedIds.size+" টি referenced page element পাওয়া গেছে।");
