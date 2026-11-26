@@ -184,7 +184,7 @@ function dateObj(s){if(!s)return new Date();const [y,m,d]=s.split("-").map(Numbe
 function dateStr(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
 function addInterval(date,value,unit){const d=dateObj(date);if(unit==="day")d.setDate(d.getDate()+value);if(unit==="month"){const day=d.getDate();d.setDate(1);d.setMonth(d.getMonth()+value);d.setDate(Math.min(day,new Date(d.getFullYear(),d.getMonth()+1,0).getDate()))}if(unit==="year"){const month=d.getMonth(),day=d.getDate();d.setDate(1);d.setFullYear(d.getFullYear()+value);d.setMonth(month);d.setDate(Math.min(day,new Date(d.getFullYear(),month+1,0).getDate()))}return dateStr(d)}
 function isConfigured(item){return !!(item&&Number(item.quantity)>0&&Number(item.interval_value)>0&&item.interval_unit&&(item.first_received_date||item.last_received)&&item.last_received&&(item.first_due_date||item.next_due_date))}
-function getNext(item){if(!isConfigured(item))return null;const firstEnd=item.first_due_date||item.next_due_date||addInterval(item.last_received,item.interval_value,item.interval_unit);let end=firstEnd;for(let n=0;n<3000&&end<=today();n++)end=addInterval(end,item.interval_value,item.interval_unit);return end}
+function getNext(item){if(!isConfigured(item))return null;const firstEnd=item.first_due_date||item.next_due_date||addInterval(item.last_received,item.interval_value,item.interval_unit);let end=firstEnd;for(let n=0;n<3000&&end<today();n++)end=addInterval(end,item.interval_value,item.interval_unit);return end}
 function getNextDueStatus(item){const due=getNext(item);if(!due)return "তথ্য সেট করুন";const a=dateObj(today()),b=dateObj(due);const days=Math.round((Date.UTC(b.getFullYear(),b.getMonth(),b.getDate())-Date.UTC(a.getFullYear(),a.getMonth(),a.getDate()))/86400000);if(days===0)return "আজ Due";if(days>0)return `${days} দিন বাকি`;return `${Math.abs(days)} দিন পার হয়েছে`}
 function unitName(u){return {day:"দিন",month:"মাস",year:"বছর"}[u]||u}
 function cycleTag(note,marker){const s=String(note||"");if(!s.startsWith(marker))return null;const m=s.match(/\bDUE:(\d{4}-\d{2}-\d{2})/);return m?m[1]:null}
@@ -320,7 +320,10 @@ async function runInspector(){
     const future=addInterval(today(),1,"day");
     const sample={id:"__inspector_test__",quantity:2,interval_value:1,interval_unit:"day",first_received_date:today(),last_received:today(),first_due_date:future,next_due_date:future};
     const nextOk=getNext(sample)===future;
-    add("Next Due schedule",nextOk?"pass":"fail",nextOk?"পরবর্তী Due date বর্তমান দিনের পরের interval অনুযায়ী এসেছে।":"পরবর্তী Due date test-এ প্রত্যাশিত ফল আসেনি।");
+    const dueToday=addInterval(today(),-1,"day");
+    const dueTodaySample={id:"__inspector_due_today__",quantity:1,interval_value:1,interval_unit:"day",first_received_date:dueToday,last_received:dueToday,first_due_date:today(),next_due_date:today()};
+    const dueTodayOk=getNext(dueTodaySample)===today();
+    add("Next Due schedule",nextOk&&dueTodayOk?"pass":"fail",nextOk&&dueTodayOk?"পরবর্তী Due date এবং আজকের Due date—দুটিই সঠিক।":"আজকের Due date বাদ পড়ে যাচ্ছে বা interval হিসাব ভুল।");
     const badItems=[];
     items.forEach(i=>{
       if(!Number.isInteger(Number(i.quantity))||Number(i.quantity)<1)badItems.push((i.item_name||i.id)+": quantity");
