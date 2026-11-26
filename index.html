@@ -95,12 +95,26 @@ body.dark .auth-input{background:linear-gradient(145deg,#1d2a3c,#29384d)!importa
 body.dark .auth-field label,body.dark .auth-options{color:#b4c1d1}
 body.dark .auth-submit,body.dark .auth-switch button{background:linear-gradient(145deg,#2b3b52,#1d2b40)!important;color:#8cc8ff!important;box-shadow:6px 6px 13px #142033,-6px -6px 13px #34465e!important}
 @media(max-width:650px){.stats{grid-template-columns:1fr 1fr}.grid2,.settings-panel{grid-template-columns:1fr}header h2{font-size:17px}.container{margin:14px auto}.auth-shell{min-height:calc(100vh - 80px);padding:18px 12px}.auth-card{padding:28px 22px 24px;border-radius:25px}.auth-card h3{font-size:26px}.auth-icon{width:82px;height:82px}.auth-orb.one{width:90px;height:90px}.auth-orb.two{width:70px;height:70px}.auth-orb.three{width:120px;height:120px}}
+
+/* MY-KITBOOK Inspector */
+#inspectorModal{position:fixed;inset:0;background:#000a;z-index:1400;display:flex;align-items:center;justify-content:center;padding:14px}
+.inspector-box{width:100%;max-width:680px;max-height:88vh;overflow:auto;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:16px;padding:18px;box-shadow:0 20px 60px #0004}
+.inspector-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.inspector-summary{padding:12px;border:1px solid var(--border);border-radius:10px;margin:14px 0;background:var(--bg)}
+.inspector-result{padding:11px;border:1px solid var(--border);border-radius:10px;margin:8px 0}
+.inspector-result b{display:block;margin-bottom:4px}
+.inspector-result small{display:block;line-height:1.5}
+.inspector-pass{border-left:4px solid #16a34a}
+.inspector-warn{border-left:4px solid #d97706}
+.inspector-fail{border-left:4px solid #dc2626}
+@media(max-width:600px){.inspector-box{padding:14px}.inspector-head{align-items:flex-start}}
+
 </style>
 </head>
 <body>
 <header>
   <div class="brand"><div class="shield">🛡️</div><div><h2>MY-KITBOOK <small>5.3</small></h2><small>Personal Kit Management System</small></div></div>
-  <div class="actions" id="headerActions" style="display:none"><img id="headerPhoto" class="profile hidden" alt="Profile"><button class="light" onclick="showSettings()">⚙ Settings</button><button class="secondary" onclick="logout()">Logout</button></div>
+  <div class="actions" id="headerActions" style="display:none"><img id="headerPhoto" class="profile hidden" alt="Profile"><button class="light" onclick="openInspector()">🛡️ System Check</button><button class="light" onclick="showSettings()">⚙ Settings</button><button class="secondary" onclick="logout()">Logout</button></div>
 </header>
 
 <div class="container">
@@ -148,6 +162,7 @@ body.dark .auth-submit,body.dark .auth-switch button{background:linear-gradient(
 <div id="settingsTab" class="card hidden"><h3>⚙️ Settings</h3><div class="settings-panel"><div><label>Display Name</label><input id="displayName"><button style="margin-top:10px" onclick="saveDisplayName()">Save Name</button></div><div><label>Profile Picture</label><input id="profileFile" type="file" accept="image/*"><button style="margin-top:10px" onclick="uploadImage('profile')">Upload Profile</button></div><div><label>Page Background Image</label><input id="backgroundFile" type="file" accept="image/*"><button style="margin-top:10px" onclick="uploadImage('background')">Upload Background</button><button class="secondary" style="margin-top:7px" onclick="removeBackground()">Remove Background</button></div><div><label>Appearance</label><select id="themeSelect" onchange="saveTheme()"><option value="light">Light Mode</option><option value="dark">Dark Mode</option></select></div><div><label>Change Password</label><input id="newPassword" type="password" placeholder="New password (minimum 6 characters)"><button style="margin-top:10px" onclick="changePassword()">Update Password</button></div><div><label>Backup</label><p class="muted">তোমার কিট ও History JSON ফাইলে সংরক্ষণ করো।</p><button class="green" onclick="exportBackup()">Download Backup</button></div></div><hr><h3>🔔 Due Notification</h3><p class="muted">এই পেজ খোলা থাকলে Browser Notification দেখাতে পারবে।</p><button class="secondary" onclick="enableNotifications()">Enable Browser Notification</button><hr><button class="secondary" onclick="resetAppearance()">Reset Appearance</button><hr><div style="border:1px solid #fecaca;background:#fff7f7;border-radius:10px;padding:14px;margin:14px 0"><h3 style="color:#b91c1c;margin:0 0 8px">⚠️ Delete Account</h3><p class="muted" style="font-size:13px">এই অ্যাকাউন্ট স্থায়ীভাবে মুছে যাবে। এর Kit, Receipt History ও Profile/Background ছবিও মুছে যাবে। এই কাজ ফেরত নেওয়া যাবে না। আগে Backup ডাউনলোড করে নাও।</p><button class="red" onclick="deleteAccount()">Permanently Delete My Account</button></div><button class="secondary" onclick="logout()">Logout</button></div>
 </section></div>
 <footer>MY-KITBOOK 5.3 · Personal Kit Management</footer>
+<div id="inspectorModal" class="hidden" onclick="closeInspector(event)"><div class="inspector-box" onclick="event.stopPropagation()"><div class="inspector-head"><div><h3 style="margin:0">🛡️ MY-KITBOOK System Inspector</h3><small>নিরাপদ স্বয়ংক্রিয় পরীক্ষা · কোনো ডেটা পরিবর্তন করবে না</small></div><button class="secondary" onclick="closeInspector()">✕</button></div><div id="inspectorSummary" class="inspector-summary">পরীক্ষা শুরু হয়নি।</div><div class="actions"><button id="inspectorRunButton" onclick="runInspector()">▶ আবার পরীক্ষা করো</button><button class="secondary" onclick="closeInspector()">Close</button></div><div id="inspectorResults" style="margin-top:12px"></div><small>নোট: এটি কোড/ডেটার নিয়মভিত্তিক পরীক্ষা। বাটনগুলোতে বাস্তব click চালায় না, যাতে কোনো তথ্য যোগ/মুছে/পরিবর্তন না হয়।</small></div></div>
 <div id="duePopup" class="hidden" onclick="closeDuePopup(event)"><div class="due-popup-box" onclick="event.stopPropagation()"><div class="actions" style="justify-content:space-between"><h3>📋 Due Kit Details</h3><button class="red" onclick="closeDuePopup()">✖</button></div><div id="duePopupContent"></div><button class="secondary" style="width:100%;margin-top:15px" onclick="closeDuePopup()">Close</button></div></div><div id="toast"></div>
 
 <script>
@@ -240,6 +255,109 @@ async function changePassword(){const p=$("newPassword").value;if(p.length<6)ret
 function exportBackup(){const blob=new Blob([JSON.stringify({created_at:new Date().toISOString(),kit_items:items,kit_receipts:receipts},null,2)],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="MY-KITBOOK-backup.json";a.click();URL.revokeObjectURL(url)}
 async function resetAppearance(){const path=currentUser.user_metadata?.background_path,{data,error}=await db.auth.updateUser({data:{theme:"light",background_path:null}});if(error)return toast(error.message);if(path)await db.storage.from("kitbook-media").remove([path]);currentUser=data.user;applyTheme("light");$("themeSelect").value="light";document.body.style.backgroundImage="";toast("Appearance reset")}
 async function enableNotifications(){if(!("Notification"in window))return toast("এই Browser Notification support করে না");const p=await Notification.requestPermission();if(p!=="granted")return toast("Notification permission দেওয়া হয়নি");const due=items.filter(i=>getDueQuantity(i)>0);new Notification("MY-KITBOOK",{body:due.length?`${due.length} ধরনের Kit Due হয়েছে`:"এখন কোনো Kit Due নেই"});toast("Browser notification enabled")}
+
+/* MY-KITBOOK 5.3 — Safe System Inspector
+   Read-only diagnostics. It never inserts, updates, or deletes user data. */
+function openInspector(){
+  if(!currentUser)return toast("আগে Login করো");
+  $("inspectorModal").classList.remove("hidden");
+  runInspector();
+}
+function closeInspector(e){
+  if(e&&e.target!==$("inspectorModal"))return;
+  $("inspectorModal").classList.add("hidden");
+}
+function inspectorDateValid(value){
+  if(typeof value!=="string"||!/^\\d{4}-\\d{2}-\\d{2}$/.test(value))return false;
+  const d=dateObj(value);
+  return dateStr(d)===value;
+}
+function inspectorRender(results){
+  const passed=results.filter(x=>x.status==="pass").length;
+  const warned=results.filter(x=>x.status==="warn").length;
+  const failed=results.filter(x=>x.status==="fail").length;
+  $("inspectorSummary").innerHTML="<b>পরীক্ষার ফলাফল</b><div style='margin-top:6px'>"+passed+" টি ঠিক · "+warned+" টি সতর্কতা · "+failed+" টি সমস্যা</div><small>পরীক্ষা শেষ: "+safe(new Date().toLocaleString("bn-BD"))+"</small>";
+  $("inspectorResults").innerHTML=results.map(x=>"<div class='inspector-result inspector-"+x.status+"'><b>"+(x.status==="pass"?"✅ ":x.status==="warn"?"⚠️ ":"❌ ")+safe(x.title)+"</b><small>"+safe(x.detail)+"</small></div>").join("");
+}
+async function runInspector(){
+  const btn=$("inspectorRunButton");
+  if(btn)btn.disabled=true;
+  $("inspectorSummary").textContent="সিস্টেম পরীক্ষা চলছে...";
+  $("inspectorResults").innerHTML="";
+  const results=[];
+  const add=(title,status,detail)=>results.push({title,status,detail});
+  try{
+    add("Login session",currentUser&&currentUser.id?"pass":"fail",currentUser&&currentUser.id?"বর্তমানে Login session পাওয়া গেছে।":"Login session পাওয়া যায়নি।");
+    const interactive=Array.from(document.querySelectorAll("[onclick],[onchange],[oninput]"));
+    const declared=new Set(Array.from(document.scripts).map(s=>s.textContent).join("\n").match(/(?:async\\s+)?function\\s+([A-Za-z_$][\\w$]*)\\s*\\(/g)||[]);
+    const fnNames=new Set(Array.from(declared).map(x=>x.replace(/^(?:async\\s+)?function\\s+/,"").replace(/\\s*\\($/,"")));
+    const missingHandlers=[];
+    interactive.forEach(el=>{
+      ["onclick","onchange","oninput"].forEach(attr=>{
+        const code=el.getAttribute(attr);
+        if(!code)return;
+        const m=code.match(/^\\s*([A-Za-z_$][\\w$]*)\\s*\\(/);
+        if(!m||m[1]==="event")return;
+        if(!fnNames.has(m[1]))missingHandlers.push(m[1]+"() — "+(el.id||el.tagName));
+      });
+    });
+    add("Button / input event handlers",missingHandlers.length?"fail":"pass",missingHandlers.length?"কাজের function পাওয়া যায়নি: "+missingHandlers.slice(0,8).join(", "):interactive.length+" টি interactive element-এর handler function পাওয়া গেছে। এটি handler উপস্থিতি যাচাই করে; destructive button click করে না।");
+    const scriptText=Array.from(document.scripts).map(s=>s.textContent).join("\n");
+    const usedIds=new Set();
+    let idMatch;
+    const idPattern=/\\$\\("([A-Za-z0-9_-]+)"\\)/g;
+    while((idMatch=idPattern.exec(scriptText))!==null)usedIds.add(idMatch[1]);
+    const missingIds=Array.from(usedIds).filter(id=>!$(id));
+    add("Required page elements",missingIds.length?"fail":"pass",missingIds.length?"HTML-এ element পাওয়া যায়নি: "+missingIds.join(", "):usedIds.size+" টি referenced page element পাওয়া গেছে।");
+    const dateTests=[
+      ["মাসের শেষ দিন (Leap year)",addInterval("2024-01-31",1,"month")==="2024-02-29"],
+      ["মাসের শেষ দিন (সাধারণ বছর)",addInterval("2025-01-31",1,"month")==="2025-02-28"],
+      ["দিনের interval",addInterval("2026-11-26",7,"day")==="2026-12-03"],
+      ["Leap day থেকে এক বছর",addInterval("2024-02-29",1,"year")==="2025-02-28"],
+      ["তারিখ round-trip",dateStr(dateObj("2026-11-26"))==="2026-11-26"]
+    ];
+    dateTests.forEach(t=>add("Date calculation: "+t[0],t[1]?"pass":"fail",t[1]?"হিসাব প্রত্যাশিত ফল দিয়েছে।":"তারিখের হিসাব প্রত্যাশিত ফলের সঙ্গে মেলেনি।"));
+    const future=addInterval(today(),1,"day");
+    const sample={id:"__inspector_test__",quantity:2,interval_value:1,interval_unit:"day",first_received_date:today(),last_received:today(),first_due_date:future,next_due_date:future};
+    const nextOk=getNext(sample)===future;
+    add("Next Due schedule",nextOk?"pass":"fail",nextOk?"পরবর্তী Due date বর্তমান দিনের পরের interval অনুযায়ী এসেছে।":"পরবর্তী Due date test-এ প্রত্যাশিত ফল আসেনি।");
+    const badItems=[];
+    items.forEach(i=>{
+      if(!Number.isInteger(Number(i.quantity))||Number(i.quantity)<1)badItems.push((i.item_name||i.id)+": quantity");
+      if(!Number.isInteger(Number(i.interval_value))||Number(i.interval_value)<1||!["day","month","year"].includes(i.interval_unit))badItems.push((i.item_name||i.id)+": interval");
+      if(i.first_received_date&&!inspectorDateValid(i.first_received_date))badItems.push((i.item_name||i.id)+": first receive date");
+      if(i.last_received&&!inspectorDateValid(i.last_received))badItems.push((i.item_name||i.id)+": last receive date");
+      if(i.first_received_date&&i.last_received&&i.first_received_date>i.last_received)badItems.push((i.item_name||i.id)+": first date is after last date");
+    });
+    add("Kit data validation",badItems.length?"warn":"pass",badItems.length?badItems.slice(0,10).join("; "):items.length+" টি Kit record-এ quantity, interval ও date format-এর দৃশ্যমান ভুল পাওয়া যায়নি।");
+    const itemIds=new Set(items.map(i=>i.id));
+    const badReceipts=receipts.filter(r=>!itemIds.has(r.kit_item_id)||!Number.isInteger(Number(r.quantity))||Number(r.quantity)<1||!inspectorDateValid(r.received_date));
+    add("Receipt history validation",badReceipts.length?"warn":"pass",badReceipts.length?badReceipts.length+" টি History record-এ Kit link, quantity বা date যাচাইয়ে সমস্যা পাওয়া গেছে।":receipts.length+" টি Receipt History record যাচাই করা হয়েছে।");
+    if(!currentUser||!currentUser.id){
+      add("Supabase read-only connection","fail","Login না থাকায় নিজের account-এর database পরীক্ষা করা যায়নি।");
+    }else{
+      const [kitCheck,receiptCheck]=await Promise.all([
+        db.from("kit_items").select("id,user_id").eq("user_id",currentUser.id),
+        db.from("kit_receipts").select("id,user_id,kit_item_id,quantity,received_date").eq("user_id",currentUser.id)
+      ]);
+      const dbError=kitCheck.error||receiptCheck.error;
+      if(dbError)add("Supabase read-only connection","fail","Database query ব্যর্থ: "+dbError.message);
+      else{
+        const foreignRows=[...(kitCheck.data||[]),...(receiptCheck.data||[])].filter(r=>r.user_id!==currentUser.id);
+        add("Supabase account-scoped read","pass","নিজের account filter দিয়ে "+(kitCheck.data||[]).length+" টি Kit এবং "+(receiptCheck.data||[]).length+" টি Receipt row পড়া গেছে।");
+        add("Returned row ownership",foreignRows.length?"fail":"pass",foreignRows.length?"নিজের account query-তে অন্য user-এর row পাওয়া গেছে।":"ফলাফলে অন্য user-এর row পাওয়া যায়নি। এটি অন্য account থেকে cross-access test নয়।");
+        const countMismatch=(kitCheck.data||[]).length!==items.length||(receiptCheck.data||[]).length!==receipts.length;
+        add("Loaded data sync",countMismatch?"warn":"pass",countMismatch?"Database row count এবং screen-এ loaded count আলাদা। Refresh করে আবার পরীক্ষা করো.":"Database ও screen-এর loaded record count মিলে গেছে।");
+      }
+    }
+  }catch(e){
+    add("Inspector runtime","fail","পরীক্ষার সময় error হয়েছে: "+(e&&e.message?e.message:String(e)));
+  }finally{
+    inspectorRender(results);
+    if(btn)btn.disabled=false;
+  }
+}
+
 $("firstReceived").value=today();$("lastReceived").value=today();$("receiptDate").value=today();
 db.auth.getSession().then(async({data,error})=>{if(error)return console.error(error);if(data.session){currentUser=data.session.user;await startApp()}});
 db.auth.onAuthStateChange(async(event,session)=>{if(event==="SIGNED_IN"&&session){currentUser=session.user;if($("appSection").classList.contains("hidden"))await startApp()}if(event==="SIGNED_OUT"){currentUser=null;items=[];receipts=[];itemsRequestId++;receiptsRequestId++;appStartPromise=null;$("appSection").classList.add("hidden");$("authSection").classList.remove("hidden");$("headerActions").style.display="none"}});
