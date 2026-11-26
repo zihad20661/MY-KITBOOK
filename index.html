@@ -301,6 +301,50 @@ body.dark tr:hover td{background:rgba(73,120,144,.36)!important}
   }
 }
 
+
+/* FINAL CRYSTAL GLASS TUNING — clear transparency, no heavy blur (mobile-friendly) */
+*,*::before,*::after{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+header{background:rgba(224,248,255,.16)!important;border-bottom:1px solid rgba(255,255,255,.58)!important;box-shadow:0 4px 14px rgba(20,88,115,.06),inset 0 1px 0 rgba(255,255,255,.48)!important}
+.card,.stat,.auth-card,.due-popup-box,.due-detail,.inspector-box,.inspector-summary,.inspector-result{
+  background:rgba(239,252,255,.13)!important;
+  border:1px solid rgba(255,255,255,.62)!important;
+  box-shadow:0 5px 16px rgba(20,88,115,.055),inset 0 1px 0 rgba(255,255,255,.42)!important;
+}
+.stat{background:rgba(239,252,255,.10)!important}
+button,.tabs button{
+  background:rgba(245,253,255,.19)!important;
+  border:1px solid rgba(255,255,255,.66)!important;
+  box-shadow:0 2px 8px rgba(20,88,115,.055),inset 0 1px 0 rgba(255,255,255,.50)!important;
+}
+button.green,.tabs button.active,#appSection .tabs button.active,#authSection .auth-submit{
+  background:rgba(8,133,177,.76)!important;color:#fff!important;
+}
+button.red{background:rgba(198,55,77,.78)!important;color:#fff!important}
+button.secondary,button.light{background:rgba(235,249,253,.22)!important}
+input:not([type=checkbox]):not([type=radio]),select,textarea{
+  background:rgba(255,255,255,.20)!important;
+  border:1px solid rgba(255,255,255,.68)!important;
+  box-shadow:inset 0 1px 4px rgba(20,88,115,.025)!important;
+}
+.tablewrap{background:rgba(235,250,255,.09)!important;border:1px solid rgba(255,255,255,.56)!important;box-shadow:none!important}
+th{background:rgba(245,253,255,.20)!important}
+td{background:rgba(235,250,255,.07)!important}
+tr:hover td{background:rgba(255,255,255,.20)!important}
+.due-detail,.inspector-summary,.inspector-result{background:rgba(240,251,255,.13)!important}
+body.dark header{background:rgba(15,42,60,.20)!important;border-color:rgba(190,235,250,.22)!important}
+body.dark .card,body.dark .stat,body.dark .auth-card,body.dark .due-popup-box,body.dark .due-detail,body.dark .inspector-box,body.dark .inspector-summary,body.dark .inspector-result{
+  background:rgba(18,48,68,.22)!important;border-color:rgba(190,235,250,.22)!important;
+  box-shadow:0 5px 16px rgba(0,0,0,.10),inset 0 1px 0 rgba(255,255,255,.07)!important;
+}
+body.dark button,body.dark .tabs button{background:rgba(35,76,98,.24)!important;border-color:rgba(190,235,250,.22)!important}
+body.dark button.green,body.dark .tabs button.active,body.dark #authSection .auth-submit{background:rgba(8,115,157,.78)!important;color:#fff!important}
+body.dark button.red{background:rgba(160,49,66,.78)!important}
+body.dark input:not([type=checkbox]):not([type=radio]),body.dark select,body.dark textarea{background:rgba(8,29,44,.24)!important;border-color:rgba(190,235,250,.22)!important}
+body.dark .tablewrap{background:rgba(8,29,44,.12)!important}
+body.dark th{background:rgba(62,103,124,.22)!important}
+body.dark td{background:rgba(8,29,44,.12)!important}
+body.dark tr:hover td{background:rgba(73,120,144,.22)!important}
+
 </style>
 </head>
 <body>
