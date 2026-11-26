@@ -507,6 +507,47 @@ body.dark input:not([type=checkbox]):not([type=radio]),body.dark select,body.dar
 body.dark th{background:rgba(120,180,215,.16)!important}
 body.dark td{background:rgba(8,28,45,.16)!important}
 
+
+/* LIQUID GLASS VISIBILITY FIX: keep the aqua light layer ABOVE body paint,
+   while all real page content stays above that layer. */
+body{position:relative;isolation:isolate}
+body:before{
+  z-index:0!important;
+  background:
+    radial-gradient(ellipse at 14% 12%,rgba(255,255,255,.72) 0,rgba(255,255,255,0) 34%),
+    radial-gradient(ellipse at 82% 20%,rgba(71,211,239,.30) 0,rgba(71,211,239,0) 38%),
+    radial-gradient(ellipse at 72% 78%,rgba(100,160,255,.20) 0,rgba(100,160,255,0) 40%),
+    repeating-linear-gradient(115deg,rgba(255,255,255,.025) 0 2px,transparent 2px 9px)!important;
+}
+body:after{
+  z-index:0!important;
+  background:
+    radial-gradient(ellipse at 50% 0,rgba(255,255,255,.32),transparent 55%),
+    linear-gradient(145deg,rgba(105,218,239,.08),transparent 45%,rgba(255,255,255,.12))!important;
+}
+body>header,body>.container,body>footer{position:relative;z-index:1}
+header,.card,.stat,.auth-card,.due-popup-box,.due-detail,.inspector-box,
+.inspector-summary,.inspector-result,.tablewrap,#authSection .auth-card,
+#appSection .card,#appSection .stat{
+  background:linear-gradient(135deg,rgba(255,255,255,.105) 0%,rgba(255,255,255,.035) 52%,rgba(255,255,255,.12) 100%)!important;
+  border:1px solid rgba(255,255,255,.68)!important;
+  box-shadow:0 18px 52px rgba(17,92,126,.13),
+    inset 0 1.5px 0 rgba(255,255,255,.82),
+    inset 1px 0 0 rgba(255,255,255,.24),
+    inset 0 -1px 0 rgba(255,255,255,.22)!important;
+}
+header{background:linear-gradient(120deg,rgba(255,255,255,.16),rgba(255,255,255,.045))!important}
+#authSection .auth-card{background:linear-gradient(135deg,rgba(255,255,255,.13),rgba(255,255,255,.035))!important}
+body.dark:before{z-index:0!important}
+body.dark:after{z-index:0!important}
+body.dark header,body.dark .card,body.dark .stat,body.dark .auth-card,
+body.dark .due-popup-box,body.dark .due-detail,body.dark .inspector-box,
+body.dark .inspector-summary,body.dark .inspector-result,body.dark .tablewrap,
+body.dark #authSection .auth-card,body.dark #appSection .card,body.dark #appSection .stat{
+  background:linear-gradient(135deg,rgba(135,205,235,.13),rgba(18,55,78,.16),rgba(110,175,210,.07))!important;
+  border-color:rgba(210,243,255,.34)!important;
+}
+
 </style>
 </head>
 <body>
