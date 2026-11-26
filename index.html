@@ -8,17 +8,132 @@
 <style>
 :root{--bg:#f1f5f9;--card:#fff;--text:#172554;--muted:#64748b;--primary:#123b70;--accent:#2563eb;--border:#e2e8f0;--danger:#dc2626;--green:#15803d;--shadow:0 5px 20px #0f172a0c}
 body.dark{--bg:#0f172a;--card:#1e293b;--text:#e2e8f0;--muted:#94a3b8;--primary:#1e40af;--accent:#60a5fa;--border:#334155;--shadow:0 5px 20px #0003}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,"Noto Sans Bengali",sans-serif;background-size:cover;background-position:center;background-attachment:fixed}
-button,input,select,textarea{font:inherit}button{border:0;border-radius:9px;padding:10px 14px;background:var(--primary);color:white;cursor:pointer;font-weight:600}button:disabled{opacity:.5}button.secondary{background:#64748b}button.green{background:#15803d}button.red{background:#dc2626}button.light{background:#e2e8f0;color:#172554}
-input,select,textarea{width:100%;padding:11px;border:1px solid var(--border);border-radius:9px;background:var(--card);color:var(--text);outline:none;margin-top:5px}label{font-size:13px;font-weight:600;display:block;margin-top:12px}small,.muted{color:var(--muted)}
-header{background:linear-gradient(120deg,#0b2545,#174a80);color:white;padding:17px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.brand,.actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.shield{width:48px;height:48px;border:2px solid #dbeafe;border-radius:14px;display:grid;place-items:center;font-size:25px}header h2{margin:0;font-size:20px}.container{max-width:1100px;margin:22px auto;padding:0 14px}
-.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:17px;margin-bottom:16px;box-shadow:var(--shadow)}h3{margin:0 0 14px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}.stat{background:var(--card);padding:16px;border:1px solid var(--border);border-radius:12px}.stat b{display:block;font-size:25px;margin-top:7px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:15px}.tabs button{background:#e2e8f0;color:#172554}.tabs button.active{background:var(--primary);color:white}.hidden{display:none!important}.profile{width:42px;height:42px;border-radius:50%;object-fit:cover;background:#dbeafe}.tablewrap{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:850px}th,td{padding:11px 9px;border-bottom:1px solid var(--border);text-align:left;font-size:13px}th{color:var(--muted)}.badge{padding:4px 8px;border-radius:20px;font-size:11px;font-weight:bold}.due{background:#fee2e2;color:#991b1b}.ok{background:#dcfce7;color:#166534}#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#172554;color:white;padding:12px 18px;border-radius:10px;z-index:1200;display:none;max-width:90%;text-align:center}.settings-panel{display:grid;grid-template-columns:1fr 1fr;gap:12px}hr{border:0;border-top:1px solid var(--border);margin:17px 0}footer{text-align:center;color:var(--muted);padding:20px;font-size:12px}.search-area{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px}.search-area input{flex:1;min-width:160px;margin:0}.due-stat{cursor:pointer}#duePopup{position:fixed;inset:0;background:#000a;z-index:1100;display:flex;align-items:center;justify-content:center;padding:15px}.due-popup-box{background:var(--card);color:var(--text);width:100%;max-width:500px;max-height:82vh;overflow-y:auto;border-radius:15px;padding:20px}.due-detail{border:1px solid var(--border);border-radius:10px;padding:13px;margin-top:10px;background:var(--bg)}@media(max-width:650px){.stats{grid-template-columns:1fr 1fr}.grid2,.settings-panel{grid-template-columns:1fr}header h2{font-size:17px}.container{margin:14px auto}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,"Noto Sans Bengali",sans-serif;background-size:cover;background-position:center;background-attachment:fixed}
+button,input,select,textarea{font:inherit}
+button{border:0;border-radius:9px;padding:10px 14px;background:var(--primary);color:white;cursor:pointer;font-weight:600}
+button:disabled{opacity:.5;cursor:not-allowed}
+button.secondary{background:#64748b}
+button.green{background:#15803d}
+button.red{background:#dc2626}
+button.light{background:#e2e8f0;color:#172554}
+input,select,textarea{width:100%;padding:11px;border:1px solid var(--border);border-radius:9px;background:var(--card);color:var(--text);outline:none;margin-top:5px}
+label{font-size:13px;font-weight:600;display:block;margin-top:12px}
+small,.muted{color:var(--muted)}
+header{background:linear-gradient(120deg,#0b2545,#174a80);color:white;padding:17px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand,.actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.shield{width:48px;height:48px;border:2px solid #dbeafe;border-radius:14px;display:grid;place-items:center;font-size:25px}
+header h2{margin:0;font-size:20px}
+.container{max-width:1100px;margin:22px auto;padding:0 14px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:17px;margin-bottom:16px;box-shadow:var(--shadow)}
+h3{margin:0 0 14px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.stat{background:var(--card);padding:16px;border:1px solid var(--border);border-radius:12px}
+.stat b{display:block;font-size:25px;margin-top:7px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:15px}
+.tabs button{background:#e2e8f0;color:#172554}
+.tabs button.active{background:var(--primary);color:white}
+.hidden{display:none!important}
+.profile{width:42px;height:42px;border-radius:50%;object-fit:cover;background:#dbeafe}
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:850px}
+th,td{padding:11px 9px;border-bottom:1px solid var(--border);text-align:left;font-size:13px}
+th{color:var(--muted)}
+.badge{padding:4px 8px;border-radius:20px;font-size:11px;font-weight:bold}
+.due{background:#fee2e2;color:#991b1b}
+.ok{background:#dcfce7;color:#166534}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#172554;color:white;padding:12px 18px;border-radius:10px;z-index:1200;display:none;max-width:90%;text-align:center}
+.settings-panel{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+hr{border:0;border-top:1px solid var(--border);margin:17px 0}
+footer{text-align:center;color:var(--muted);padding:20px;font-size:12px}
+.search-area{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.search-area input{flex:1;min-width:160px;margin:0}
+.due-stat{cursor:pointer}
+#duePopup{position:fixed;inset:0;background:#000a;z-index:1100;display:flex;align-items:center;justify-content:center;padding:15px}
+.due-popup-box{background:var(--card);color:var(--text);width:100%;max-width:500px;max-height:82vh;overflow-y:auto;border-radius:15px;padding:20px}
+.due-detail{border:1px solid var(--border);border-radius:10px;padding:13px;margin-top:10px;background:var(--bg)}
+
+/* New authentication design */
+.auth-shell{min-height:calc(100vh - 90px);display:flex;align-items:center;justify-content:center;padding:26px 14px;position:relative;overflow:hidden}
+.auth-orb{position:absolute;border-radius:50%;background:linear-gradient(145deg,#ffffffb8,#dce5ef55);box-shadow:12px 12px 28px #aab7c633,-12px -12px 28px #ffffffb0;pointer-events:none}
+.auth-orb.one{width:150px;height:150px;top:5%;left:4%}
+.auth-orb.two{width:110px;height:110px;right:5%;top:22%}
+.auth-orb.three{width:190px;height:190px;right:2%;bottom:-7%}
+.auth-card{position:relative;z-index:1;width:100%;max-width:455px;padding:34px 34px 28px;border:1px solid #ffffffb8;border-radius:30px;background:linear-gradient(145deg,#eef2f6f2,#e5ebf2ed);box-shadow:18px 18px 40px #aab6c64a,-18px -18px 40px #ffffffc9;color:#172033}
+.auth-card h3{font-size:29px;text-align:center;margin:20px 0 8px;color:#111827;letter-spacing:.2px}
+.auth-subtitle{text-align:center;color:#7b8795;margin:0 0 28px;font-size:14px}
+.auth-icon{width:92px;height:92px;margin:0 auto;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#f7faff,#e2e9f1);box-shadow:9px 9px 18px #b8c2ce80,-9px -9px 18px #ffffff}
+.auth-icon svg{width:39px;height:39px;fill:#1680df}
+.auth-field{margin-top:17px}
+.auth-field label{margin:0 0 7px 4px;color:#657386;font-size:12px;font-weight:600}
+.auth-input-wrap{position:relative}
+.auth-input{height:58px!important;margin:0!important;padding:0 17px!important;border:1px solid #ffffffa8!important;border-radius:17px!important;background:linear-gradient(145deg,#e6ebf1,#f7f9fb)!important;box-shadow:inset 6px 6px 12px #c2ccd780,inset -6px -6px 12px #ffffff!important;color:#263447!important;font-size:15px!important}
+.auth-input::placeholder{color:#8994a2}
+.auth-input:focus{border-color:#a8c8ed!important;box-shadow:inset 4px 4px 9px #c2ccd780,inset -4px -4px 9px #ffffff,0 0 0 3px #2684df17!important}
+.auth-password{padding-right:52px!important}
+.auth-eye{position:absolute;right:13px;top:50%;transform:translateY(-50%);border:0;background:transparent!important;color:#64748b!important;padding:7px!important;font-size:18px;box-shadow:none!important}
+.auth-options{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:17px 2px 21px;font-size:13px;color:#687789}
+.auth-remember{display:flex;align-items:center;gap:7px;margin:0;font-weight:400;cursor:pointer}
+.auth-remember input{width:16px;height:16px;margin:0;accent-color:#167bd1}
+.auth-link{color:#176eb7;text-decoration:none;font-weight:600;cursor:pointer}
+.auth-link:hover{text-decoration:underline}
+.auth-submit{width:100%;height:58px;border-radius:17px!important;background:linear-gradient(145deg,#f8fbff,#e2e9f1)!important;color:#1767a7!important;box-shadow:8px 8px 17px #b9c4d080,-8px -8px 17px #ffffff!important;font-size:15px;letter-spacing:.5px}
+.auth-submit:hover{transform:translateY(-1px);box-shadow:5px 5px 12px #b9c4d080,-5px -5px 12px #ffffff!important}
+.auth-submit:disabled{opacity:.65}
+.auth-switch{text-align:center;color:#7b8795;font-size:13px;margin:23px 0 0}
+.auth-switch button{display:inline-grid;place-items:center;width:34px;height:34px;padding:0;margin-left:8px;border-radius:50%;background:linear-gradient(145deg,#f8fbff,#e2e9f1);color:#1680df;box-shadow:5px 5px 10px #b9c4d080,-5px -5px 10px #ffffff;font-size:23px;vertical-align:middle}
+.auth-message{min-height:18px;margin:14px 2px 0;text-align:center;font-size:13px;color:#526579;line-height:1.5}
+.auth-message.error{color:#c62828}
+.auth-message.success{color:#16733b}
+.auth-brand{text-align:center;color:#8b98a8;font-size:11px;margin-top:18px;letter-spacing:.5px}
+body.dark .auth-card{background:linear-gradient(145deg,#263449f5,#1b293cfa);border-color:#ffffff16;color:#e2e8f0}
+body.dark .auth-card h3{color:#f1f5f9}
+body.dark .auth-subtitle,body.dark .auth-switch{color:#a9b7c9}
+body.dark .auth-icon{background:linear-gradient(145deg,#34445b,#1d2b40);box-shadow:8px 8px 18px #101b2b,-8px -8px 18px #3b4d65}
+body.dark .auth-input{background:linear-gradient(145deg,#1d2a3c,#29384d)!important;color:#e2e8f0!important;border-color:#ffffff10!important;box-shadow:inset 5px 5px 10px #142033,inset -5px -5px 10px #34465e!important}
+body.dark .auth-field label,body.dark .auth-options{color:#b4c1d1}
+body.dark .auth-submit,body.dark .auth-switch button{background:linear-gradient(145deg,#2b3b52,#1d2b40)!important;color:#8cc8ff!important;box-shadow:6px 6px 13px #142033,-6px -6px 13px #34465e!important}
+@media(max-width:650px){.stats{grid-template-columns:1fr 1fr}.grid2,.settings-panel{grid-template-columns:1fr}header h2{font-size:17px}.container{margin:14px auto}.auth-shell{min-height:calc(100vh - 80px);padding:18px 12px}.auth-card{padding:28px 22px 24px;border-radius:25px}.auth-card h3{font-size:26px}.auth-icon{width:82px;height:82px}.auth-orb.one{width:90px;height:90px}.auth-orb.two{width:70px;height:70px}.auth-orb.three{width:120px;height:120px}}
 </style>
 </head>
 <body>
-<header><div class="brand"><div class="shield">🛡️</div><div><h2>MY-KITBOOK <small>5.3</small></h2><small>Personal Kit Management System</small></div></div><div class="actions" id="headerActions" style="display:none"><img id="headerPhoto" class="profile hidden" alt="Profile"><button class="light" onclick="showSettings()">⚙ Settings</button><button class="secondary" onclick="logout()">Logout</button></div></header>
+<header>
+  <div class="brand"><div class="shield">🛡️</div><div><h2>MY-KITBOOK <small>5.3</small></h2><small>Personal Kit Management System</small></div></div>
+  <div class="actions" id="headerActions" style="display:none"><img id="headerPhoto" class="profile hidden" alt="Profile"><button class="light" onclick="showSettings()">⚙ Settings</button><button class="secondary" onclick="logout()">Logout</button></div>
+</header>
+
 <div class="container">
-<section id="authSection" class="card" style="max-width:430px;margin:45px auto"><h3>🛡️ MY-KITBOOK Login</h3><p class="muted">তোমার অ্যাকাউন্টে প্রবেশ করো</p><label>Gmail</label><input id="Gmail" type="email" placeholder="Gmail id"><label>Password</label><input id="password" type="password" placeholder="Password"><div class="actions" style="margin-top:16px"><button id="loginButton" onclick="login()">Login</button><button id="signupButton" class="secondary" onclick="signup()">Create Account</button></div><p id="authMessage" class="muted"></p></section>
+<section id="authSection" class="auth-shell">
+  <div class="auth-orb one"></div><div class="auth-orb two"></div><div class="auth-orb three"></div>
+  <div class="auth-card">
+    <div class="auth-icon" id="authIcon">
+      <svg id="authIconSvg" viewBox="0 0 24 24" aria-hidden="true"><path d="M17 8h-1V6a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2ZM10 6a2 2 0 1 1 4 0v2h-4V6Z"/></svg>
+    </div>
+    <h3 id="authTitle">Welcome</h3>
+    <p class="auth-subtitle" id="authSubtitle">Login to continue your journey</p>
+
+    <div id="loginFields">
+      <div class="auth-field"><label for="Gmail">Email Address</label><input class="auth-input" id="Gmail" type="email" placeholder="Enter your email" autocomplete="username"></div>
+      <div class="auth-field"><label for="password">Password</label><div class="auth-input-wrap"><input class="auth-input auth-password" id="password" type="password" placeholder="Enter your password" autocomplete="current-password"><button type="button" class="auth-eye" onclick="togglePassword('password',this)" aria-label="Show password">◉</button></div></div>
+      <div class="auth-options"><label class="auth-remember"><input id="rememberMe" type="checkbox" checked> Remember me</label><a class="auth-link" href="#" onclick="forgotPassword(event)">Forgot password?</a></div>
+      <button class="auth-submit" id="loginButton" onclick="login()">LOGIN</button>
+    </div>
+
+    <div id="signupFields" class="hidden">
+      <div class="auth-field"><label for="fullName">Full Name</label><input class="auth-input" id="fullName" type="text" placeholder="Enter your full name" autocomplete="name"></div>
+      <div class="auth-field"><label for="signupEmail">Email Address</label><input class="auth-input" id="signupEmail" type="email" placeholder="Enter your email" autocomplete="email"></div>
+      <div class="auth-field"><label for="signupPassword">Password</label><div class="auth-input-wrap"><input class="auth-input auth-password" id="signupPassword" type="password" placeholder="Create a password" autocomplete="new-password"><button type="button" class="auth-eye" onclick="togglePassword('signupPassword',this)" aria-label="Show password">◉</button></div></div>
+      <div class="auth-field"><label for="confirmPassword">Confirm Password</label><div class="auth-input-wrap"><input class="auth-input auth-password" id="confirmPassword" type="password" placeholder="Confirm your password" autocomplete="new-password"><button type="button" class="auth-eye" onclick="togglePassword('confirmPassword',this)" aria-label="Show password">◉</button></div></div>
+      <button class="auth-submit" id="createAccountButton" style="margin-top:23px" onclick="signup()">CREATE ACCOUNT</button>
+    </div>
+
+    <p id="authMessage" class="auth-message" aria-live="polite"></p>
+    <p class="auth-switch"><span id="authSwitchText">Don't have an account?</span><button type="button" id="authSwitchButton" onclick="switchAuthMode()" aria-label="Create account">＋</button></p>
+    <div class="auth-brand">MY-KITBOOK · PERSONAL KIT MANAGEMENT</div>
+  </div>
+</section>
+
 <section id="appSection" class="hidden">
 <div class="card" style="display:flex;align-items:center;gap:12px"><img id="profileLarge" class="profile" style="width:55px;height:55px" alt="Profile"><div><b id="welcomeName">Welcome</b><div class="muted" style="font-size:12px">MY-KITBOOK Personal Dashboard</div></div></div>
 <div class="stats"><div class="stat"><small>Total Items</small><b id="totalItems">0</b></div><div class="stat due-stat" onclick="openDuePopup()"><small>Due Items 👆</small><b id="dueItems">0</b><small>Click to view details</small></div><div class="stat"><small>Due Quantity</small><b id="dueQty">0</b></div><div class="stat"><small>Up to Date</small><b id="okItems">0</b></div></div>
@@ -34,6 +149,7 @@ header{background:linear-gradient(120deg,#0b2545,#174a80);color:white;padding:17
 </section></div>
 <footer>MY-KITBOOK 5.3 · Personal Kit Management</footer>
 <div id="duePopup" class="hidden" onclick="closeDuePopup(event)"><div class="due-popup-box" onclick="event.stopPropagation()"><div class="actions" style="justify-content:space-between"><h3>📋 Due Kit Details</h3><button class="red" onclick="closeDuePopup()">✖</button></div><div id="duePopupContent"></div><button class="secondary" style="width:100%;margin-top:15px" onclick="closeDuePopup()">Close</button></div></div><div id="toast"></div>
+
 <script>
 const SUPABASE_URL="https://szzmkzjruxcqpxkfzbne.supabase.co";
 const SUPABASE_KEY="sb_publishable_s16dseU385UQt78r5uaRKA_xRo7RZH8";
@@ -44,6 +160,10 @@ const AUTO_DUE_MARKER="[KITBOOK_AUTO_DUE]";
 const ADVANCE_MARKER="[KITBOOK_ADVANCE]";
 const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
 function toast(msg){const t=$("toast");t.textContent=msg;t.style.display="block";clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>t.style.display="none",3500)}
+function setAuthMessage(msg,type=""){const el=$("authMessage");el.textContent=msg;el.className="auth-message"+(type?" "+type:"")}
+function togglePassword(id,button){const input=$(id);input.type=input.type==="password"?"text":"password";button.textContent=input.type==="password"?"◉":"◎";button.setAttribute("aria-label",input.type==="password"?"Show password":"Hide password")}
+let authMode="login";
+function switchAuthMode(mode){authMode=mode||(authMode==="login"?"signup":"login");const isSignup=authMode==="signup";$("loginFields").classList.toggle("hidden",isSignup);$("signupFields").classList.toggle("hidden",!isSignup);$("authTitle").textContent=isSignup?"Create Account":"Welcome";$("authSubtitle").textContent=isSignup?"Start your journey with us":"Login to continue your journey";$("authSwitchText").textContent=isSignup?"Already have an account?":"Don't have an account?";$("authSwitchButton").textContent=isSignup?"↩":"＋";$("authSwitchButton").setAttribute("aria-label",isSignup?"Back to login":"Create account");$("authIconSvg").innerHTML=isSignup?'<path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Zm0 2c-4.2 0-7.5 2.2-7.5 5v1h15v-1c0-2.8-3.3-5-7.5-5Z"/>':'<path d="M17 8h-1V6a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2ZM10 6a2 2 0 1 1 4 0v2h-4V6Z"/>';$("authMessage").textContent="";if(isSignup){$("signupEmail").value=$("Gmail").value;$("fullName").focus()}else $("Gmail").focus()}
 function safe(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function dateObj(s){if(!s)return new Date();const [y,m,d]=s.split("-").map(Number);return new Date(y,m-1,d)}
 function dateStr(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
@@ -65,24 +185,26 @@ function updateReceiptLimit(){const item=items.find(i=>i.id===$("receiptItem").v
 function resetForm(){$("editId").value="";$("itemName").value="";$("qty").value=1;$("intervalValue").value=1;$("intervalUnit").value="year";$("firstReceived").value=today();$("lastReceived").value=today();$("notes").value="";$("formTitle").textContent="➕ Add New Kit"}
 function showTab(tab){["inventory","add","history","accounting","settings"].forEach(x=>{$(x+"Tab").classList.toggle("hidden",x!==tab);const b=$("tab"+x[0].toUpperCase()+x.slice(1));if(b)b.classList.toggle("active",x===tab)});if(tab==="history")loadHistory();if(tab==="inventory")renderItems();if(tab==="accounting")renderAccounting()}
 function showSettings(){showTab("settings");$("displayName").value=currentUser?.user_metadata?.display_name||"";$("themeSelect").value=currentUser?.user_metadata?.theme||"light"}
-async function login(){const email=$("Gmail").value.trim(),password=$("password").value,b=$("loginButton");if(!email||!password){$("authMessage").textContent="Gmail ও Password দাও";return}b.disabled=true;$("authMessage").textContent="Login হচ্ছে...";try{const {data,error}=await db.auth.signInWithPassword({email,password});if(error)throw error;currentUser=data.user;await startApp()}catch(e){$("authMessage").textContent=e.message}finally{b.disabled=false}}
-async function signup(){const email=$("Gmail").value.trim(),password=$("password").value,b=$("signupButton");if(!email||!password)return $("authMessage").textContent="Gmail ও Password দাও";if(password.length<6)return $("authMessage").textContent="Password কমপক্ষে ৬ অক্ষরের হতে হবে";b.disabled=true;try{const {data,error}=await db.auth.signUp({email,password});if(error)throw error;if(data.session){currentUser=data.user;await startApp()}else $("authMessage").textContent="Account তৈরি হয়েছে। Gmail-এ Confirmation Link যাচাই করে Login করো।"}catch(e){$("authMessage").textContent=e.message}finally{b.disabled=false}}
-async function logout(){isLoggingOut=true;appStartPromise=null;itemsRequestId++;receiptsRequestId++;try{await db.auth.signOut()}catch(e){}currentUser=null;items=[];receipts=[];$("appSection").classList.add("hidden");$("authSection").classList.remove("hidden");$("headerActions").style.display="none";$("authMessage").textContent="Logout সফল হয়েছে";closeDuePopup();isLoggingOut=false}
+
+async function login(){const email=$("Gmail").value.trim(),password=$("password").value,b=$("loginButton");if(!email||!password){setAuthMessage("Email ও Password দাও","error");return}b.disabled=true;setAuthMessage("Login হচ্ছে...");try{const {data,error}=await db.auth.signInWithPassword({email,password});if(error)throw error;currentUser=data.user;await startApp()}catch(e){setAuthMessage(e.message,"error")}finally{b.disabled=false}}
+async function signup(){const name=$("fullName").value.trim(),email=$("signupEmail").value.trim(),password=$("signupPassword").value,confirm=$("confirmPassword").value,b=$("createAccountButton");if(!name||!email||!password||!confirm)return setAuthMessage("সব তথ্য পূরণ করো","error");if(password.length<6)return setAuthMessage("Password কমপক্ষে ৬ অক্ষরের হতে হবে","error");if(password!==confirm)return setAuthMessage("দুটি Password মিলছে না","error");b.disabled=true;setAuthMessage("Account তৈরি হচ্ছে...");try{const {data,error}=await db.auth.signUp({email,password,options:{data:{display_name:name}}});if(error)throw error;if(data.session){currentUser=data.user;await startApp()}else{setAuthMessage("Account তৈরি হয়েছে। Gmail-এ Confirmation Link যাচাই করে Login করো।","success");switchAuthMode("login");$("Gmail").value=email;setAuthMessage("Account তৈরি হয়েছে। Gmail-এ Confirmation Link যাচাই করে Login করো।","success")}}catch(e){setAuthMessage(e.message,"error")}finally{b.disabled=false}}
+async function forgotPassword(event){event.preventDefault();const email=(authMode==="signup"?$("signupEmail").value:$("Gmail").value).trim();if(!email)return setAuthMessage("আগে Email Address লিখো","error");try{const {error}=await db.auth.resetPasswordForEmail(email,{redirectTo:location.href.split("#")[0]});if(error)throw error;setAuthMessage("Password reset link তোমার Email-এ পাঠানো হয়েছে।","success")}catch(e){setAuthMessage(e.message,"error")}}
+async function logout(){isLoggingOut=true;appStartPromise=null;itemsRequestId++;receiptsRequestId++;try{await db.auth.signOut()}catch(e){}currentUser=null;items=[];receipts=[];$("appSection").classList.add("hidden");$("authSection").classList.remove("hidden");$("headerActions").style.display="none";$("authMessage").textContent="Logout সফল হয়েছে";switchAuthMode("login");closeDuePopup();isLoggingOut=false}
 async function startApp(){if(!currentUser||isLoggingOut)return;if(appStartPromise)return appStartPromise;const uid=currentUser.id;appStartPromise=(async()=>{$("authSection").classList.add("hidden");$("appSection").classList.remove("hidden");$("headerActions").style.display="flex";await applyPreferences();if(!currentUser||currentUser.id!==uid)return;await Promise.all([loadItems(),loadHistory()]);renderItems();renderAccounting()})();try{await appStartPromise}catch(e){toast("App loading error: "+e.message)}finally{appStartPromise=null}}
 async function loadItems(){if(!currentUser)return;const uid=currentUser.id,rid=++itemsRequestId;const {data,error}=await db.from("kit_items").select("*").eq("user_id",uid).order("created_at",{ascending:false});if(rid!==itemsRequestId||!currentUser||currentUser.id!==uid)return;if(error)return toast("Kit load error: "+error.message);items=data||[];renderItems();renderAccounting()}
 async function loadHistory(){if(!currentUser)return;const uid=currentUser.id,rid=++receiptsRequestId;const {data,error}=await db.from("kit_receipts").select("*").eq("user_id",uid).order("received_date",{ascending:false});if(rid!==receiptsRequestId||!currentUser||currentUser.id!==uid)return;if(error){$("historyBody").innerHTML=`<tr><td colspan="5">${safe(error.message)}</td></tr>`;return}receipts=data||[];const names=Object.fromEntries(items.map(i=>[i.id,i.item_name]));$("historyBody").innerHTML=receipts.length?receipts.map(r=>`<tr><td>${safe(names[r.kit_item_id]||"Deleted Kit")}</td><td>${safe(r.received_date)}</td><td>${safe(r.quantity)}</td><td>${safe(cleanHistoryNote(r.notes))}</td><td><div class="actions"><button class="secondary" onclick="editReceipt('${r.id}')">✏️ Edit</button><button class="red" onclick="deleteReceipt('${r.id}')">🗑 Delete</button></div></td></tr>`).join(""):'<tr><td colspan="5">এখনো কোনো Receipt History নেই।</td></tr>';renderItems();renderAccounting()}
-function cleanHistoryNote(note){return String(note||"").replace(/^\[KITBOOK_AUTO_DUE\](?:\s+FULL|\s+PARTIAL)?\s+DUE:\d{4}-\d{2}-\d{2}(?:\s+PERIOD:[^|]+)?\s*\|\s*/,"").replace(/^\[KITBOOK_ADVANCE\](?:\s+DUE:\d{4}-\d{2}-\d{2}(?:\s+PERIOD:[^|]+)?)?\s*\|\s*/,"").replace(/^\[KITBOOK_AUTO_DUE\]\s*\|\s*/,"") }
+function cleanHistoryNote(note){return String(note||"").replace(/^\[KITBOOK_AUTO_DUE\](?:\s+FULL|\s+PARTIAL)?\s+DUE:\d{4}-\d{2}-\d{2}(?:\s+PERIOD:[^|]+)?\s*\|\s*/,"").replace(/^\[KITBOOK_ADVANCE\](?:\s+DUE:\d{4}-\d{2}-\d{2}(?:\s+PERIOD:[^|]+)?)?\s*\|\s*/,"").replace(/^\[KITBOOK_AUTO_DUE\]\s*\|\s*/,"")}
 function searchKit(){searchQuery=$("kitSearch").value.trim().toLowerCase();renderItems()}
 function clearKitSearch(){searchQuery="";$("kitSearch").value="";$("searchResult").textContent="";renderItems()}
-function renderItems(){const body=$("inventoryBody"),filtered=items.filter(i=>String(i.item_name||"").toLowerCase().includes(searchQuery));$("searchResult").textContent=searchQuery?`${filtered.length} টি Kit পাওয়া গেছে`:"";body.innerHTML=filtered.length?filtered.map(i=>{const count=getDueCount(i),q=getDueQuantity(i),status=q?`<span class="badge due">${count} Period Due · ${q} টি</span>`:'<span class="badge ok">Up to date</span>';return `<tr><td><b>${safe(i.item_name)}</b><br><small>${safe(i.notes||"")}</small></td><td>${safe(i.quantity)} টি</td><td>${safe(i.interval_value||1)} ${unitName(i.interval_unit||"day")} পরপর</td><td>${safe(i.first_received_date||i.last_received||"-")}</td><td>${safe(i.last_received||"-")}</td><td>${formatDate(getNext(i))}<br><small><b>${getNextDueStatus(i)}</b> · পরবর্তী Period-এ বাকি: ${getNextCycleRemaining(i)} টি</small></td><td>${status}</td><td><div class="actions">${q?`<button class="green" onclick="receiveDue('${i.id}')">Receive ${q}</button>`:""}<button class="secondary" onclick="editItem('${i.id}')">Edit</button><button class="red" onclick="deleteItem('${i.id}')">Delete</button></div></td></tr>`}).join(""):searchQuery?'<tr><td colspan="8">কোনো Kit পাওয়া যায়নি।</td></tr>':'<tr><td colspan="8">এখনো কোনো Kit যোগ করা হয়নি। Add Kit থেকে যোগ করো।</td></tr>';$ ("totalItems").textContent=items.length;const due=items.filter(i=>getDueQuantity(i)>0);$("dueItems").textContent=due.length;$("dueQty").textContent=items.reduce((s,i)=>s+getDueQuantity(i),0);$("okItems").textContent=items.length-due.length}
+function renderItems(){const body=$("inventoryBody"),filtered=items.filter(i=>String(i.item_name||"").toLowerCase().includes(searchQuery));$("searchResult").textContent=searchQuery?`${filtered.length} টি Kit পাওয়া গেছে`:"";body.innerHTML=filtered.length?filtered.map(i=>{const count=getDueCount(i),q=getDueQuantity(i),status=q?`<span class="badge due">${count} Period Due · ${q} টি</span>`:'<span class="badge ok">Up to date</span>';return `<tr><td><b>${safe(i.item_name)}</b><br><small>${safe(i.notes||"")}</small></td><td>${safe(i.quantity)} টি</td><td>${safe(i.interval_value||1)} ${unitName(i.interval_unit||"day")} পরপর</td><td>${safe(i.first_received_date||i.last_received||"-")}</td><td>${safe(i.last_received||"-")}</td><td>${formatDate(getNext(i))}<br><small><b>${getNextDueStatus(i)}</b> · পরবর্তী Period-এ বাকি: ${getNextCycleRemaining(i)} টি</small></td><td>${status}</td><td><div class="actions">${q?`<button class="green" onclick="receiveDue('${i.id}')">Receive ${q}</button>`:""}<button class="secondary" onclick="editItem('${i.id}')">Edit</button><button class="red" onclick="deleteItem('${i.id}')">Delete</button></div></td></tr>`}).join(""):searchQuery?'<tr><td colspan="8">কোনো Kit পাওয়া যায়নি।</td></tr>':'<tr><td colspan="8">এখনো কোনো Kit যোগ করা হয়নি। Add Kit থেকে যোগ করো।</td></tr>';$("totalItems").textContent=items.length;const due=items.filter(i=>getDueQuantity(i)>0);$("dueItems").textContent=due.length;$("dueQty").textContent=items.reduce((s,i)=>s+getDueQuantity(i),0);$("okItems").textContent=items.length-due.length}
 function openDuePopup(){const due=items.filter(i=>getDueQuantity(i)>0);let total=0;$("duePopupContent").innerHTML=due.length?due.map(i=>{const ps=getPeriods(i,0).filter(p=>p.due&&p.remaining>0),q=ps.reduce((n,p)=>n+p.remaining,0);total+=q;return `<div class="due-detail"><b>📦 ${safe(i.item_name)}</b><div style="margin-top:8px"><span class="badge due">${ps.length} Period Due</span> <b>${q} টি Due</b></div>${ps.map(p=>`<small style="display:block;margin-top:6px">${formatDate(p.start)} – ${formatDate(p.end)}: ${p.remaining} টি বাকি</small>`).join("")}<button class="green" style="margin-top:9px" onclick="closeDuePopup();receiveDue('${i.id}')">Receive</button></div>`}).join("")+`<p><b>মোট Due: ${total} টি</b></p>`:'<p style="text-align:center;padding:25px">✅ এখন কোনো Kit Due নেই।</p>';$("duePopup").classList.remove("hidden")}
 function closeDuePopup(e){if(e&&e.target!==$("duePopup"))return;$("duePopup").classList.add("hidden")}
 async function saveItem(){const id=$("editId").value,name=$("itemName").value.trim(),quantity=Number($("qty").value),intervalValue=Number($("intervalValue").value),unit=$("intervalUnit").value,first=$("firstReceived").value,last=$("lastReceived").value;if(!name||!first||!last||!Number.isInteger(quantity)||quantity<1||!Number.isInteger(intervalValue)||intervalValue<1)return toast("সব তথ্য সঠিকভাবে পূরণ করো");if(first>last)return toast("First Receive Date, Last Receive Date-এর পরে হতে পারবে না");const old=id?items.find(x=>x.id===id):null;const next=old?.next_due_date||addInterval(last,intervalValue,unit);const payload={user_id:currentUser.id,item_name:name,quantity,interval_value:intervalValue,interval_unit:unit,interval_days:unit==="day"?intervalValue:unit==="month"?intervalValue*30:intervalValue*365,first_received_date:first,last_received:last,next_due_date:next,first_due_date:old?.first_due_date||next,notes:$("notes").value.trim()};const result=id?await db.from("kit_items").update(payload).eq("id",id).eq("user_id",currentUser.id):await db.from("kit_items").insert(payload);if(result.error)return toast("Save error: "+result.error.message);toast(id?"Kit Updated":"Kit Added Successfully");resetForm();await Promise.all([loadItems(),loadHistory()]);showTab("inventory")}
 function editItem(id){const i=items.find(x=>x.id===id);if(!i)return;$("editId").value=id;$("itemName").value=i.item_name;$("qty").value=i.quantity;$("intervalValue").value=i.interval_value||1;$("intervalUnit").value=i.interval_unit||"day";$("firstReceived").value=i.first_received_date||i.last_received||today();$("lastReceived").value=i.last_received||today();$("notes").value=i.notes||"";$("formTitle").textContent="✏️ Edit Kit";showTab("add")}
 async function deleteItem(id){const i=items.find(x=>x.id===id);if(!i||!confirm(`"${i.item_name}" এবং এর সব History স্থায়ীভাবে মুছে ফেলবে?`))return;const c=await db.from("kit_receipts").delete().eq("kit_item_id",id).eq("user_id",currentUser.id);if(c.error)return toast(c.error.message);const r=await db.from("kit_items").delete().eq("id",id).eq("user_id",currentUser.id);if(r.error)return toast(r.error.message);toast("Kit এবং History Deleted");await Promise.all([loadItems(),loadHistory()])}
 async function addReceipt(itemId,date,quantity,note){const {error}=await db.from("kit_receipts").insert({user_id:currentUser.id,kit_item_id:itemId,received_date:date,quantity,notes:note||""});if(error)throw error}
-async function updateKitAfterReceipt(item,date){/* period-based receipt: schedule anchor অপরিবর্তিত থাকবে */return true}
-async function completeCycle(item,date){/* legacy helper retained; period-based system never shifts fixed due dates */return getNext(item)}
+async function updateKitAfterReceipt(item,date){return true}
+async function completeCycle(item,date){return getNext(item)}
 function receiveDue(id){const item=items.find(x=>x.id===id);if(!item)return;showTab("accounting");$("receiptItem").value=id;updateReceiptPeriods();const first=getPeriods(item,0).find(p=>p.due&&p.remaining>0);if(first){$("receiptPeriod").value=first.end;updateReceiptLimit()}$("receiptQty").focus();toast("যে Period-এর কিট পেয়েছ সেটি নির্বাচন করে Quantity দিয়ে Save Receipt চাপো")}
 async function editReceipt(id){const r=receipts.find(x=>x.id===id);if(!r)return toast("History পাওয়া যায়নি");const date=prompt("প্রাপ্তির তারিখ (YYYY-MM-DD):",r.received_date);if(date===null)return;if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||date>today())return toast("সঠিক তারিখ লিখো");const raw=prompt("প্রাপ্তির পরিমাণ:",r.quantity);if(raw===null)return;const q=Number(raw);if(!Number.isInteger(q)||q<1)return toast("সঠিক Quantity লিখো");const note=prompt("Notes:",cleanHistoryNote(r.notes));if(note===null)return;let finalNote=r.notes||"";const dueTag=cycleTag(r.notes,AUTO_DUE_MARKER),advTag=cycleTag(r.notes,ADVANCE_MARKER);if(dueTag)finalNote=`${AUTO_DUE_MARKER} DUE:${dueTag} | ${note.trim()}`;else if(advTag)finalNote=`${ADVANCE_MARKER} DUE:${advTag} | ${note.trim()}`;else finalNote=note.trim();if(!confirm("এই History পরিবর্তন করবে?"))return;const {error}=await db.from("kit_receipts").update({received_date:date,quantity:q,notes:finalNote}).eq("id",id).eq("user_id",currentUser.id);if(error)return toast("Edit Error: "+error.message);await Promise.all([loadHistory(),loadItems()]);toast("History Updated")}
 async function deleteReceipt(id){if(!confirm("এই Receipt History স্থায়ীভাবে Delete করবে?"))return;const {error}=await db.from("kit_receipts").delete().eq("id",id).eq("user_id",currentUser.id);if(error)return toast("Delete Error: "+error.message);await Promise.all([loadHistory(),loadItems()]);toast("History Deleted")}
@@ -108,4 +230,4 @@ const oldHistoryButton=document.createElement("button");oldHistoryButton.textCon
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeDuePopup()});
 </script>
 </body>
-</html>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </html>
