@@ -268,7 +268,7 @@ async function refreshDueData(uid){if(!currentUser||currentUser.id!==uid)return;
 function stopDueRealtime(){if(dueRealtimeChannel){db.removeChannel(dueRealtimeChannel);dueRealtimeChannel=null}}
 function startDueClock(){stopDueClock();lastDueCheckDate=today();dueClockTimer=setInterval(()=>{if(!currentUser)return;if(today()!==lastDueCheckDate){lastDueCheckDate=today();renderItems();renderAccounting()}checkDueNotifications()},60000)}
 function stopDueClock(){if(dueClockTimer){clearInterval(dueClockTimer);dueClockTimer=null}}
-const VAPID_PUBLIC_KEY="BLZSku8DeIcGzz0-dNGAnmE1NxdvXbwlqFdLjzpdUMTCHaOjau48pDrCcujxO0nRJ5KUU7YCv98aoNu0EgxnrRw";
+const VAPID_PUBLIC_KEY="BMx9sR59BY-pgZ4YflDyoQFBPaHlx9zsa6jF5uUD2YxA8iIanxLqDtng5VUohf8fj6_n2egGD5b1H2SR3Ij8SjE";
 function urlBase64ToUint8Array(base64String){const padding="=".repeat((4-base64String.length%4)%4);const raw=atob((base64String+padding).replace(/-/g,"+").replace(/_/g,"/"));return Uint8Array.from([...raw].map(c=>c.charCodeAt(0)))}
 async function enablePushNotifications(){
   if(!currentUser)return toast("আগে Login করো");
