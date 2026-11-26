@@ -527,7 +527,9 @@ function saveLastView(tabOverride){
   if(!currentUser||restoringLastView)return;
   const valid=["inventory","add","history","accounting","settings"];
   const visible=valid.find(x=>{const panel=$(x+"Tab");return panel&&!panel.classList.contains("hidden")});
-  const tab=valid.includes(tabOverride)?tabOverride:(visible||"inventory");
+  // When every popup is closed, do not overwrite the previously selected tab with Inventory.
+  const tab=valid.includes(tabOverride)?tabOverride:visible;
+  if(!tab)return;
   try{
     localStorage.setItem(LAST_VIEW_PREFIX+currentUser.id,JSON.stringify({tab,scrollY:Math.max(0,window.scrollY||0),savedAt:Date.now()}));
   }catch(e){console.warn("Could not save last opened tab:",e)}
