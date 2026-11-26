@@ -122,6 +122,34 @@ body.dark .popup-topbar{background:#19334deF;border-color:#ffffff35;color:#eff8f
 body.sidebar-open{overflow:hidden}
 @media(max-width:650px){#appSection>.tab-modal:not(.hidden){padding:10px;padding-top:78px}.tab-modal>.card,#accountingTab>.card{border-radius:18px;padding:14px}.popup-topbar{top:8px}}
 @media(max-width:650px){.stats{grid-template-columns:1fr 1fr}.grid2,.settings-panel{grid-template-columns:1fr}header h2{font-size:17px}.container{margin:14px auto}.auth-shell{min-height:calc(100vh - 80px);padding:18px 12px}.auth-card{padding:28px 22px 24px;border-radius:25px}.auth-card h3{font-size:26px}.auth-icon{width:82px;height:82px}.auth-orb.one{width:90px;height:90px}.auth-orb.two{width:70px;height:70px}.auth-orb.three{width:120px;height:120px}}
+
+/* Refreshed MY-KITBOOK home: calm navy water-glass theme, lightweight static gradients */
+body{min-height:100vh;background-color:var(--bg);background-image:radial-gradient(ellipse at 12% 8%,rgba(56,189,248,.22),transparent 34%),radial-gradient(ellipse at 88% 18%,rgba(37,99,235,.16),transparent 32%),linear-gradient(145deg,#eaf4fb 0%,#dceaf5 48%,#f5f9fc 100%);background-attachment:fixed;background-repeat:no-repeat;background-size:cover}
+body.dark{background-color:#081525;background-image:radial-gradient(ellipse at 12% 8%,rgba(14,116,144,.25),transparent 34%),radial-gradient(ellipse at 88% 18%,rgba(37,99,235,.2),transparent 32%),linear-gradient(145deg,#071321 0%,#10263c 52%,#091827 100%)}
+header{background:linear-gradient(115deg,rgba(5,25,48,.94),rgba(12,65,105,.88) 58%,rgba(18,91,130,.84));border-bottom:1px solid rgba(255,255,255,.22);box-shadow:0 8px 28px rgba(2,18,38,.2)}
+.shield{background:linear-gradient(145deg,rgba(255,255,255,.22),rgba(255,255,255,.06));box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 6px 18px rgba(0,0,0,.12)}
+.container{position:relative;z-index:1}
+#appSection>.card:first-child{background:linear-gradient(120deg,rgba(255,255,255,.78),rgba(219,240,252,.52));border:1px solid rgba(255,255,255,.82);box-shadow:0 14px 36px rgba(8,39,67,.13),inset 0 1px 0 rgba(255,255,255,.9);backdrop-filter:blur(15px) saturate(155%);-webkit-backdrop-filter:blur(15px) saturate(155%)}
+body.dark #appSection>.card:first-child{background:linear-gradient(120deg,rgba(28,62,88,.82),rgba(13,38,61,.78));border-color:rgba(255,255,255,.16);color:#edf7ff}
+.stats .stat{background:linear-gradient(145deg,rgba(255,255,255,.82),rgba(220,239,250,.56));border:1px solid rgba(255,255,255,.9);box-shadow:0 10px 28px rgba(5,35,62,.12),inset 0 1px 0 rgba(255,255,255,.95);backdrop-filter:blur(13px) saturate(150%);-webkit-backdrop-filter:blur(13px) saturate(150%);color:#163653}
+.stats .stat small{color:#58738b}
+.stats .stat b{color:#0b3760}
+body.dark .stats .stat{background:linear-gradient(145deg,rgba(34,69,96,.84),rgba(15,43,67,.82));border-color:rgba(255,255,255,.17);color:#eaf6ff;box-shadow:0 12px 28px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.12)}
+body.dark .stats .stat small{color:#b9d0e2}body.dark .stats .stat b{color:#f3f9ff}
+.auth-shell{isolation:isolate}
+.auth-orb{background:linear-gradient(145deg,rgba(255,255,255,.42),rgba(83,168,211,.13));border:1px solid rgba(255,255,255,.5);box-shadow:0 12px 32px rgba(14,68,103,.08);filter:blur(.2px)}
+.auth-card{background:linear-gradient(145deg,rgba(255,255,255,.82),rgba(226,241,250,.68));border:1px solid rgba(255,255,255,.88);box-shadow:0 22px 55px rgba(10,48,76,.17),inset 0 1px 0 rgba(255,255,255,.96);backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%)}
+.auth-icon{background:linear-gradient(145deg,rgba(255,255,255,.92),rgba(211,232,245,.72));border:1px solid rgba(255,255,255,.9);box-shadow:7px 8px 20px rgba(25,74,105,.12),inset 0 1px 0 #fff}
+.auth-input{background:rgba(255,255,255,.72)!important;border-color:rgba(255,255,255,.92)!important;box-shadow:inset 2px 3px 7px rgba(43,86,115,.08),0 3px 10px rgba(18,62,91,.04)!important}
+.auth-submit{background:linear-gradient(120deg,#0b4778,#167bb0)!important;color:#fff!important;border:1px solid rgba(255,255,255,.5)!important;box-shadow:0 9px 22px rgba(13,82,128,.24),inset 0 1px 0 rgba(255,255,255,.3)!important}
+.auth-submit:hover{transform:translateY(-1px);box-shadow:0 12px 26px rgba(13,82,128,.28)!important}
+body.dark .auth-card{background:linear-gradient(145deg,rgba(25,51,75,.9),rgba(11,30,49,.9));border-color:rgba(255,255,255,.18);box-shadow:0 22px 55px rgba(0,0,0,.32),inset 0 1px 0 rgba(255,255,255,.12)}
+body.dark .auth-input{background:rgba(9,27,45,.72)!important;border-color:rgba(255,255,255,.16)!important}
+body.dark .auth-icon{background:linear-gradient(145deg,#25445f,#142b43);border-color:rgba(255,255,255,.16)}
+button{transition:transform .16s ease,box-shadow .16s ease,filter .16s ease}
+button:active{transform:translateY(1px)}
+@media(max-width:650px){.auth-shell{padding-top:24px;padding-bottom:30px}.auth-card{backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}#appSection>.card:first-child{border-radius:18px}.stats .stat{padding:13px;border-radius:16px}}
+
 </style>
 </head>
 <body>
