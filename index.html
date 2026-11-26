@@ -20,15 +20,15 @@ button.light{background:#e2e8f0;color:#172554}
 input,select,textarea{width:100%;padding:11px;border:1px solid var(--border);border-radius:9px;background:var(--card);color:var(--text);outline:none;margin-top:5px}
 label{font-size:13px;font-weight:600;display:block;margin-top:12px}
 small,.muted{color:var(--muted)}
-header{background:linear-gradient(120deg,#0b2545,#174a80);color:white;padding:17px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+header{background:linear-gradient(120deg,#0b2545cc,#174a80bb);backdrop-filter:blur(22px) saturate(180%);-webkit-backdrop-filter:blur(22px) saturate(180%);border-bottom:1px solid #ffffff55;color:white;padding:17px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;position:sticky;top:0;z-index:900}
 .brand,.actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
 .shield{width:48px;height:48px;border:2px solid #dbeafe;border-radius:14px;display:grid;place-items:center;font-size:25px}
 header h2{margin:0;font-size:20px}
 .container{max-width:1100px;margin:22px auto;padding:0 14px}
-.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:17px;margin-bottom:16px;box-shadow:var(--shadow)}
+.card{background:linear-gradient(135deg,#ffffff9c,#eaf5ff55);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border:1px solid #ffffffa8;border-radius:20px;padding:17px;margin-bottom:16px;box-shadow:0 12px 34px #0b254526,inset 0 1px 0 #ffffffc9}body.dark .card{background:linear-gradient(135deg,#d8edff20,#8bbce414);border-color:#ffffff30;box-shadow:0 14px 38px #0005,inset 0 1px 0 #ffffff24}
 h3{margin:0 0 14px}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
-.stat{background:var(--card);padding:16px;border:1px solid var(--border);border-radius:12px}
+.stat{background:linear-gradient(135deg,#ffffffa8,#dceeff58);backdrop-filter:blur(22px) saturate(180%);-webkit-backdrop-filter:blur(22px) saturate(180%);padding:16px;border:1px solid #ffffffb0;border-radius:18px;box-shadow:0 10px 28px #0b25451a,inset 0 1px 0 #ffffffd9}body.dark .stat{background:linear-gradient(135deg,#d8edff20,#8bbce414);border-color:#ffffff30}
 .stat b{display:block;font-size:25px;margin-top:7px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:15px}
@@ -94,350 +94,43 @@ body.dark .auth-icon{background:linear-gradient(145deg,#34445b,#1d2b40);box-shad
 body.dark .auth-input{background:linear-gradient(145deg,#1d2a3c,#29384d)!important;color:#e2e8f0!important;border-color:#ffffff10!important;box-shadow:inset 5px 5px 10px #142033,inset -5px -5px 10px #34465e!important}
 body.dark .auth-field label,body.dark .auth-options{color:#b4c1d1}
 body.dark .auth-submit,body.dark .auth-switch button{background:linear-gradient(145deg,#2b3b52,#1d2b40)!important;color:#8cc8ff!important;box-shadow:6px 6px 13px #142033,-6px -6px 13px #34465e!important}
-@media(max-width:650px){.stats{grid-template-columns:1fr 1fr}.grid2,.settings-panel{grid-template-columns:1fr}header h2{font-size:17px}.container{margin:14px auto}.auth-shell{min-height:calc(100vh - 80px);padding:18px 12px}.auth-card{padding:28px 22px 24px;border-radius:25px}.auth-card h3{font-size:26px}.auth-icon{width:82px;height:82px}.auth-orb.one{width:90px;height:90px}.auth-orb.two{width:70px;height:70px}.auth-orb.three{width:120px;height:120px}}
 
-/* MY-KITBOOK Inspector */
-#inspectorModal{position:fixed;inset:0;background:#000a;z-index:1400;display:flex;align-items:center;justify-content:center;padding:14px}
-.inspector-box{width:100%;max-width:680px;max-height:88vh;overflow:auto;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:16px;padding:18px;box-shadow:0 20px 60px #0004}
-.inspector-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.inspector-summary{padding:12px;border:1px solid var(--border);border-radius:10px;margin:14px 0;background:var(--bg)}
-.inspector-result{padding:11px;border:1px solid var(--border);border-radius:10px;margin:8px 0}
-.inspector-result b{display:block;margin-bottom:4px}
-.inspector-result small{display:block;line-height:1.5}
-.inspector-pass{border-left:4px solid #16a34a}
-.inspector-warn{border-left:4px solid #d97706}
-.inspector-fail{border-left:4px solid #dc2626}
-@media(max-width:600px){.inspector-box{padding:14px}.inspector-head{align-items:flex-start}}
-
-
-/* LIGHTWEIGHT LIQUID CRYSTAL GLASS THEME
-   Pure gradients, borders and shadows: avoids expensive full-screen/backdrop blur. */
-:root{
-  --bg:#dff3f8;--card:rgba(255,255,255,.58);--text:#12344b;
-  --muted:#527184;--primary:#087eaa;--accent:#168fc1;
-  --border:rgba(255,255,255,.88);--shadow:0 10px 28px rgba(20,88,115,.10)
-}
-html{min-height:100%;background:#dff3f8}
-body{
-  min-height:100vh;color:#12344b;
-  background-color:#dff3f8!important;
-  background-image:radial-gradient(ellipse at 12% 5%,rgba(255,255,255,.92),transparent 38%),radial-gradient(ellipse at 88% 22%,rgba(116,220,235,.22),transparent 40%),linear-gradient(135deg,#e8f8fb,#d9eef7 55%,#e8f5ff);
-  background-attachment:scroll!important
-}
-header{
-  color:#123b54!important;
-  background:linear-gradient(125deg,rgba(255,255,255,.78),rgba(221,245,250,.58))!important;
-  border-bottom:1px solid rgba(255,255,255,.95);
-  box-shadow:0 8px 24px rgba(20,88,115,.09),inset 0 1px 0 #fff!important
-}
-header small{color:#527184!important}
-.shield{
-  color:#087eaa;background:linear-gradient(145deg,rgba(255,255,255,.92),rgba(194,235,245,.55));
-  border:1px solid #fff!important;box-shadow:0 5px 14px rgba(20,88,115,.10),inset 0 1px 0 #fff
-}
-.card,.stat,.auth-card,.due-popup-box,.due-detail,.inspector-box,.inspector-summary,.inspector-result{
-  color:#173b52!important;
-  background:linear-gradient(145deg,rgba(255,255,255,.78),rgba(224,246,250,.52))!important;
-  border:1px solid rgba(255,255,255,.96)!important;
-  box-shadow:0 10px 28px rgba(20,88,115,.10),inset 0 1px 0 rgba(255,255,255,.98)!important
-}
-.card{border-radius:20px!important}
-.stat{border-radius:17px!important}
-h3,.card h3,.stat b{color:#123b54}
-small,.muted,.auth-subtitle,.auth-switch,.auth-brand{color:#527184}
-button,.tabs button{
-  color:#16435a!important;
-  background:linear-gradient(145deg,rgba(255,255,255,.92),rgba(198,235,244,.70))!important;
-  border:1px solid rgba(255,255,255,.98)!important;
-  border-radius:13px!important;
-  box-shadow:0 5px 14px rgba(20,88,115,.09),inset 0 1px 0 #fff!important;
-  transition:background .15s ease,box-shadow .15s ease
-}
-button:hover:not(:disabled){box-shadow:0 7px 17px rgba(20,88,115,.13),inset 0 1px 0 #fff!important}
-button.green,.tabs button.active,#appSection .tabs button.active,#authSection .auth-submit{
-  color:#fff!important;background:linear-gradient(130deg,#078db3,#267cc0)!important;
-  border-color:rgba(255,255,255,.82)!important
-}
-button.red{color:#fff!important;background:linear-gradient(130deg,#df5968,#bd4058)!important}
-button.secondary,button.light{color:#244d62!important;background:linear-gradient(145deg,#f5fcff,#d8edf4)!important}
-input:not([type=checkbox]):not([type=radio]),select,textarea{
-  color:#173b52!important;background:rgba(255,255,255,.76)!important;
-  border:1px solid rgba(255,255,255,.98)!important;border-radius:12px!important;
-  box-shadow:inset 0 2px 6px rgba(20,88,115,.045)!important
-}
-input::placeholder,textarea::placeholder{color:#7894a3}
-input:focus,select:focus,textarea:focus{outline:none!important;border-color:#62b8d1!important;box-shadow:0 0 0 3px rgba(8,142,179,.12)!important}
-input[type=checkbox],input[type=radio]{accent-color:#078db3}
-.tabs{gap:9px}
-.tabs button{min-height:42px}
-.tablewrap{
-  overflow-x:auto;border:1px solid rgba(255,255,255,.92)!important;border-radius:14px!important;
-  background:rgba(255,255,255,.42)!important;box-shadow:inset 0 1px 0 #fff!important
-}
-table{border-collapse:separate!important;border-spacing:0!important}
-th{color:#42677a!important;background:rgba(255,255,255,.72)!important}
-td{color:#24485c;background:rgba(255,255,255,.36)!important;border-bottom:1px solid rgba(255,255,255,.72)!important}
-tr:hover td{background:rgba(255,255,255,.72)!important}
-.badge{border:1px solid rgba(255,255,255,.85)!important}
-.due{background:#ffe5e8!important;color:#a5283b!important}
-.ok{background:#dcf8e8!important;color:#17653b!important}
-#duePopup,#inspectorModal{background:rgba(12,44,61,.36)!important}
-#toast{background:#16435a!important;color:#fff!important;box-shadow:0 8px 24px rgba(10,45,65,.20)}
-.auth-card{max-width:455px}
-.auth-card h3{color:#123b54!important}
-.auth-field label,.auth-options{color:#42677a!important}
-.auth-input{color:#173b52!important;background:rgba(255,255,255,.82)!important;box-shadow:inset 0 2px 7px rgba(20,88,115,.05)!important}
-.auth-icon{background:linear-gradient(145deg,#fff,#dff3f8)!important;box-shadow:0 6px 16px rgba(20,88,115,.10)!important}
-.auth-submit{color:#fff!important}
-.auth-link{color:#087eaa!important}
-.auth-message{color:#42677a}
-footer{color:#527184!important}
-body.dark{
-  --bg:#102b3d;--card:rgba(28,59,78,.82);--text:#e8f7fc;--muted:#b5cfdb;
-  --primary:#168db4;--accent:#65c7e2;--border:rgba(180,225,240,.22);
-  background-color:#102b3d!important;
-  background-image:radial-gradient(ellipse at 12% 5%,rgba(64,150,180,.22),transparent 40%),radial-gradient(ellipse at 88% 22%,rgba(54,130,175,.18),transparent 40%),linear-gradient(135deg,#102b3d,#183d52 55%,#102b3d)
-}
-body.dark header{color:#e8f7fc!important;background:linear-gradient(125deg,rgba(45,83,105,.90),rgba(23,55,75,.88))!important;border-color:rgba(180,225,240,.22)!important}
-body.dark header small,body.dark footer,body.dark small,body.dark .muted{color:#b5cfdb!important}
-body.dark .shield{color:#d9f5ff;background:rgba(150,210,230,.13);border-color:rgba(180,225,240,.25)!important}
-body.dark .card,body.dark .stat,body.dark .auth-card,body.dark .due-popup-box,body.dark .due-detail,body.dark .inspector-box,body.dark .inspector-summary,body.dark .inspector-result{
-  color:#e8f7fc!important;background:linear-gradient(145deg,rgba(47,86,108,.88),rgba(24,53,72,.90))!important;
-  border-color:rgba(180,225,240,.24)!important;box-shadow:0 10px 28px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.10)!important
-}
-body.dark h3,body.dark .card h3,body.dark .stat b,body.dark .auth-card h3{color:#effaff!important}
-body.dark button,body.dark .tabs button{color:#e8f7fc!important;background:linear-gradient(145deg,rgba(72,117,140,.72),rgba(35,72,94,.82))!important;border-color:rgba(180,225,240,.24)!important}
-body.dark button.green,body.dark button.red,body.dark .tabs button.active,body.dark #authSection .auth-submit{color:#fff!important;background:linear-gradient(130deg,#087fa8,#286fae)!important}
-body.dark button.red{background:linear-gradient(130deg,#c64d5d,#9f354c)!important}
-body.dark input:not([type=checkbox]):not([type=radio]),body.dark select,body.dark textarea,body.dark .auth-input{
-  color:#effaff!important;background:rgba(12,35,51,.76)!important;border-color:rgba(180,225,240,.25)!important
-}
-body.dark input::placeholder,body.dark textarea::placeholder{color:#a7c2cf}
-body.dark th{color:#d6edf6!important;background:rgba(78,121,144,.42)!important}
-body.dark td{color:#e3f3f9;background:rgba(14,39,56,.44)!important}
-body.dark tr:hover td{background:rgba(78,121,144,.38)!important}
-body.dark .tablewrap{background:rgba(14,39,56,.38)!important;border-color:rgba(180,225,240,.22)!important}
-body.dark .due{background:rgba(150,45,60,.36)!important;color:#ffd8de!important}
-body.dark .ok{background:rgba(25,115,70,.34)!important;color:#c8f7dc!important}
-body.dark .auth-field label,body.dark .auth-options,body.dark .auth-subtitle,body.dark .auth-switch{color:#c4dce6!important}
-body.dark .auth-link{color:#8bdcff!important}
-@media(max-width:650px){
-  .card{border-radius:17px!important;padding:14px!important}
-  .stat{border-radius:15px!important}
-  .tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
-  .tabs button{width:100%;min-height:44px}
-}
-
-/* CRYSTAL CLEAR GLASS — transparent surfaces with restrained blur for smooth mobile performance */
-header{
-  background:rgba(225,248,255,.24)!important;
-  -webkit-backdrop-filter:blur(7px) saturate(155%);
-  backdrop-filter:blur(7px) saturate(155%);
-  border-bottom:1px solid rgba(255,255,255,.68)!important;
-  box-shadow:0 5px 18px rgba(20,88,115,.07),inset 0 1px 0 rgba(255,255,255,.72)!important;
-}
-.card,.stat,.auth-card,.due-popup-box,.due-detail,.inspector-box,.inspector-summary,.inspector-result{
-  background:rgba(239,252,255,.23)!important;
-  -webkit-backdrop-filter:blur(7px) saturate(155%);
-  backdrop-filter:blur(7px) saturate(155%);
-  border:1px solid rgba(255,255,255,.72)!important;
-  box-shadow:0 7px 22px rgba(20,88,115,.075),inset 0 1px 0 rgba(255,255,255,.72)!important;
-}
-.stat{background:rgba(239,252,255,.19)!important}
-button,.tabs button{
-  background:rgba(245,253,255,.30)!important;
-  -webkit-backdrop-filter:blur(5px) saturate(145%);
-  backdrop-filter:blur(5px) saturate(145%);
-  border:1px solid rgba(255,255,255,.78)!important;
-  box-shadow:0 3px 12px rgba(20,88,115,.07),inset 0 1px 0 rgba(255,255,255,.82)!important;
-}
-button.green,.tabs button.active,#appSection .tabs button.active,#authSection .auth-submit{
-  background:rgba(8,133,177,.78)!important;color:#fff!important;
-  border:1px solid rgba(255,255,255,.72)!important;
-}
-button.red{background:rgba(198,55,77,.82)!important;color:#fff!important}
-button.secondary,button.light{background:rgba(235,249,253,.42)!important}
-input:not([type=checkbox]):not([type=radio]),select,textarea{
-  background:rgba(255,255,255,.34)!important;
-  border:1px solid rgba(255,255,255,.78)!important;
-  box-shadow:inset 0 1px 5px rgba(20,88,115,.035)!important;
-}
-.tablewrap{
-  background:rgba(235,250,255,.18)!important;
-  -webkit-backdrop-filter:blur(6px) saturate(145%);
-  backdrop-filter:blur(6px) saturate(145%);
-  border:1px solid rgba(255,255,255,.68)!important;
-}
-th{background:rgba(245,253,255,.36)!important}
-td{background:rgba(235,250,255,.15)!important}
-tr:hover td{background:rgba(255,255,255,.32)!important}
-.due-detail,.inspector-summary,.inspector-result{background:rgba(240,251,255,.24)!important}
-body.dark header{
-  background:rgba(15,42,60,.36)!important;
-  border-color:rgba(190,235,250,.24)!important;
-}
-body.dark .card,body.dark .stat,body.dark .auth-card,body.dark .due-popup-box,body.dark .due-detail,body.dark .inspector-box,body.dark .inspector-summary,body.dark .inspector-result{
-  background:rgba(18,48,68,.42)!important;
-  border-color:rgba(190,235,250,.25)!important;
-}
-body.dark button,body.dark .tabs button{
-  background:rgba(35,76,98,.48)!important;
-  border-color:rgba(190,235,250,.24)!important;
-}
-body.dark button.green,body.dark .tabs button.active,body.dark #authSection .auth-submit{
-  background:rgba(8,115,157,.82)!important;color:#fff!important;
-}
-body.dark button.red{background:rgba(160,49,66,.82)!important}
-body.dark input:not([type=checkbox]):not([type=radio]),body.dark select,body.dark textarea{
-  background:rgba(8,29,44,.46)!important;border-color:rgba(190,235,250,.24)!important;
-}
-body.dark .tablewrap{background:rgba(8,29,44,.25)!important}
-body.dark th{background:rgba(62,103,124,.40)!important}
-body.dark td{background:rgba(8,29,44,.24)!important}
-body.dark tr:hover td{background:rgba(73,120,144,.36)!important}
-@media(prefers-reduced-transparency:reduce){
-  header,.card,.stat,.auth-card,.due-popup-box,.due-detail,.inspector-box,.inspector-summary,.inspector-result,button,.tabs button,.tablewrap{
-    -webkit-backdrop-filter:none!important;backdrop-filter:none!important;
-  }
-}
-
-
-/* FINAL CRYSTAL GLASS TUNING — clear transparency, no heavy blur (mobile-friendly) */
-*,*::before,*::after{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
-header{background:rgba(224,248,255,.16)!important;border-bottom:1px solid rgba(255,255,255,.58)!important;box-shadow:0 4px 14px rgba(20,88,115,.06),inset 0 1px 0 rgba(255,255,255,.48)!important}
-.card,.stat,.auth-card,.due-popup-box,.due-detail,.inspector-box,.inspector-summary,.inspector-result{
-  background:rgba(239,252,255,.13)!important;
-  border:1px solid rgba(255,255,255,.62)!important;
-  box-shadow:0 5px 16px rgba(20,88,115,.055),inset 0 1px 0 rgba(255,255,255,.42)!important;
-}
-.stat{background:rgba(239,252,255,.10)!important}
-button,.tabs button{
-  background:rgba(245,253,255,.19)!important;
-  border:1px solid rgba(255,255,255,.66)!important;
-  box-shadow:0 2px 8px rgba(20,88,115,.055),inset 0 1px 0 rgba(255,255,255,.50)!important;
-}
-button.green,.tabs button.active,#appSection .tabs button.active,#authSection .auth-submit{
-  background:rgba(8,133,177,.76)!important;color:#fff!important;
-}
-button.red{background:rgba(198,55,77,.78)!important;color:#fff!important}
-button.secondary,button.light{background:rgba(235,249,253,.22)!important}
-input:not([type=checkbox]):not([type=radio]),select,textarea{
-  background:rgba(255,255,255,.20)!important;
-  border:1px solid rgba(255,255,255,.68)!important;
-  box-shadow:inset 0 1px 4px rgba(20,88,115,.025)!important;
-}
-.tablewrap{background:rgba(235,250,255,.09)!important;border:1px solid rgba(255,255,255,.56)!important;box-shadow:none!important}
-th{background:rgba(245,253,255,.20)!important}
-td{background:rgba(235,250,255,.07)!important}
-tr:hover td{background:rgba(255,255,255,.20)!important}
-.due-detail,.inspector-summary,.inspector-result{background:rgba(240,251,255,.13)!important}
-body.dark header{background:rgba(15,42,60,.20)!important;border-color:rgba(190,235,250,.22)!important}
-body.dark .card,body.dark .stat,body.dark .auth-card,body.dark .due-popup-box,body.dark .due-detail,body.dark .inspector-box,body.dark .inspector-summary,body.dark .inspector-result{
-  background:rgba(18,48,68,.22)!important;border-color:rgba(190,235,250,.22)!important;
-  box-shadow:0 5px 16px rgba(0,0,0,.10),inset 0 1px 0 rgba(255,255,255,.07)!important;
-}
-body.dark button,body.dark .tabs button{background:rgba(35,76,98,.24)!important;border-color:rgba(190,235,250,.22)!important}
-body.dark button.green,body.dark .tabs button.active,body.dark #authSection .auth-submit{background:rgba(8,115,157,.78)!important;color:#fff!important}
-body.dark button.red{background:rgba(160,49,66,.78)!important}
-body.dark input:not([type=checkbox]):not([type=radio]),body.dark select,body.dark textarea{background:rgba(8,29,44,.24)!important;border-color:rgba(190,235,250,.22)!important}
-body.dark .tablewrap{background:rgba(8,29,44,.12)!important}
-body.dark th{background:rgba(62,103,124,.22)!important}
-body.dark td{background:rgba(8,29,44,.12)!important}
-body.dark tr:hover td{background:rgba(73,120,144,.22)!important}
-
-
-/* SUBTLE DARK CRYSTAL GLASS — slightly deeper overall palette, lightweight */
-html{background:#102637!important}
-body{
-  color:#e5f3f8!important;
-  background-color:#102637!important;
-  background-image:
-    radial-gradient(ellipse at 12% 5%,rgba(91,160,188,.18),transparent 38%),
-    radial-gradient(ellipse at 88% 22%,rgba(38,116,151,.16),transparent 40%),
-    linear-gradient(135deg,#102637,#18394d 55%,#102b40)!important;
-}
-header{
-  color:#eaf7fc!important;
-  background:rgba(14,39,56,.42)!important;
-  border-color:rgba(190,230,245,.24)!important;
-}
-header small,small,.muted,footer{color:#b6d0dc!important}
-.card,.stat,.auth-card,.due-popup-box,.due-detail,.inspector-box,.inspector-summary,.inspector-result{
-  color:#e5f3f8!important;
-  background:rgba(23,53,72,.48)!important;
-  border-color:rgba(190,230,245,.27)!important;
-  box-shadow:0 6px 18px rgba(0,0,0,.14),inset 0 1px 0 rgba(255,255,255,.09)!important;
-}
-h3,.card h3,.stat b,.auth-card h3{color:#f0faff!important}
-button,.tabs button{
-  color:#eaf7fc!important;
-  background:rgba(42,83,105,.42)!important;
-  border-color:rgba(190,230,245,.27)!important;
-}
-button.green,.tabs button.active,#appSection .tabs button.active,#authSection .auth-submit{
-  color:#fff!important;background:rgba(8,126,166,.82)!important;
-}
-button.red{color:#fff!important;background:rgba(166,55,73,.82)!important}
-button.secondary,button.light{color:#eaf7fc!important;background:rgba(53,86,104,.46)!important}
-input:not([type=checkbox]):not([type=radio]),select,textarea,.auth-input{
-  color:#f0faff!important;
-  background:rgba(8,29,44,.48)!important;
-  border-color:rgba(190,230,245,.25)!important;
-}
-input::placeholder,textarea::placeholder{color:#a6c1ce!important}
-.tablewrap{background:rgba(8,29,44,.28)!important;border-color:rgba(190,230,245,.22)!important}
-th{color:#d9edf5!important;background:rgba(63,105,127,.34)!important}
-td{color:#e5f3f8!important;background:rgba(8,29,44,.22)!important}
-tr:hover td{background:rgba(73,120,144,.32)!important}
-.due-detail,.inspector-summary,.inspector-result{background:rgba(15,42,59,.40)!important}
-.auth-field label,.auth-options,.auth-subtitle,.auth-switch,.auth-brand{color:#c0d8e2!important}
-.auth-link{color:#8bdcff!important}
-.auth-icon{background:rgba(48,83,103,.55)!important}
-#toast{background:#102b40!important;color:#f0faff!important}
-
-
-/* Crystal water-glass sidebar and modal navigation */
-.menu-trigger{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#ffffff45,#ffffff12);border:1px solid #ffffff80;box-shadow:inset 0 1px 0 #ffffff70,0 5px 18px #00152b35;backdrop-filter:blur(18px) saturate(190%);-webkit-backdrop-filter:blur(18px) saturate(190%)}
-#sidebarShade{position:fixed;inset:0;background:#02081788;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:1050;opacity:0;visibility:hidden;transition:.25s}
+/* Crystal water-glass navigation and popup panels */
+.menu-trigger{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#ffffff38,#ffffff12);border:1px solid #ffffff70;box-shadow:inset 0 1px 0 #ffffff65,0 5px 18px #00152b35;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+#sidebarShade{position:fixed;inset:0;background:#02081788;backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);z-index:1050;opacity:0;visibility:hidden;transition:.25s}
 #sidebarShade.open{opacity:1;visibility:visible}
-#appSidebar{position:fixed;z-index:1060;top:0;left:0;height:100dvh;width:min(310px,84vw);padding:22px 17px;background:linear-gradient(145deg,#f3fbffeF,#cce7f5d9 48%,#ffffffd9);border-right:1px solid #ffffffed;box-shadow:18px 0 55px #00152b45;backdrop-filter:blur(34px) saturate(200%);-webkit-backdrop-filter:blur(34px) saturate(200%);transform:translateX(-110%);transition:transform .28s ease;overflow:auto;color:#173957}
+#appSidebar{position:fixed;z-index:1060;top:0;left:0;height:100dvh;width:min(310px,84vw);padding:22px 17px;background:linear-gradient(145deg,#effaffd9,#cce7f5a8 48%,#ffffffa8);border-right:1px solid #ffffffd9;box-shadow:18px 0 55px #00152b45;backdrop-filter:blur(32px) saturate(190%);-webkit-backdrop-filter:blur(32px) saturate(190%);transform:translateX(-110%);transition:transform .28s ease;overflow-y:auto;color:#16324e}
 #appSidebar.open{transform:translateX(0)}
-.sidebar-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}.sidebar-brand{font-weight:800;font-size:18px}.sidebar-close{background:#ffffff85;color:#183653;border:1px solid #ffffffc9;border-radius:12px;font-size:20px;padding:5px 11px}
-.sidebar-nav{display:grid;gap:10px}.sidebar-nav button{width:100%;text-align:left;padding:14px 15px;border-radius:15px;color:#173957;background:linear-gradient(135deg,#ffffffd4,#d8edfa99);border:1px solid #ffffffdf;box-shadow:5px 6px 16px #47718b1b,inset 0 1px 0 #fff;font-weight:700}.sidebar-nav button.active{background:linear-gradient(135deg,#8dd5ffdc,#ffffffdc);border-color:#fff;box-shadow:inset 0 0 0 1px #6bb9e855,0 7px 20px #367da633}
-body.dark #appSidebar{background:linear-gradient(145deg,#142a40f5,#203e57f2 55%,#142a40f5);border-color:#ffffff2b;color:#e6f5ff}body.dark .sidebar-close,body.dark .sidebar-nav button{color:#e5f3ff;background:linear-gradient(135deg,#d8edff26,#8bbce41c);border-color:#ffffff30}body.dark .sidebar-nav button.active{background:linear-gradient(135deg,#2479a899,#d8edff25)}
-#appSection .tabs{display:none}
-#tabModalShade{position:fixed;inset:0;z-index:970;background:#0208178c;backdrop-filter:blur(8px) saturate(130%);-webkit-backdrop-filter:blur(8px) saturate(130%);opacity:0;visibility:hidden;transition:.2s}
-#tabModalShade.open{opacity:1;visibility:visible}
-#appSection>.tab-modal:not(.hidden){position:fixed!important;z-index:980;top:50%;left:50%;transform:translate(-50%,-50%);width:min(1080px,calc(100% - 28px));max-height:min(86dvh,900px);overflow:auto;margin:0!important;padding:20px;border:1px solid #ffffffc9;border-radius:24px;background:linear-gradient(135deg,#f4fbffeF,#d9eff8df 55%,#ffffffd9);box-shadow:0 25px 80px #00152b66,inset 0 1px 0 #fff;backdrop-filter:blur(34px) saturate(190%);-webkit-backdrop-filter:blur(34px) saturate(190%)}
-body.dark #appSection>.tab-modal:not(.hidden){background:linear-gradient(135deg,#172d43f5,#24425bf0 55%,#172d43f5);border-color:#ffffff35}
-.popup-topbar{position:sticky;top:-20px;z-index:3;display:flex;justify-content:space-between;align-items:center;gap:12px;margin:-20px -20px 17px;padding:13px 17px;border-radius:22px 22px 0 0;background:#eaf7ffed;border-bottom:1px solid #ffffffd9;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);color:#173957}
-.popup-topbar button{background:linear-gradient(135deg,#ffffff,#cce7f7);color:#17466a;border:1px solid #ffffff;box-shadow:0 4px 12px #17466a20;padding:8px 12px}
-body.dark .popup-topbar{background:#19334df2;border-color:#ffffff35;color:#eff8ff}body.dark .popup-topbar button{background:#2c4c68;color:#eff8ff;border-color:#ffffff30}
-body.sidebar-open,body.modal-open{overflow:hidden}
-@media(max-width:650px){#appSection>.tab-modal:not(.hidden){width:calc(100% - 18px);max-height:88dvh;padding:14px;border-radius:18px}.popup-topbar{top:-14px;margin:-14px -14px 14px;padding:11px 13px}.stats{grid-template-columns:repeat(2,1fr)}}
-
+.sidebar-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}.sidebar-brand{font-weight:800;font-size:18px}.sidebar-close{background:#ffffff75;color:#183653;border:1px solid #ffffffb8;border-radius:12px;font-size:20px;padding:5px 11px}
+.sidebar-nav{display:grid;gap:10px}.sidebar-nav button{width:100%;text-align:left;padding:14px 15px;border-radius:15px;color:#173957;background:linear-gradient(135deg,#ffffffbd,#d8edfa70);border:1px solid #ffffffc9;box-shadow:5px 6px 16px #47718b1b,inset 0 1px 0 #fff;font-weight:700}.sidebar-nav button.active{background:linear-gradient(135deg,#8dd5ffbd,#ffffffbd);border-color:#ffffff;box-shadow:inset 0 0 0 1px #6bb9e855,0 7px 20px #367da633}
+body.dark #appSidebar{background:linear-gradient(145deg,#142a40f2,#203e57ed 55%,#142a40f2);border-color:#ffffff2b;color:#e6f5ff}body.dark .sidebar-close,body.dark .sidebar-nav button{color:#e5f3ff;background:linear-gradient(135deg,#d8edff20,#8bbce414);border-color:#ffffff25}body.dark .sidebar-nav button.active{background:linear-gradient(135deg,#2479a888,#d8edff20)}
+#appSection>.tabs{display:none}
+#appSection>.tab-modal:not(.hidden){position:fixed;z-index:980;inset:0;overflow-y:auto;display:block!important;margin:0;padding:clamp(12px,3vw,28px);padding-top:90px;background:rgba(4,15,30,.68);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.tab-modal>.card,#accountingTab>.card{width:min(1050px,100%);margin:0 auto 15px;background:#f1f5f9;border:1px solid #cbd5e1;border-radius:20px;box-shadow:0 18px 48px rgba(0,12,28,.38);color:#172b43}
+body.dark #appSection>.tab-modal:not(.hidden){background:rgba(2,8,23,.76)}
+body.dark .tab-modal>.card,body.dark #accountingTab>.card{background:#17283d;border-color:#40536a;color:#e5edf7}
+.tab-modal>.card input,.tab-modal>.card select,.tab-modal>.card textarea,#accountingTab>.card input,#accountingTab>.card select,#accountingTab>.card textarea{background:#fff;color:#172b43;border:1px solid #cbd5e1}
+body.dark .tab-modal>.card input,body.dark .tab-modal>.card select,body.dark .tab-modal>.card textarea,body.dark #accountingTab>.card input,body.dark #accountingTab>.card select,body.dark #accountingTab>.card textarea{background:#0d1b2d;color:#e5edf7;border-color:#40536a}
+#duePopup{background:rgba(4,15,30,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.due-popup-box{background:#f1f5f9;color:#172b43;border:1px solid #cbd5e1;box-shadow:0 18px 48px rgba(0,12,28,.4)}
+body.dark .due-popup-box{background:#17283d;color:#e5edf7;border-color:#40536a}
+.due-detail{background:#e2e8f0;border-color:#cbd5e1}
+body.dark .due-detail{background:#20364f;border-color:#40536a}
+.popup-topbar{position:fixed;z-index:990;top:12px;left:50%;transform:translateX(-50%);width:min(1050px,calc(100% - 24px));display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 13px;border-radius:17px;background:#eaf7ffdf;border:1px solid #ffffffeb;box-shadow:0 8px 28px #00152b35;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);color:#173957}
+.popup-topbar button{background:linear-gradient(135deg,#ffffff,#cce7f7);color:#17466a;border:1px solid #ffffff;box-shadow:0 4px 12px #17466a20}
+body.dark .popup-topbar{background:#19334deF;border-color:#ffffff35;color:#eff8ff}body.dark .popup-topbar button{background:#2c4c68;color:#eff8ff;border-color:#ffffff30}
+body.sidebar-open{overflow:hidden}
+@media(max-width:650px){#appSection>.tab-modal:not(.hidden){padding:10px;padding-top:78px}.tab-modal>.card,#accountingTab>.card{border-radius:18px;padding:14px}.popup-topbar{top:8px}}
+@media(max-width:650px){.stats{grid-template-columns:1fr 1fr}.grid2,.settings-panel{grid-template-columns:1fr}header h2{font-size:17px}.container{margin:14px auto}.auth-shell{min-height:calc(100vh - 80px);padding:18px 12px}.auth-card{padding:28px 22px 24px;border-radius:25px}.auth-card h3{font-size:26px}.auth-icon{width:82px;height:82px}.auth-orb.one{width:90px;height:90px}.auth-orb.two{width:70px;height:70px}.auth-orb.three{width:120px;height:120px}}
 </style>
 </head>
 <body>
 <header>
   <div class="brand"><div class="shield">🛡️</div><div><h2>MY-KITBOOK <small>5.3</small></h2><small>Personal Kit Management System</small></div></div>
-  <div class="actions" id="headerActions" style="display:none"><button class="menu-trigger" onclick="toggleSidebar(true)" aria-label="Open menu">☰ Menu</button><button class="light" id="dueBell" onclick="openDuePopup()">🔔 Due 0</button><img id="headerPhoto" class="profile hidden" alt="Profile"><button class="light" onclick="openInspector()">🛡️ System Check</button><button class="light" onclick="showSettings()">⚙ Settings</button><button class="secondary" onclick="logout()">Logout</button></div>
+  <div class="actions" id="headerActions" style="display:none"><button class="menu-trigger" onclick="toggleSidebar(true)" aria-label="Open menu">☰ Menu</button><img id="headerPhoto" class="profile hidden" alt="Profile"><button class="light" onclick="showSettings()">⚙ Settings</button><button class="secondary" onclick="logout()">Logout</button></div>
 </header>
 <div id="sidebarShade" onclick="toggleSidebar(false)"></div>
-<aside id="appSidebar" aria-label="Main navigation">
- <div class="sidebar-head"><div class="sidebar-brand">🛡️ MY-KITBOOK <small>5.3</small></div><button class="sidebar-close" onclick="toggleSidebar(false)" aria-label="Close menu">×</button></div>
- <nav class="sidebar-nav">
-  <button id="navInventory" onclick="showTab('inventory')">📦 &nbsp; Inventory</button>
-  <button id="navAdd" onclick="showTab('add')">➕ &nbsp; Add Kit</button>
-  <button id="navHistory" onclick="showTab('history')">📋 &nbsp; Receipt History</button>
-  <button id="navAccounting" onclick="showTab('accounting')">📊 &nbsp; Kit হিসাব</button>
-  <button id="navSettings" onclick="showSettings()">⚙️ &nbsp; Settings</button>
-  <button onclick="openDuePopup();toggleSidebar(false)">🔔 &nbsp; Due Details</button>
-  <button onclick="openInspector();toggleSidebar(false)">🛡️ &nbsp; System Check</button>
-  <button onclick="logout()">↪️ &nbsp; Logout</button>
- </nav>
-</aside>
-<div id="tabModalShade" onclick="showTab('')"></div>
+<aside id="appSidebar" aria-label="Main navigation"><div class="sidebar-head"><div class="sidebar-brand">🛡️ MY-KITBOOK <small>5.3</small></div><button class="sidebar-close" onclick="toggleSidebar(false)" aria-label="Close menu">×</button></div><nav class="sidebar-nav"><button id="navInventory" onclick="showTab('inventory')">📦 &nbsp; Inventory</button><button id="navAdd" onclick="showTab('add')">➕ &nbsp; Add Kit</button><button id="navHistory" onclick="showTab('history')">📋 &nbsp; Receipt History</button><button id="navAccounting" onclick="showTab('accounting')">📊 &nbsp; Kit হিসাব</button><button id="navSettings" onclick="showSettings()">⚙️ &nbsp; Settings</button><button onclick="logout()">↪️ &nbsp; Logout</button></nav></aside>
 
 <div class="container">
 <section id="authSection" class="auth-shell">
@@ -474,24 +167,23 @@ body.sidebar-open,body.modal-open{overflow:hidden}
 <div class="card" style="display:flex;align-items:center;gap:12px"><img id="profileLarge" class="profile" style="width:55px;height:55px" alt="Profile"><div><b id="welcomeName">Welcome</b><div class="muted" style="font-size:12px">MY-KITBOOK Personal Dashboard</div></div></div>
 <div class="stats"><div class="stat"><small>Total Items</small><b id="totalItems">0</b></div><div class="stat due-stat" onclick="openDuePopup()"><small>Due Items 👆</small><b id="dueItems">0</b><small>Click to view details</small></div><div class="stat"><small>Due Quantity</small><b id="dueQty">0</b></div><div class="stat"><small>Up to Date</small><b id="okItems">0</b></div></div>
 <div class="tabs"><button class="active" id="tabInventory" onclick="showTab('inventory')">📦 Inventory</button><button id="tabAdd" onclick="showTab('add')">➕ Add Kit</button><button id="tabHistory" onclick="showTab('history')">📋 History</button><button id="tabAccounting" onclick="showTab('accounting')">📊 Kit হিসাব</button><button id="tabSettings" onclick="showSettings()">⚙ Settings</button></div>
-<div id="inventoryTab" class="card tab-modal"><h3>📦 My Kit Inventory</h3><div class="search-area"><input id="kitSearch" type="search" placeholder="🔍 Kit-এর নাম লিখে খুঁজুন..." oninput="searchKit()"><button onclick="searchKit()">🔍 Search</button><button class="secondary" onclick="clearKitSearch()">✖ Clear</button></div><div id="searchResult" class="muted" style="font-size:12px"></div><div class="tablewrap"><table><thead><tr><th>Kit Name</th><th>Quantity / Cycle</th><th>Interval</th><th>First Receive</th><th>Last Received</th><th>Next Due</th><th>Status</th><th>Actions</th></tr></thead><tbody id="inventoryBody"></tbody></table></div></div>
-<div id="addTab" class="card hidden tab-modal"><h3 id="formTitle">➕ Add New Kit</h3><input id="editId" type="hidden"><label>Kit Item Name</label><input id="itemName" placeholder="যেমন: Shirt, Pant, Shoes"><div class="grid2"><div><label>Quantity per Cycle</label><input id="qty" type="number" min="1" value="1"></div><div><label>Interval Number</label><input id="intervalValue" type="number" min="1" value="1"></div></div><label>Interval Unit</label><select id="intervalUnit"><option value="day">দিন (Day)</option><option value="month">মাস (Month)</option><option value="year" selected>বছর (Year)</option></select><div class="grid2"><div><label>First Receive Date</label><input id="firstReceived" type="date"></div><div><label>Last Received Date</label><input id="lastReceived" type="date"></div></div><small>প্রথমবার কবে পেয়েছিলে এবং সর্বশেষ কবে পেয়েছ—দুটি তারিখ আলাদা করে দাও।</small><label>Notes (Optional)</label><textarea id="notes" rows="2"></textarea><div class="actions" style="margin-top:15px"><button onclick="saveItem()">Save Kit</button><button class="secondary" onclick="resetForm()">Cancel</button></div></div>
-<div id="historyTab" class="card hidden tab-modal"><h3>📋 Kit Receipt History</h3><div class="search-area"><input id="historySearch" type="search" placeholder="🔍 কিটের নাম, তারিখ, পরিমাণ বা Notes দিয়ে খুঁজুন..." oninput="searchHistory()"><button onclick="searchHistory()">🔍 Search</button><button class="secondary" onclick="clearHistorySearch()">✖ Clear</button></div><div id="historySearchResult" class="muted" style="font-size:12px;margin-bottom:8px"></div><div class="tablewrap"><table><thead><tr><th>Kit</th><th>Received Date</th><th>Quantity</th><th>Notes</th><th>Actions</th></tr></thead><tbody id="historyBody"></tbody></table></div></div>
-<div id="accountingTab" class="hidden tab-modal">
+<div id="inventoryTab" class="tab-modal card hidden"><h3>📦 My Kit Inventory</h3><div class="search-area"><input id="kitSearch" type="search" placeholder="🔍 Kit-এর নাম লিখে খুঁজুন..." oninput="searchKit()"><button onclick="searchKit()">🔍 Search</button><button class="secondary" onclick="clearKitSearch()">✖ Clear</button></div><div id="searchResult" class="muted" style="font-size:12px"></div><div class="tablewrap"><table><thead><tr><th>Kit Name</th><th>Quantity / Cycle</th><th>Interval</th><th>First Receive</th><th>Last Received</th><th>Next Due</th><th>Status</th><th>Actions</th></tr></thead><tbody id="inventoryBody"></tbody></table></div></div>
+<div id="addTab" class="tab-modal card hidden"><h3 id="formTitle">➕ Add New Kit</h3><input id="editId" type="hidden"><label>Kit Item Name</label><input id="itemName" placeholder="যেমন: Shirt, Pant, Shoes"><div class="grid2"><div><label>Quantity per Cycle</label><input id="qty" type="number" min="1" value="1"></div><div><label>Interval Number</label><input id="intervalValue" type="number" min="1" value="1"></div></div><label>Interval Unit</label><select id="intervalUnit"><option value="day">দিন (Day)</option><option value="month">মাস (Month)</option><option value="year" selected>বছর (Year)</option></select><div class="grid2"><div><label>First Receive Date</label><input id="firstReceived" type="date"></div><div><label>Last Received Date</label><input id="lastReceived" type="date"></div></div><small>প্রথমবার কবে পেয়েছিলে এবং সর্বশেষ কবে পেয়েছ—দুটি তারিখ আলাদা করে দাও।</small><label>Notes (Optional)</label><textarea id="notes" rows="2"></textarea><div class="actions" style="margin-top:15px"><button onclick="saveItem()">Save Kit</button><button class="secondary" onclick="resetForm()">Cancel</button></div></div>
+<div id="historyTab" class="tab-modal card hidden"><h3>📋 Kit Receipt History</h3><div class="tablewrap"><table><thead><tr><th>Kit</th><th>Received Date</th><th>Quantity</th><th>Notes</th><th>Actions</th></tr></thead><tbody id="historyBody"></tbody></table></div></div>
+<div id="accountingTab" class="tab-modal hidden">
 <div class="card"><h3>📊 Kit পাওনা ও প্রাপ্তির হিসাব</h3><div class="muted" style="font-size:13px">বকেয়া, পরবর্তী Due এবং আগাম প্রাপ্তি আলাদাভাবে হিসাব হবে। আগাম পাওয়া কিট পরবর্তী নির্ধারিত Cycle-এর পাওনা থেকে কমবে; বকেয়া Receive না করলে কমবে না।</div><div class="stats" style="margin-top:14px"><div class="stat"><small>এখন পর্যন্ত নির্ধারিত পাওনা</small><b id="accDue">0</b></div><div class="stat"><small>মোট প্রাপ্তি*</small><b id="accReceived">0</b></div><div class="stat"><small>আগাম প্রাপ্তি / ক্রেডিট</small><b id="accAdvance">0</b></div><div class="stat"><small>বকেয়া পাওনা</small><b id="accRemaining">0</b></div></div><small>*মোট প্রাপ্তি = প্রাথমিক বরাদ্দ + সংরক্ষিত Receipt History।</small></div>
-<div class="card"><h3>📋 প্রতিটি কিটের আলাদা হিসাব</h3><div class="search-area"><input id="accountingSearch" type="search" placeholder="🔍 কিটের নাম বা হিসাবের পরিমাণ দিয়ে খুঁজুন..." oninput="searchAccounting()"><button onclick="searchAccounting()">🔍 Search</button><button class="secondary" onclick="clearAccountingSearch()">✖ Clear</button></div><div id="accountingSearchResult" class="muted" style="font-size:12px;margin-bottom:8px"></div><div class="tablewrap"><table><thead><tr><th>Kit Name</th><th>Cycle Quantity</th><th>এখন পর্যন্ত পাওনা</th><th>History-তে প্রাপ্তি</th><th>আগাম ক্রেডিট</th><th>বকেয়া</th><th>পরবর্তী Due-তে বাকি</th><th>Actions</th></tr></thead><tbody id="accountingBody"></tbody></table></div></div>
+<div class="card"><h3>📋 প্রতিটি কিটের আলাদা হিসাব</h3><div class="tablewrap"><table><thead><tr><th>Kit Name</th><th>Cycle Quantity</th><th>এখন পর্যন্ত পাওনা</th><th>History-তে প্রাপ্তি</th><th>আগাম ক্রেডিট</th><th>বকেয়া</th><th>পরবর্তী Due-তে বাকি</th><th>Actions</th></tr></thead><tbody id="accountingBody"></tbody></table></div></div>
 <div class="card"><h3>➕ নতুন Receipt / আগাম Receipt যোগ করো</h3><label>Kit Item</label><select id="receiptItem" onchange="updateReceiptPeriods()"></select><label>কোন সময়ের পাওনা Receive করবে?</label><select id="receiptPeriod" onchange="updateReceiptLimit()"></select><small id="receiptPeriodInfo" class="muted">প্রথমে Kit নির্বাচন করো।</small><div class="grid2"><div><label>প্রাপ্তির তারিখ</label><input id="receiptDate" type="date"></div><div><label>প্রাপ্তির পরিমাণ</label><input id="receiptQty" type="number" min="1" value="1"></div></div><label>Notes (Optional)</label><textarea id="receiptNotes" rows="2" placeholder="যেমন: আগাম পেয়েছি"></textarea><div class="actions" style="margin-top:14px"><button class="green" onclick="saveAdvanceReceipt()">Save Receipt</button></div><small>তারিখ পরবর্তী Due Date-এর আগে হলে আগাম হিসেবে, Due Date বা পরে হলে বকেয়া/নির্ধারিত পাওনা হিসেবে যোগ হবে।</small></div></div>
-<div id="settingsTab" class="card hidden tab-modal"><h3>⚙️ Settings</h3><div class="settings-panel"><div><label>Display Name</label><input id="displayName"><button style="margin-top:10px" onclick="saveDisplayName()">Save Name</button></div><div><label>Profile Picture</label><input id="profileFile" type="file" accept="image/*"><button style="margin-top:10px" onclick="uploadImage('profile')">Upload Profile</button></div><div><label>Page Background Image</label><input id="backgroundFile" type="file" accept="image/*"><button style="margin-top:10px" onclick="uploadImage('background')">Upload Background</button><button class="secondary" style="margin-top:7px" onclick="removeBackground()">Remove Background</button></div><div><label>Appearance</label><select id="themeSelect" onchange="saveTheme()"><option value="light">Light Mode</option><option value="dark">Dark Mode</option></select></div><div><label>Change Password</label><input id="newPassword" type="password" placeholder="New password (minimum 6 characters)"><button style="margin-top:10px" onclick="changePassword()">Update Password</button></div><div><label>Backup</label><p class="muted">তোমার কিট ও History JSON ফাইলে সংরক্ষণ করো।</p><button class="green" onclick="exportBackup()">Download Backup</button></div></div><hr><h3>🔔 Due Notification</h3><p class="muted">এই পেজ খোলা থাকলে Browser Notification দেখাতে পারবে।</p><button class="secondary" onclick="enableNotifications()">Enable Browser Notification</button><div style="margin-top:12px;padding:13px;border:1px solid var(--border);border-radius:10px"><b>📲 Push Notification (Website বন্ধ থাকলেও)</b><p class="muted" style="font-size:13px">ফোনের Browser-এ একবার Allow দিলে Due হলে Push আসতে পারবে।</p><div class="actions"><button class="green" onclick="enablePushNotifications()">Enable Push Notification</button><button class="secondary" onclick="testPushNotification()">Test Push</button><button class="secondary" onclick="disablePushNotifications()">Disable Push</button></div><small id="pushStatus" class="muted">Push এখনো সেটআপ করা হয়নি।</small></div><hr><button class="secondary" onclick="resetAppearance()">Reset Appearance</button><hr><div style="border:1px solid #fecaca;background:#fff7f7;border-radius:10px;padding:14px;margin:14px 0"><h3 style="color:#b91c1c;margin:0 0 8px">⚠️ Delete Account</h3><p class="muted" style="font-size:13px">এই অ্যাকাউন্ট স্থায়ীভাবে মুছে যাবে। এর Kit, Receipt History ও Profile/Background ছবিও মুছে যাবে। এই কাজ ফেরত নেওয়া যাবে না। আগে Backup ডাউনলোড করে নাও।</p><button class="red" onclick="deleteAccount()">Permanently Delete My Account</button></div><button class="secondary" onclick="logout()">Logout</button></div>
+<div id="settingsTab" class="tab-modal card hidden"><h3>⚙️ Settings</h3><div class="settings-panel"><div><label>Display Name</label><input id="displayName"><button style="margin-top:10px" onclick="saveDisplayName()">Save Name</button></div><div><label>Profile Picture</label><input id="profileFile" type="file" accept="image/*"><button style="margin-top:10px" onclick="uploadImage('profile')">Upload Profile</button></div><div><label>Page Background Image</label><input id="backgroundFile" type="file" accept="image/*"><button style="margin-top:10px" onclick="uploadImage('background')">Upload Background</button><button class="secondary" style="margin-top:7px" onclick="removeBackground()">Remove Background</button></div><div><label>Appearance</label><select id="themeSelect" onchange="saveTheme()"><option value="light">Light Mode</option><option value="dark">Dark Mode</option></select></div><div><label>Change Password</label><input id="newPassword" type="password" placeholder="New password (minimum 6 characters)"><button style="margin-top:10px" onclick="changePassword()">Update Password</button></div><div><label>Backup</label><p class="muted">তোমার কিট ও History JSON ফাইলে সংরক্ষণ করো।</p><button class="green" onclick="exportBackup()">Download Backup</button></div></div><hr><h3>🔔 Due Notification</h3><p class="muted">এই পেজ খোলা থাকলে Browser Notification দেখাতে পারবে।</p><button class="secondary" onclick="enableNotifications()">Enable Browser Notification</button><hr><button class="secondary" onclick="resetAppearance()">Reset Appearance</button><button class="red" onclick="logout()">Logout</button></div>
 </section></div>
 <footer>MY-KITBOOK 5.3 · Personal Kit Management</footer>
-<div id="inspectorModal" class="hidden" onclick="closeInspector(event)"><div class="inspector-box" onclick="event.stopPropagation()"><div class="inspector-head"><div><h3 style="margin:0">🛡️ MY-KITBOOK System Inspector</h3><small>নিরাপদ স্বয়ংক্রিয় পরীক্ষা · কোনো ডেটা পরিবর্তন করবে না</small></div><button class="secondary" onclick="closeInspector()">✕</button></div><div id="inspectorSummary" class="inspector-summary">পরীক্ষা শুরু হয়নি।</div><div class="actions"><button id="inspectorRunButton" onclick="runInspector()">▶ আবার পরীক্ষা করো</button><button class="secondary" onclick="closeInspector()">Close</button></div><div id="inspectorResults" style="margin-top:12px"></div><small>নোট: এটি কোড/ডেটার নিয়মভিত্তিক পরীক্ষা। বাটনগুলোতে বাস্তব click চালায় না, যাতে কোনো তথ্য যোগ/মুছে/পরিবর্তন না হয়।</small></div></div>
 <div id="duePopup" class="hidden" onclick="closeDuePopup(event)"><div class="due-popup-box" onclick="event.stopPropagation()"><div class="actions" style="justify-content:space-between"><h3>📋 Due Kit Details</h3><button class="red" onclick="closeDuePopup()">✖</button></div><div id="duePopupContent"></div><button class="secondary" style="width:100%;margin-top:15px" onclick="closeDuePopup()">Close</button></div></div><div id="toast"></div>
 
 <script>
 const SUPABASE_URL="https://szzmkzjruxcqpxkfzbne.supabase.co";
 const SUPABASE_KEY="sb_publishable_s16dseU385UQt78r5uaRKA_xRo7RZH8";
 const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-let currentUser=null,items=[],receipts=[],searchQuery="",historySearchQuery="",accountingSearchQuery="",itemsRequestId=0,receiptsRequestId=0,appStartPromise=null,isLoggingOut=false,dueRealtimeChannel=null,dueClockTimer=null,lastDueCheckDate="";
+let currentUser=null,items=[],receipts=[],searchQuery="",itemsRequestId=0,receiptsRequestId=0,appStartPromise=null,isLoggingOut=false;
 const $=id=>document.getElementById(id);
 const AUTO_DUE_MARKER="[KITBOOK_AUTO_DUE]";
 const ADVANCE_MARKER="[KITBOOK_ADVANCE]";
@@ -506,7 +198,7 @@ function dateObj(s){if(!s)return new Date();const [y,m,d]=s.split("-").map(Numbe
 function dateStr(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
 function addInterval(date,value,unit){const d=dateObj(date);if(unit==="day")d.setDate(d.getDate()+value);if(unit==="month"){const day=d.getDate();d.setDate(1);d.setMonth(d.getMonth()+value);d.setDate(Math.min(day,new Date(d.getFullYear(),d.getMonth()+1,0).getDate()))}if(unit==="year"){const month=d.getMonth(),day=d.getDate();d.setDate(1);d.setFullYear(d.getFullYear()+value);d.setMonth(month);d.setDate(Math.min(day,new Date(d.getFullYear(),month+1,0).getDate()))}return dateStr(d)}
 function isConfigured(item){return !!(item&&Number(item.quantity)>0&&Number(item.interval_value)>0&&item.interval_unit&&(item.first_received_date||item.last_received)&&item.last_received&&(item.first_due_date||item.next_due_date))}
-function getNext(item){if(!isConfigured(item))return null;const firstEnd=item.first_due_date||item.next_due_date||addInterval(item.last_received,item.interval_value,item.interval_unit);let end=firstEnd;for(let n=0;n<3000&&end<today();n++)end=addInterval(end,item.interval_value,item.interval_unit);return end}
+function getNext(item){if(!isConfigured(item))return null;const firstEnd=item.first_due_date||item.next_due_date||addInterval(item.last_received,item.interval_value,item.interval_unit);let end=firstEnd;for(let n=0;n<3000&&end<=today();n++)end=addInterval(end,item.interval_value,item.interval_unit);return end}
 function getNextDueStatus(item){const due=getNext(item);if(!due)return "তথ্য সেট করুন";const a=dateObj(today()),b=dateObj(due);const days=Math.round((Date.UTC(b.getFullYear(),b.getMonth(),b.getDate())-Date.UTC(a.getFullYear(),a.getMonth(),a.getDate()))/86400000);if(days===0)return "আজ Due";if(days>0)return `${days} দিন বাকি`;return `${Math.abs(days)} দিন পার হয়েছে`}
 function unitName(u){return {day:"দিন",month:"মাস",year:"বছর"}[u]||u}
 function cycleTag(note,marker){const s=String(note||"");if(!s.startsWith(marker))return null;const m=s.match(/\bDUE:(\d{4}-\d{2}-\d{2})/);return m?m[1]:null}
@@ -521,72 +213,23 @@ function getSelectedPeriod(item){const id=$("receiptPeriod")?.value;return getPe
 function updateReceiptPeriods(){const item=items.find(i=>i.id===$("receiptItem").value),sel=$("receiptPeriod");if(!sel)return;if(!item){sel.innerHTML="";$("receiptPeriodInfo").textContent="আগে Kit-এর Quantity, Interval ও Receive Date সেট করো।";return}const periods=getPeriods(item,1).filter(p=>p.remaining>0);sel.innerHTML=periods.map(p=>`<option value="${p.end}">${formatDate(p.start)} – ${formatDate(p.end)} · ${p.due?"বকেয়া":"আগাম"} ${p.remaining} টি বাকি</option>`).join("");if(!periods.length){sel.innerHTML='<option value="">কোনো পাওনা নেই</option>';$("receiptPeriodInfo").textContent="এই Kit-এর সব সময়ের পাওনা Receive হয়েছে।"}updateReceiptLimit()}
 function updateReceiptLimit(){const item=items.find(i=>i.id===$("receiptItem").value),period=item?getSelectedPeriod(item):null;if(!period)return;$("receiptQty").max=period.remaining;$("receiptQty").value=Math.min(Number($("receiptQty").value)||1,period.remaining);$("receiptPeriodInfo").textContent=`${period.due?"Due হয়েছে":"এখনো Due হয়নি — Advance"} · মোট বরাদ্দ ${item.quantity} টি · এই সময়ে Receive হয়েছে ${period.received} টি · বাকি ${period.remaining} টি`}
 function resetForm(){$("editId").value="";$("itemName").value="";$("qty").value="";$("intervalValue").value="";$("intervalUnit").value="year";$("firstReceived").value="";$("lastReceived").value="";$("notes").value="";$("formTitle").textContent="➕ Add New Kit"}
-const LAST_VIEW_PREFIX="my-kitbook-last-view-v1:";
-let restoringLastView=false,lastViewSaveTimer=null,lastActiveTab="inventory";
-function saveLastView(tabOverride){
-  if(!currentUser||restoringLastView)return;
-  const valid=["inventory","add","history","accounting","settings"];
-  const visible=valid.find(x=>{const panel=$(x+"Tab");return panel&&!panel.classList.contains("hidden")});
-  // When every popup is closed, do not overwrite the previously selected tab with Inventory.
-  const tab=valid.includes(tabOverride)?tabOverride:(visible|| (valid.includes(lastActiveTab)?lastActiveTab:"inventory"));
-  if(!tab)return;
-  try{
-    localStorage.setItem(LAST_VIEW_PREFIX+currentUser.id,JSON.stringify({tab,scrollY:Math.max(0,window.scrollY||0),savedAt:Date.now()}));
-  }catch(e){console.warn("Could not save last opened tab:",e)}
-}
-function restoreLastView(){
-  if(!currentUser)return;
-  const valid=["inventory","add","history","accounting","settings"];
-  let view=null;
-  try{view=JSON.parse(localStorage.getItem(LAST_VIEW_PREFIX+currentUser.id)||"null")}catch(e){}
-  const tab=view&&valid.includes(view.tab)?view.tab:"inventory";
-  lastActiveTab=tab;
-  restoringLastView=true;
-  showTab(tab);
-  requestAnimationFrame(()=>{
-    window.scrollTo(0,Math.max(0,Number(view&&view.scrollY)||0));
-    restoringLastView=false;
-    saveLastView(tab);
-  });
-}function toggleSidebar(open){const side=$("appSidebar"),shade=$("sidebarShade");if(!side||!shade)return;side.classList.toggle("open",!!open);shade.classList.toggle("open",!!open);document.body.classList.toggle("sidebar-open",!!open)}
-function showTab(tab){if(["inventory","add","history","accounting","settings"].includes(tab))lastActiveTab=tab;toggleSidebar(false);const shade=$("tabModalShade");if(shade)shade.classList.toggle("open",!!tab);document.body.classList.toggle("modal-open",!!tab);["inventory","add","history","accounting","settings"].forEach(x=>{const active=x===tab;$(x+"Tab").classList.toggle("hidden",!active);const b=$("tab"+x[0].toUpperCase()+x.slice(1));if(b)b.classList.toggle("active",active);const n=$("nav"+x[0].toUpperCase()+x.slice(1));if(n)n.classList.toggle("active",active)});if(!tab)return;if(tab==="history")loadHistory();if(tab==="inventory")renderItems();if(tab==="accounting")renderAccounting();const panel=$(tab+"Tab");if(panel&&!panel.querySelector(".popup-topbar")){const bar=document.createElement("div");bar.className="popup-topbar";bar.innerHTML=`<b>${({inventory:"📦 Inventory",add:"➕ Add Kit",history:"📋 Receipt History",accounting:"📊 Kit হিসাব",settings:"⚙️ Settings"})[tab]}</b><button type="button" onclick="showTab('')">✕ Close</button>`;panel.prepend(bar)}if(!restoringLastView)saveLastView()}
-window.addEventListener("scroll",()=>{if(!currentUser||restoringLastView)return;clearTimeout(lastViewSaveTimer);lastViewSaveTimer=setTimeout(saveLastView,180)},{passive:true});
-window.addEventListener("pagehide",saveLastView);
-document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden")saveLastView()});
-window.addEventListener("beforeunload",()=>saveLastView());
+function toggleSidebar(open){const side=$("appSidebar"),shade=$("sidebarShade");if(!side||!shade)return;side.classList.toggle("open",!!open);shade.classList.toggle("open",!!open);document.body.classList.toggle("sidebar-open",!!open)}
+let activeTab="inventory";
+function showTab(tab){toggleSidebar(false);const valid=["inventory","add","history","accounting","settings"];if(tab&&!valid.includes(tab))tab="inventory";if(tab){activeTab=tab;try{localStorage.setItem("myKitbookLastTab",tab)}catch(e){}}["inventory","add","history","accounting","settings"].forEach(x=>{$(x+"Tab").classList.toggle("hidden",!tab||x!==tab);const b=$("tab"+x[0].toUpperCase()+x.slice(1));if(b)b.classList.toggle("active",x===tab);const n=$("nav"+x[0].toUpperCase()+x.slice(1));if(n)n.classList.toggle("active",x===tab)});if(!tab)return;if(tab==="history")loadHistory();if(tab==="inventory")renderItems();if(tab==="accounting")renderAccounting();let panel=$(tab+"Tab");if(panel&&!panel.querySelector(".popup-topbar")){const bar=document.createElement("div");bar.className="popup-topbar";bar.innerHTML=`<b>${({inventory:"📦 Inventory",add:"➕ Add Kit",history:"📋 Receipt History",accounting:"📊 Kit হিসাব",settings:"⚙️ Settings"})[tab]}</b><button type="button" onclick="showTab('')">✕ Close</button>`;panel.prepend(bar)}}
+function getLastTab(){try{const saved=localStorage.getItem("myKitbookLastTab");return ["inventory","add","history","accounting","settings"].includes(saved)?saved:"inventory"}catch(e){return "inventory"}}
 function showSettings(){showTab("settings");$("displayName").value=currentUser?.user_metadata?.display_name||"";$("themeSelect").value=currentUser?.user_metadata?.theme||"light"}
 
 async function login(){const email=$("Gmail").value.trim(),password=$("password").value,b=$("loginButton");if(!email||!password){setAuthMessage("Email ও Password দাও","error");return}b.disabled=true;setAuthMessage("Login হচ্ছে...");try{const {data,error}=await db.auth.signInWithPassword({email,password});if(error)throw error;currentUser=data.user;await startApp()}catch(e){setAuthMessage(e.message,"error")}finally{b.disabled=false}}
-async function signup(){const name=$("fullName").value.trim(),email=$("signupEmail").value.trim(),password=$("signupPassword").value,confirm=$("confirmPassword").value,b=$("createAccountButton");if(!name||!email||!password||!confirm)return setAuthMessage("সব তথ্য পূরণ করো","error");if(password.length<6)return setAuthMessage("Password কমপক্ষে ৬ অক্ষরের হতে হবে","error");if(password!==confirm)return setAuthMessage("দুটি Password মিলছে না","error");b.disabled=true;setAuthMessage("Account তৈরি হচ্ছে...");try{const {data,error}=await db.auth.signUp({email,password,options:{data:{display_name:name}}});if(error)throw error;if(data.session){currentUser=data.user;await startApp()}else{switchAuthMode("login");$("Gmail").value=email;setAuthMessage("Account তৈরি হয়েছে। এখন তোমার Email ও Password দিয়ে Login করো।","success")}}catch(e){setAuthMessage(e.message,"error")}finally{b.disabled=false}}
+async function signup(){const name=$("fullName").value.trim(),email=$("signupEmail").value.trim(),password=$("signupPassword").value,confirm=$("confirmPassword").value,b=$("createAccountButton");if(!name||!email||!password||!confirm)return setAuthMessage("সব তথ্য পূরণ করো","error");if(password.length<6)return setAuthMessage("Password কমপক্ষে ৬ অক্ষরের হতে হবে","error");if(password!==confirm)return setAuthMessage("দুটি Password মিলছে না","error");b.disabled=true;setAuthMessage("Account তৈরি হচ্ছে...");try{const {data,error}=await db.auth.signUp({email,password,options:{data:{display_name:name}}});if(error)throw error;if(data.session){currentUser=data.user;await startApp()}else{setAuthMessage("Account তৈরি হয়েছে। Gmail-এ Confirmation Link যাচাই করে Login করো।","success");switchAuthMode("login");$("Gmail").value=email;setAuthMessage("Account তৈরি হয়েছে। Gmail-এ Confirmation Link যাচাই করে Login করো।","success")}}catch(e){setAuthMessage(e.message,"error")}finally{b.disabled=false}}
 async function forgotPassword(event){event.preventDefault();const email=(authMode==="signup"?$("signupEmail").value:$("Gmail").value).trim();if(!email)return setAuthMessage("আগে Email Address লিখো","error");try{const {error}=await db.auth.resetPasswordForEmail(email,{redirectTo:location.href.split("#")[0]});if(error)throw error;setAuthMessage("Password reset link তোমার Email-এ পাঠানো হয়েছে।","success")}catch(e){setAuthMessage(e.message,"error")}}
-async function deleteAccount(){if(!currentUser)return toast("আগে Login করো");if(!confirm("সতর্কতা: এই অ্যাকাউন্ট, সব Kit, Receipt History এবং Profile/Background ছবি স্থায়ীভাবে মুছে যাবে। আগে Backup নিয়েছ?"))return;const phrase=prompt('নিশ্চিত করতে DELETE লিখো:');if(phrase!=="DELETE")return toast("Account delete বাতিল করা হয়েছে");const password=prompt("নিশ্চিত পরিচয়ের জন্য তোমার বর্তমান Password দাও:");if(!password)return toast("Password দেওয়া হয়নি");const email=currentUser.email;if(!email)return toast("এই অ্যাকাউন্টের Email পাওয়া যায়নি");try{const reauth=await db.auth.signInWithPassword({email,password});if(reauth.error)throw new Error("Password সঠিক নয়: "+reauth.error.message);const {data,error}=await db.functions.invoke("delete-account",{body:{confirmation:"DELETE"}});if(error)throw error;if(!data?.success)throw new Error(data?.error||"Account delete সম্পন্ন হয়নি");stopDueRealtime();stopDueClock();await db.auth.signOut();currentUser=null;items=[];receipts=[];appStartPromise=null;itemsRequestId++;receiptsRequestId++;$("appSection").classList.add("hidden");$("authSection").classList.remove("hidden");$("headerActions").style.display="none";switchAuthMode("login");setAuthMessage("তোমার Account স্থায়ীভাবে Delete হয়েছে।","success")}catch(e){toast("Account Delete Error: "+(e.message||e))}}
-async function logout(){isLoggingOut=true;stopDueRealtime();stopDueClock();appStartPromise=null;itemsRequestId++;receiptsRequestId++;try{await db.auth.signOut()}catch(e){}currentUser=null;items=[];receipts=[];$("appSection").classList.add("hidden");$("authSection").classList.remove("hidden");$("headerActions").style.display="none";$("authMessage").textContent="Logout সফল হয়েছে";switchAuthMode("login");closeDuePopup();isLoggingOut=false}
-async function startApp(){if(!currentUser||isLoggingOut)return;if(appStartPromise)return appStartPromise;const uid=currentUser.id;appStartPromise=(async()=>{$("authSection").classList.add("hidden");$("appSection").classList.remove("hidden");$("headerActions").style.display="flex";await applyPreferences();if(!currentUser||currentUser.id!==uid)return;await Promise.all([loadItems(),loadHistory()]);renderItems();renderAccounting();restoreLastView();startDueRealtime(uid);checkDueNotifications();startDueClock()})();try{await appStartPromise}catch(e){toast("App loading error: "+e.message)}finally{appStartPromise=null}}
-async function loadItems(){if(!currentUser)return;const uid=currentUser.id,rid=++itemsRequestId;const {data,error}=await db.from("kit_items").select("*").eq("user_id",uid).order("created_at",{ascending:false});if(rid!==itemsRequestId||!currentUser||currentUser.id!==uid)return;if(error)return toast("Kit load error: "+error.message);items=data||[];renderHistory();renderItems();renderAccounting()}
-function searchHistory(){historySearchQuery=$("historySearch").value.trim().toLowerCase();renderHistory()}
-function clearHistorySearch(){historySearchQuery="";$("historySearch").value="";renderHistory()}
-function renderHistory(){
-  if(!$("historyBody"))return;
-  const names=Object.fromEntries(items.map(i=>[i.id,i.item_name]));
-  const filtered=receipts.filter(r=>[names[r.kit_item_id]||"Deleted Kit",r.received_date,r.quantity,cleanHistoryNote(r.notes)].join(" ").toLowerCase().includes(historySearchQuery));
-  $("historySearchResult").textContent=historySearchQuery?`${filtered.length} টি Receipt পাওয়া গেছে`:"";
-  $("historyBody").innerHTML=filtered.length?filtered.map(r=>`<tr><td>${safe(names[r.kit_item_id]||"Deleted Kit")}</td><td>${safe(r.received_date)}</td><td>${safe(r.quantity)}</td><td>${safe(cleanHistoryNote(r.notes))}</td><td><div class="actions"><button class="secondary" onclick="editReceipt('${r.id}')">✏️ Edit</button><button class="red" onclick="deleteReceipt('${r.id}')">🗑 Delete</button></div></td></tr>`).join(""):historySearchQuery?'<tr><td colspan="5">কোনো Receipt পাওয়া যায়নি।</td></tr>':'<tr><td colspan="5">এখনো কোনো Receipt History নেই।</td></tr>';
-}
-async function loadHistory(){
-  if(!currentUser)return;
-  const uid=currentUser.id,rid=++receiptsRequestId;
-  const {data,error}=await db.from("kit_receipts").select("*").eq("user_id",uid).order("received_date",{ascending:false});
-  if(rid!==receiptsRequestId||!currentUser||currentUser.id!==uid)return;
-  if(error){$("historyBody").innerHTML=`<tr><td colspan="5">${safe(error.message)}</td></tr>`;return}
-  receipts=data||[];
-  renderHistory();
-  renderItems();
-  renderAccounting();
-}
+async function logout(){isLoggingOut=true;appStartPromise=null;itemsRequestId++;receiptsRequestId++;try{await db.auth.signOut()}catch(e){}currentUser=null;items=[];receipts=[];$("appSection").classList.add("hidden");$("authSection").classList.remove("hidden");$("headerActions").style.display="none";$("authMessage").textContent="Logout সফল হয়েছে";switchAuthMode("login");closeDuePopup();isLoggingOut=false}
+async function startApp(){if(!currentUser||isLoggingOut)return;if(appStartPromise)return appStartPromise;const uid=currentUser.id;appStartPromise=(async()=>{ $("appSection").classList.add("hidden"); $("authSection").classList.add("hidden"); $("headerActions").style.display="none"; await applyPreferences(); if(!currentUser||currentUser.id!==uid)return; await Promise.all([loadItems(),loadHistory()]); if(!currentUser||currentUser.id!==uid)return; renderItems();renderAccounting(); const lastTab=getLastTab(); showTab(lastTab); $("appSection").classList.remove("hidden"); $("headerActions").style.display="flex"; })();try{await appStartPromise}catch(e){toast("App loading error: "+e.message);$("authSection").classList.remove("hidden")}finally{appStartPromise=null}}
+async function loadItems(){if(!currentUser)return;const uid=currentUser.id,rid=++itemsRequestId;const {data,error}=await db.from("kit_items").select("*").eq("user_id",uid).order("created_at",{ascending:false});if(rid!==itemsRequestId||!currentUser||currentUser.id!==uid)return;if(error)return toast("Kit load error: "+error.message);items=data||[];renderItems();renderAccounting()}
+async function loadHistory(){if(!currentUser)return;const uid=currentUser.id,rid=++receiptsRequestId;const {data,error}=await db.from("kit_receipts").select("*").eq("user_id",uid).order("received_date",{ascending:false});if(rid!==receiptsRequestId||!currentUser||currentUser.id!==uid)return;if(error){$("historyBody").innerHTML=`<tr><td colspan="5">${safe(error.message)}</td></tr>`;return}receipts=data||[];const names=Object.fromEntries(items.map(i=>[i.id,i.item_name]));$("historyBody").innerHTML=receipts.length?receipts.map(r=>`<tr><td>${safe(names[r.kit_item_id]||"Deleted Kit")}</td><td>${safe(r.received_date)}</td><td>${safe(r.quantity)}</td><td>${safe(cleanHistoryNote(r.notes))}</td><td><div class="actions"><button class="secondary" onclick="editReceipt('${r.id}')">✏️ Edit</button><button class="red" onclick="deleteReceipt('${r.id}')">🗑 Delete</button></div></td></tr>`).join(""):'<tr><td colspan="5">এখনো কোনো Receipt History নেই।</td></tr>';renderItems();renderAccounting()}
 function cleanHistoryNote(note){return String(note||"").replace(/^\[KITBOOK_AUTO_DUE\](?:\s+FULL|\s+PARTIAL)?\s+DUE:\d{4}-\d{2}-\d{2}(?:\s+PERIOD:[^|]+)?\s*\|\s*/,"").replace(/^\[KITBOOK_ADVANCE\](?:\s+DUE:\d{4}-\d{2}-\d{2}(?:\s+PERIOD:[^|]+)?)?\s*\|\s*/,"").replace(/^\[KITBOOK_AUTO_DUE\]\s*\|\s*/,"")}
 function searchKit(){searchQuery=$("kitSearch").value.trim().toLowerCase();renderItems()}
 function clearKitSearch(){searchQuery="";$("kitSearch").value="";$("searchResult").textContent="";renderItems()}
-function renderItems(){const body=$("inventoryBody"),filtered=items.filter(i=>String(i.item_name||"").toLowerCase().includes(searchQuery));$("searchResult").textContent=searchQuery?`${filtered.length} টি Kit পাওয়া গেছে`:"";body.innerHTML=filtered.length?filtered.map(i=>{const configured=isConfigured(i),count=configured?getDueCount(i):0,q=configured?getDueQuantity(i):0,status=!configured?'<span class="badge">তথ্য অসম্পূর্ণ</span>':q?`<span class="badge due">${count} Period Due · ${q} টি</span>`:'<span class="badge ok">Up to date</span>';return `<tr><td><b>${safe(i.item_name)}</b><br><small>${safe(i.notes||"")}</small></td><td>${configured?safe(i.quantity)+" টি":"-"}</td><td>${configured?safe(i.interval_value)+" "+unitName(i.interval_unit)+" পরপর":"-"}</td><td>${safe(i.first_received_date||"-")}</td><td>${safe(i.last_received||"-")}</td><td>${configured?formatDate(getNext(i))+`<br><small><b>${getNextDueStatus(i)}</b> · পরবর্তী Period-এ বাকি: ${getNextCycleRemaining(i)} টি</small>`:"প্রথমে Edit করে তথ্য সেট করুন"}</td><td>${status}</td><td><div class="actions">${q?`<button class="green" onclick="receiveDue('${i.id}')">Receive ${q}</button>`:""}<button class="secondary" onclick="editItem('${i.id}')">Edit</button><button class="red" onclick="deleteItem('${i.id}')">Delete</button></div></td></tr>`}).join(""):searchQuery?'<tr><td colspan="8">কোনো Kit পাওয়া যায়নি।</td></tr>':'<tr><td colspan="8">এখনো কোনো Kit যোগ করা হয়নি। Add Kit থেকে যোগ করো।</td></tr>';$("totalItems").textContent=items.length;const due=items.filter(i=>isConfigured(i)&&getDueQuantity(i)>0);$("dueItems").textContent=due.length;$("dueQty").textContent=items.reduce((sum,i)=>sum+(isConfigured(i)?getDueQuantity(i):0),0);$("okItems").textContent=items.length-due.length;updateDueBell(due.length)}
+function renderItems(){const body=$("inventoryBody"),filtered=items.filter(i=>String(i.item_name||"").toLowerCase().includes(searchQuery));$("searchResult").textContent=searchQuery?`${filtered.length} টি Kit পাওয়া গেছে`:"";body.innerHTML=filtered.length?filtered.map(i=>{const configured=isConfigured(i),count=configured?getDueCount(i):0,q=configured?getDueQuantity(i):0,status=!configured?'<span class="badge">তথ্য অসম্পূর্ণ</span>':q?`<span class="badge due">${count} Period Due · ${q} টি</span>`:'<span class="badge ok">Up to date</span>';return `<tr><td><b>${safe(i.item_name)}</b><br><small>${safe(i.notes||"")}</small></td><td>${configured?safe(i.quantity)+" টি":"-"}</td><td>${configured?safe(i.interval_value)+" "+unitName(i.interval_unit)+" পরপর":"-"}</td><td>${safe(i.first_received_date||"-")}</td><td>${safe(i.last_received||"-")}</td><td>${configured?formatDate(getNext(i))+`<br><small><b>${getNextDueStatus(i)}</b> · পরবর্তী Period-এ বাকি: ${getNextCycleRemaining(i)} টি</small>`:"প্রথমে Edit করে তথ্য সেট করুন"}</td><td>${status}</td><td><div class="actions">${q?`<button class="green" onclick="receiveDue('${i.id}')">Receive ${q}</button>`:""}<button class="secondary" onclick="editItem('${i.id}')">Edit</button><button class="red" onclick="deleteItem('${i.id}')">Delete</button></div></td></tr>`}).join(""):searchQuery?'<tr><td colspan="8">কোনো Kit পাওয়া যায়নি।</td></tr>':'<tr><td colspan="8">এখনো কোনো Kit যোগ করা হয়নি। Add Kit থেকে যোগ করো।</td></tr>';$("totalItems").textContent=items.length;const due=items.filter(i=>isConfigured(i)&&getDueQuantity(i)>0);$("dueItems").textContent=due.length;$("dueQty").textContent=items.reduce((sum,i)=>sum+(isConfigured(i)?getDueQuantity(i):0),0);$("okItems").textContent=items.length-due.length}
 function openDuePopup(){const due=items.filter(i=>getDueQuantity(i)>0);let total=0;$("duePopupContent").innerHTML=due.length?due.map(i=>{const ps=getPeriods(i,0).filter(p=>p.due&&p.remaining>0),q=ps.reduce((n,p)=>n+p.remaining,0);total+=q;return `<div class="due-detail"><b>📦 ${safe(i.item_name)}</b><div style="margin-top:8px"><span class="badge due">${ps.length} Period Due</span> <b>${q} টি Due</b></div>${ps.map(p=>`<small style="display:block;margin-top:6px">${formatDate(p.start)} – ${formatDate(p.end)}: ${p.remaining} টি বাকি</small>`).join("")}<button class="green" style="margin-top:9px" onclick="closeDuePopup();receiveDue('${i.id}')">Receive</button></div>`}).join("")+`<p><b>মোট Due: ${total} টি</b></p>`:'<p style="text-align:center;padding:25px">✅ এখন কোনো Kit Due নেই।</p>';$("duePopup").classList.remove("hidden")}
 function closeDuePopup(e){if(e&&e.target!==$("duePopup"))return;$("duePopup").classList.add("hidden")}
 async function saveItem(){const id=$("editId").value,name=$("itemName").value.trim(),quantity=Number($("qty").value),intervalValue=Number($("intervalValue").value),unit=$("intervalUnit").value,first=$("firstReceived").value,last=$("lastReceived").value;if(!name||!first||!last||!Number.isInteger(quantity)||quantity<1||!Number.isInteger(intervalValue)||intervalValue<1)return toast("সব তথ্য সঠিকভাবে পূরণ করো");if(first>last)return toast("First Receive Date, Last Receive Date-এর পরে হতে পারবে না");const old=id?items.find(x=>x.id===id):null;const next=old?.next_due_date||addInterval(last,intervalValue,unit);const payload={user_id:currentUser.id,item_name:name,quantity,interval_value:intervalValue,interval_unit:unit,interval_days:unit==="day"?intervalValue:unit==="month"?intervalValue*30:intervalValue*365,first_received_date:first,last_received:last,next_due_date:next,first_due_date:old?.first_due_date||next,notes:$("notes").value.trim()};const result=id?await db.from("kit_items").update(payload).eq("id",id).eq("user_id",currentUser.id):await db.from("kit_items").insert(payload);if(result.error)return toast("Save error: "+result.error.message);toast(id?"Kit Updated":"Kit Added Successfully");resetForm();await Promise.all([loadItems(),loadHistory()]);showTab("inventory")}
@@ -600,9 +243,7 @@ async function editReceipt(id){const r=receipts.find(x=>x.id===id);if(!r)return 
 async function deleteReceipt(id){if(!confirm("এই Receipt History স্থায়ীভাবে Delete করবে?"))return;const {error}=await db.from("kit_receipts").delete().eq("id",id).eq("user_id",currentUser.id);if(error)return toast("Delete Error: "+error.message);await Promise.all([loadHistory(),loadItems()]);toast("History Deleted")}
 function getScheduledCycles(item,until=today()){return getPeriods(item,0).filter(p=>p.end<=until).length}
 function getItemAccounting(item){const all=receipts.filter(r=>r.kit_item_id===item.id),history=all.reduce((s,r)=>s+Number(r.quantity||0),0),advance=all.filter(r=>String(r.notes||"").startsWith(ADVANCE_MARKER)).reduce((s,r)=>s+Number(r.quantity||0),0),periods=getPeriods(item,1),due=periods.filter(p=>p.due).reduce((s,p)=>s+p.remaining,0),next=periods.find(p=>!p.due),nextRemain=next?next.remaining:0,scheduled=periods.filter(p=>p.due).length*Number(item.quantity||0);return {scheduled,history,advance,due,nextRemain,lifetime:Number(item.quantity||0)+history}}
-function searchAccounting(){accountingSearchQuery=$("accountingSearch").value.trim().toLowerCase();renderAccounting()}
-function clearAccountingSearch(){accountingSearchQuery="";$("accountingSearch").value="";renderAccounting()}
-function renderAccounting(){if(!$("accountingBody"))return;let td=0,tr=0,ta=0,remaining=0,shown=0;$("accountingBody").innerHTML=items.length?items.map(i=>{const a=getItemAccounting(i);td+=a.scheduled;tr+=a.lifetime;ta+=a.advance;remaining+=a.due;const searchable=[i.item_name,i.quantity,a.scheduled,a.history,a.advance,a.due,a.nextRemain].join(" ").toLowerCase();if(!searchable.includes(accountingSearchQuery))return "";shown++;return `<tr><td><b>${safe(i.item_name)}</b></td><td>${safe(i.quantity)}</td><td>${a.scheduled}</td><td>${a.history}</td><td>${a.advance}</td><td>${a.due}</td><td>${a.nextRemain}</td><td><div class="actions"><button class="secondary" onclick="editItem('${i.id}')">Edit</button><button class="red" onclick="deleteItem('${i.id}')">Delete</button></div></td></tr>`}).join(""): '<tr><td colspan="8">কোনো Kit নেই।</td></tr>';$("accountingSearchResult").textContent=accountingSearchQuery?`${shown} টি Kit-এর হিসাব পাওয়া গেছে`:"";if(items.length&&shown===0)$("accountingBody").innerHTML='<tr><td colspan="8">কোনো হিসাব পাওয়া যায়নি।</td></tr>';$("accDue").textContent=td;$("accReceived").textContent=tr;$("accAdvance").textContent=ta;$("accRemaining").textContent=remaining;const sel=$("receiptItem"),old=sel.value;sel.innerHTML=items.filter(isConfigured).map(i=>`<option value="${safe(i.id)}">${safe(i.item_name)}</option>`).join("");if(items.some(i=>i.id===old))sel.value=old;updateReceiptPeriods()}
+function renderAccounting(){if(!$("accountingBody"))return;let td=0,tr=0,ta=0,remaining=0;$("accountingBody").innerHTML=items.length?items.map(i=>{const a=getItemAccounting(i);td+=a.scheduled;tr+=a.lifetime;ta+=a.advance;remaining+=a.due+a.nextRemain;return `<tr><td><b>${safe(i.item_name)}</b></td><td>${safe(i.quantity)}</td><td>${a.scheduled}</td><td>${a.history}</td><td>${a.advance}</td><td>${a.due}</td><td>${a.nextRemain}</td><td><div class="actions"><button class="secondary" onclick="editItem('${i.id}')">Edit</button><button class="red" onclick="deleteItem('${i.id}')">Delete</button></div></td></tr>`}).join(""):'<tr><td colspan="8">কোনো Kit নেই।</td></tr>';$("accDue").textContent=td;$("accReceived").textContent=tr;$("accAdvance").textContent=ta;$("accRemaining").textContent=remaining;const sel=$("receiptItem"),old=sel.value;sel.innerHTML=items.filter(isConfigured).map(i=>`<option value="${safe(i.id)}">${safe(i.item_name)}</option>`).join("");if(items.some(i=>i.id===old))sel.value=old;updateReceiptPeriods()}
 async function saveAdvanceReceipt(){const id=$("receiptItem").value,date=$("receiptDate").value,q=Number($("receiptQty").value),note=$("receiptNotes").value.trim(),item=items.find(i=>i.id===id),period=item?getSelectedPeriod(item):null;if(!item)return toast("একটি Kit নির্বাচন করো");if(!period)return toast("একটি Due Period নির্বাচন করো");if(!date||date>today())return toast("সঠিক প্রাপ্তির তারিখ দাও");if(!Number.isInteger(q)||q<1)return toast("সঠিক Quantity দাও");if(q>period.remaining)return toast(`এই Period-এ সর্বোচ্চ ${period.remaining} টি Receive করতে পারবে`);const marker=period.due?AUTO_DUE_MARKER:ADVANCE_MARKER;const kind=period.due?"বকেয়া Receipt":"আগাম Receipt";try{await addReceipt(id,date,q,`${marker} DUE:${period.end} PERIOD:${period.start}..${period.end} | ${note||kind}`);$("receiptQty").value=1;$("receiptNotes").value="";$("receiptDate").value=today();await Promise.all([loadHistory(),loadItems()]);toast(`${q} টি ${kind} সংরক্ষণ হয়েছে। এই Period-এ বাকি ${period.remaining-q} টি`)}catch(e){toast("Receipt error: "+e.message)}}
 async function saveDisplayName(){const {data,error}=await db.auth.updateUser({data:{display_name:$("displayName").value.trim()}});if(error)return toast(error.message);currentUser=data.user;$("welcomeName").textContent=$("displayName").value.trim()||"Welcome";toast("Name saved")}
 function applyTheme(t){document.body.classList.toggle("dark",t==="dark")}
@@ -614,163 +255,12 @@ async function removeBackground(){const path=currentUser.user_metadata?.backgrou
 async function changePassword(){const p=$("newPassword").value;if(p.length<6)return toast("কমপক্ষে ৬ অক্ষরের Password দাও");const {error}=await db.auth.updateUser({password:p});if(error)return toast(error.message);$("newPassword").value="";toast("Password updated")}
 function exportBackup(){const blob=new Blob([JSON.stringify({created_at:new Date().toISOString(),kit_items:items,kit_receipts:receipts},null,2)],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="MY-KITBOOK-backup.json";a.click();URL.revokeObjectURL(url)}
 async function resetAppearance(){const path=currentUser.user_metadata?.background_path,{data,error}=await db.auth.updateUser({data:{theme:"light",background_path:null}});if(error)return toast(error.message);if(path)await db.storage.from("kitbook-media").remove([path]);currentUser=data.user;applyTheme("light");$("themeSelect").value="light";document.body.style.backgroundImage="";toast("Appearance reset")}
-function dueNotificationEntries(){const out=[];items.forEach(i=>{if(!isConfigured(i))return;getPeriods(i,0).filter(p=>p.due&&p.remaining>0).forEach(p=>out.push({key:i.id+":"+p.end,name:i.item_name,quantity:p.remaining,end:p.end}))});return out}
-function updateDueBell(count){const b=$("dueBell");if(b)b.textContent="🔔 Due "+(count||0)}
-function checkDueNotifications(force=false){if(!currentUser)return;const entries=dueNotificationEntries(),keys=entries.map(x=>x.key).sort(),storageKey="my-kitbook-due-v1:"+currentUser.id;let previous=[];try{previous=JSON.parse(localStorage.getItem(storageKey)||"[]");if(!Array.isArray(previous))previous=[]}catch(e){}const newlyDue=force?entries:entries.filter(x=>!previous.includes(x.key));try{localStorage.setItem(storageKey,JSON.stringify(keys))}catch(e){}if(!newlyDue.length)return;const total=newlyDue.reduce((n,x)=>n+x.quantity,0),names=[...new Set(newlyDue.map(x=>x.name))];const message=names.slice(0,4).join(", ")+(names.length>4?" সহ আরও "+(names.length-4)+" টি":"")+" · মোট "+total+" টি Due";toast("🔔 "+message);if("Notification"in window&&Notification.permission==="granted"){try{const n=new Notification("MY-KITBOOK — নতুন Due",{body:message,tag:"my-kitbook-due-"+currentUser.id});n.onclick=()=>{window.focus();openDuePopup();n.close()}}catch(e){console.warn("Browser notification failed",e)}}}
-function startDueRealtime(uid){stopDueRealtime();dueRealtimeChannel=db.channel("kit-due-live-"+uid).on("postgres_changes",{event:"*",schema:"public",table:"kit_items"},()=>refreshDueData(uid)).on("postgres_changes",{event:"*",schema:"public",table:"kit_receipts"},()=>refreshDueData(uid)).subscribe(status=>{if(status==="CHANNEL_ERROR"||status==="TIMED_OUT")console.warn("Due Realtime status:",status)})}
-async function refreshDueData(uid){if(!currentUser||currentUser.id!==uid)return;await Promise.all([loadItems(),loadHistory()]);if(currentUser&&currentUser.id===uid)checkDueNotifications()}
-function stopDueRealtime(){if(dueRealtimeChannel){db.removeChannel(dueRealtimeChannel);dueRealtimeChannel=null}}
-function startDueClock(){stopDueClock();lastDueCheckDate=today();dueClockTimer=setInterval(()=>{if(!currentUser)return;if(today()!==lastDueCheckDate){lastDueCheckDate=today();renderItems();renderAccounting()}checkDueNotifications()},60000)}
-function stopDueClock(){if(dueClockTimer){clearInterval(dueClockTimer);dueClockTimer=null}}
-const VAPID_PUBLIC_KEY="BMx9sR59BY-pgZ4YflDyoQFBPaHlx9zsa6jF5uUD2YxA8iIanxLqDtng5VUohf8fj6_n2egGD5b1H2SR3Ij8SjE";
-function urlBase64ToUint8Array(base64String){const padding="=".repeat((4-base64String.length%4)%4);const raw=atob((base64String+padding).replace(/-/g,"+").replace(/_/g,"/"));return Uint8Array.from([...raw].map(c=>c.charCodeAt(0)))}
-async function enablePushNotifications(){
-  if(!currentUser)return toast("আগে Login করো");
-  if(!("serviceWorker"in navigator)||!("PushManager"in window))return toast("এই Browser-এ Web Push support নেই");
-  if(!window.isSecureContext)return toast("Push-এর জন্য HTTPS প্রয়োজন");
-  try{
-    const permission=await Notification.requestPermission();
-    if(permission!=="granted")return toast("Notification permission দেওয়া হয়নি");
-    const swUrl=new URL("./sw.js",location.href),scope=new URL("./",location.href).pathname;
-    const registration=await navigator.serviceWorker.register(swUrl,{scope});
-    await navigator.serviceWorker.ready;
-    let subscription=await registration.pushManager.getSubscription();
-    if(!subscription)subscription=await registration.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:urlBase64ToUint8Array(VAPID_PUBLIC_KEY)});
-    const {data,error}=await db.functions.invoke("kitbook-push",{body:{action:"subscribe",subscription:subscription.toJSON()}});
-    if(error)throw error;
-    if(!data?.success)throw new Error(data?.error||"Subscription save হয়নি");
-    $("pushStatus").textContent="✅ Push subscription সংরক্ষিত হয়েছে।";
-    toast("Push subscription চালু হয়েছে");
-  }catch(e){$("pushStatus").textContent="⚠️ "+(e.message||e);toast("Push setup: "+(e.message||e))}
-}
-async function testPushNotification(){
-  if(!currentUser)return toast("আগে Login করো");
-  try{const {data,error}=await db.functions.invoke("kitbook-push",{body:{action:"test"}});if(error)throw error;if(!data?.success)throw new Error(data?.error||"Test push পাঠানো যায়নি");toast("Test push পাঠানো হয়েছে");}
-  catch(e){toast("Test push: "+(e.message||e))}
-}
-async function disablePushNotifications(){
-  if(!currentUser)return toast("আগে Login করো");
-  try{
-    const scope=new URL("./",location.href).pathname;
-    const registration=await navigator.serviceWorker.getRegistration(scope);
-    const subscription=await registration?.pushManager?.getSubscription();
-    if(subscription){const {error}=await db.functions.invoke("kitbook-push",{body:{action:"unsubscribe",endpoint:subscription.endpoint}});if(error)throw error;await subscription.unsubscribe();}
-    $("pushStatus").textContent="Push বন্ধ করা হয়েছে.";
-    toast("Push notification বন্ধ হয়েছে");
-  }catch(e){toast("Push বন্ধ করতে সমস্যা: "+(e.message||e))}
-}
-async function enableNotifications(){if(!("Notification"in window))return toast("এই Browser Notification support করে না");const p=await Notification.requestPermission();if(p!=="granted")return toast("Notification permission দেওয়া হয়নি");toast("Browser Notification চালু হয়েছে");checkDueNotifications(true)}
-
-/* MY-KITBOOK 5.3 — Safe System Inspector
-   Read-only diagnostics. It never inserts, updates, or deletes user data. */
-function openInspector(){
-  if(!currentUser)return toast("আগে Login করো");
-  $("inspectorModal").classList.remove("hidden");
-  runInspector();
-}
-function closeInspector(e){
-  if(e&&e.target!==$("inspectorModal"))return;
-  $("inspectorModal").classList.add("hidden");
-}
-function inspectorDateValid(value){
-  if(typeof value!=="string"||!/^\d{4}-\d{2}-\d{2}$/.test(value))return false;
-  const d=dateObj(value);
-  return dateStr(d)===value;
-}
-function inspectorRender(results){
-  const passed=results.filter(x=>x.status==="pass").length;
-  const warned=results.filter(x=>x.status==="warn").length;
-  const failed=results.filter(x=>x.status==="fail").length;
-  $("inspectorSummary").innerHTML="<b>পরীক্ষার ফলাফল</b><div style='margin-top:6px'>"+passed+" টি ঠিক · "+warned+" টি সতর্কতা · "+failed+" টি সমস্যা</div><small>পরীক্ষা শেষ: "+safe(new Date().toLocaleString("bn-BD"))+"</small>";
-  $("inspectorResults").innerHTML=results.map(x=>"<div class='inspector-result inspector-"+x.status+"'><b>"+(x.status==="pass"?"✅ ":x.status==="warn"?"⚠️ ":"❌ ")+safe(x.title)+"</b><small>"+safe(x.detail)+"</small></div>").join("");
-}
-async function runInspector(){
-  const btn=$("inspectorRunButton");
-  if(btn)btn.disabled=true;
-  $("inspectorSummary").textContent="সিস্টেম পরীক্ষা চলছে...";
-  $("inspectorResults").innerHTML="";
-  const results=[];
-  const add=(title,status,detail)=>results.push({title,status,detail});
-  try{
-    add("Login session",currentUser&&currentUser.id?"pass":"fail",currentUser&&currentUser.id?"বর্তমানে Login session পাওয়া গেছে।":"Login session পাওয়া যায়নি।");
-    const interactive=Array.from(document.querySelectorAll("[onclick],[onchange],[oninput]"));
-    const declared=new Set(Array.from(document.scripts).map(s=>s.textContent).join("\n").match(/(?:async\s+)?function\s+([A-Za-z_$][\w$]*)\s*\(/g)||[]);
-    const fnNames=new Set(Array.from(declared).map(x=>x.replace(/^(?:async\s+)?function\s+/,"").replace(/\s*\($/,"")));
-    const missingHandlers=[];
-    interactive.forEach(el=>{
-      ["onclick","onchange","oninput"].forEach(attr=>{
-        const code=el.getAttribute(attr);
-        if(!code)return;
-        const m=code.match(/^\s*([A-Za-z_$][\w$]*)\s*\(/);
-        if(!m||m[1]==="event")return;
-        if(!fnNames.has(m[1]))missingHandlers.push(m[1]+"() — "+(el.id||el.tagName));
-      });
-    });
-    add("Button / input event handlers",missingHandlers.length?"fail":"pass",missingHandlers.length?"কাজের function পাওয়া যায়নি: "+missingHandlers.slice(0,8).join(", "):interactive.length+" টি interactive element-এর handler function পাওয়া গেছে। এটি handler উপস্থিতি যাচাই করে; destructive button click করে না।");
-    const scriptText=Array.from(document.scripts).map(s=>s.textContent).join("\n");
-    const usedIds=new Set();
-    let idMatch;
-    const idPattern=/\$\("([A-Za-z0-9_-]+)"\)/g;
-    while((idMatch=idPattern.exec(scriptText))!==null)usedIds.add(idMatch[1]);
-    const missingIds=Array.from(usedIds).filter(id=>!$(id));
-    add("Required page elements",missingIds.length?"fail":"pass",missingIds.length?"HTML-এ element পাওয়া যায়নি: "+missingIds.join(", "):usedIds.size+" টি referenced page element পাওয়া গেছে।");
-    const dateTests=[
-      ["মাসের শেষ দিন (Leap year)",addInterval("2024-01-31",1,"month")==="2024-02-29"],
-      ["মাসের শেষ দিন (সাধারণ বছর)",addInterval("2025-01-31",1,"month")==="2025-02-28"],
-      ["দিনের interval",addInterval("2026-11-26",7,"day")==="2026-12-03"],
-      ["Leap day থেকে এক বছর",addInterval("2024-02-29",1,"year")==="2025-02-28"],
-      ["তারিখ round-trip",dateStr(dateObj("2026-11-26"))==="2026-11-26"]
-    ];
-    dateTests.forEach(t=>add("Date calculation: "+t[0],t[1]?"pass":"fail",t[1]?"হিসাব প্রত্যাশিত ফল দিয়েছে।":"তারিখের হিসাব প্রত্যাশিত ফলের সঙ্গে মেলেনি।"));
-    const future=addInterval(today(),1,"day");
-    const sample={id:"__inspector_test__",quantity:2,interval_value:1,interval_unit:"day",first_received_date:today(),last_received:today(),first_due_date:future,next_due_date:future};
-    const nextOk=getNext(sample)===future;
-    const dueToday=addInterval(today(),-1,"day");
-    const dueTodaySample={id:"__inspector_due_today__",quantity:1,interval_value:1,interval_unit:"day",first_received_date:dueToday,last_received:dueToday,first_due_date:today(),next_due_date:today()};
-    const dueTodayOk=getNext(dueTodaySample)===today();
-    add("Next Due schedule",nextOk&&dueTodayOk?"pass":"fail",nextOk&&dueTodayOk?"পরবর্তী Due date এবং আজকের Due date—দুটিই সঠিক।":"আজকের Due date বাদ পড়ে যাচ্ছে বা interval হিসাব ভুল।");
-    const badItems=[];
-    items.forEach(i=>{
-      if(!Number.isInteger(Number(i.quantity))||Number(i.quantity)<1)badItems.push((i.item_name||i.id)+": quantity");
-      if(!Number.isInteger(Number(i.interval_value))||Number(i.interval_value)<1||!["day","month","year"].includes(i.interval_unit))badItems.push((i.item_name||i.id)+": interval");
-      if(i.first_received_date&&!inspectorDateValid(i.first_received_date))badItems.push((i.item_name||i.id)+": first receive date");
-      if(i.last_received&&!inspectorDateValid(i.last_received))badItems.push((i.item_name||i.id)+": last receive date");
-      if(i.first_received_date&&i.last_received&&i.first_received_date>i.last_received)badItems.push((i.item_name||i.id)+": first date is after last date");
-    });
-    add("Kit data validation",badItems.length?"warn":"pass",badItems.length?badItems.slice(0,10).join("; "):items.length+" টি Kit record-এ quantity, interval ও date format-এর দৃশ্যমান ভুল পাওয়া যায়নি।");
-    const itemIds=new Set(items.map(i=>i.id));
-    const badReceipts=receipts.filter(r=>!itemIds.has(r.kit_item_id)||!Number.isInteger(Number(r.quantity))||Number(r.quantity)<1||!inspectorDateValid(r.received_date));
-    add("Receipt history validation",badReceipts.length?"warn":"pass",badReceipts.length?badReceipts.length+" টি History record-এ Kit link, quantity বা date যাচাইয়ে সমস্যা পাওয়া গেছে।":receipts.length+" টি Receipt History record যাচাই করা হয়েছে।");
-    if(!currentUser||!currentUser.id){
-      add("Supabase read-only connection","fail","Login না থাকায় নিজের account-এর database পরীক্ষা করা যায়নি।");
-    }else{
-      const [kitCheck,receiptCheck]=await Promise.all([
-        db.from("kit_items").select("id,user_id").eq("user_id",currentUser.id),
-        db.from("kit_receipts").select("id,user_id,kit_item_id,quantity,received_date").eq("user_id",currentUser.id)
-      ]);
-      const dbError=kitCheck.error||receiptCheck.error;
-      if(dbError)add("Supabase read-only connection","fail","Database query ব্যর্থ: "+dbError.message);
-      else{
-        const foreignRows=[...(kitCheck.data||[]),...(receiptCheck.data||[])].filter(r=>r.user_id!==currentUser.id);
-        add("Supabase account-scoped read","pass","নিজের account filter দিয়ে "+(kitCheck.data||[]).length+" টি Kit এবং "+(receiptCheck.data||[]).length+" টি Receipt row পড়া গেছে।");
-        add("Returned row ownership",foreignRows.length?"fail":"pass",foreignRows.length?"নিজের account query-তে অন্য user-এর row পাওয়া গেছে।":"ফলাফলে অন্য user-এর row পাওয়া যায়নি। এটি অন্য account থেকে cross-access test নয়।");
-        const countMismatch=(kitCheck.data||[]).length!==items.length||(receiptCheck.data||[]).length!==receipts.length;
-        add("Loaded data sync",countMismatch?"warn":"pass",countMismatch?"Database row count এবং screen-এ loaded count আলাদা। Refresh করে আবার পরীক্ষা করো.":"Database ও screen-এর loaded record count মিলে গেছে।");
-      }
-    }
-  }catch(e){
-    add("Inspector runtime","fail","পরীক্ষার সময় error হয়েছে: "+(e&&e.message?e.message:String(e)));
-  }finally{
-    inspectorRender(results);
-    if(btn)btn.disabled=false;
-  }
-}
-
+async function enableNotifications(){if(!("Notification"in window))return toast("এই Browser Notification support করে না");const p=await Notification.requestPermission();if(p!=="granted")return toast("Notification permission দেওয়া হয়নি");const due=items.filter(i=>getDueQuantity(i)>0);new Notification("MY-KITBOOK",{body:due.length?`${due.length} ধরনের Kit Due হয়েছে`:"এখন কোনো Kit Due নেই"});toast("Browser notification enabled")}
 $("firstReceived").value=today();$("lastReceived").value=today();$("receiptDate").value=today();
 db.auth.getSession().then(async({data,error})=>{if(error)return console.error(error);if(data.session){currentUser=data.session.user;await startApp()}});
-db.auth.onAuthStateChange(async(event,session)=>{if(event==="SIGNED_IN"&&session){currentUser=session.user;if($("appSection").classList.contains("hidden"))await startApp()}if(event==="SIGNED_OUT"){stopDueRealtime();stopDueClock();currentUser=null;items=[];receipts=[];itemsRequestId++;receiptsRequestId++;appStartPromise=null;$("appSection").classList.add("hidden");$("authSection").classList.remove("hidden");$("headerActions").style.display="none"}});
+db.auth.onAuthStateChange(async(event,session)=>{if(event==="SIGNED_IN"&&session){currentUser=session.user;if($("appSection").classList.contains("hidden"))await startApp()}if(event==="SIGNED_OUT"){currentUser=null;items=[];receipts=[];itemsRequestId++;receiptsRequestId++;appStartPromise=null;$("appSection").classList.add("hidden");$("authSection").classList.remove("hidden");$("headerActions").style.display="none"}});
 const oldHistoryButton=document.createElement("button");oldHistoryButton.textContent="＋ Add Old Receipt";oldHistoryButton.className="secondary";oldHistoryButton.style.marginBottom="12px";oldHistoryButton.onclick=()=>{const name=prompt("কোন Kit-এর পুরোনো Receipt যোগ করবে?\n"+items.map(i=>i.item_name).join(", "));if(!name)return;const i=items.find(x=>x.item_name.toLowerCase()===name.trim().toLowerCase());if(!i)return toast("Kit নাম মেলেনি");const d=prompt("তারিখ (YYYY-MM-DD):",today()),q=Number(prompt("কতটি পেয়েছিলে?"));if(!d||!/^\d{4}-\d{2}-\d{2}$/.test(d)||!Number.isInteger(q)||q<1)return toast("তথ্য সঠিক নয়");addReceipt(i.id,d,q,prompt("Notes:")||"Old receipt").then(()=>Promise.all([loadItems(),loadHistory()])).then(()=>toast("Old History যোগ হয়েছে")).catch(e=>toast(e.message))};$("historyTab").insertBefore(oldHistoryButton,$("historyTab").children[1]);
-document.addEventListener("keydown",e=>{if(e.key==="Escape")closeDuePopup()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeDuePopup();toggleSidebar(false);showTab("")}});
 </script>
 </body>
 </html>
