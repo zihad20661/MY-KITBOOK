@@ -168,6 +168,89 @@ body.dark #appSection td{background:rgba(20,35,55,.22)}
   #appSection .card,#appSection .stat{border-radius:14px!important}
 }
 
+
+/* Crystal-clear glass dashboard v2 — auth/login is intentionally excluded */
+#appSection{
+  --glass-fill:rgba(255,255,255,.13);
+  --glass-fill-strong:rgba(255,255,255,.19);
+  --glass-edge:rgba(255,255,255,.52);
+  --glass-shadow:0 18px 48px rgba(18,43,75,.13),inset 0 1px 0 rgba(255,255,255,.62);
+}
+#appSection .card,
+#appSection .stat,
+#appSection .due-popup-box,
+#appSection .inspector-box,
+#appSection .due-detail{
+  background:linear-gradient(135deg,rgba(255,255,255,.23),rgba(255,255,255,.075))!important;
+  border:1px solid var(--glass-edge)!important;
+  box-shadow:var(--glass-shadow)!important;
+  -webkit-backdrop-filter:blur(26px) saturate(180%);
+  backdrop-filter:blur(26px) saturate(180%);
+}
+#appSection .card{border-radius:22px!important}
+#appSection .stat{border-radius:19px!important;background:linear-gradient(145deg,rgba(255,255,255,.28),rgba(255,255,255,.09))!important}
+#appSection .tabs button,
+#appSection .actions button,
+#appSection button:not(.auth-eye){
+  border:1px solid rgba(255,255,255,.42)!important;
+  background:linear-gradient(135deg,rgba(255,255,255,.30),rgba(255,255,255,.10))!important;
+  color:var(--text)!important;
+  box-shadow:0 8px 22px rgba(18,43,75,.10),inset 0 1px 0 rgba(255,255,255,.6)!important;
+  -webkit-backdrop-filter:blur(22px) saturate(180%);
+  backdrop-filter:blur(22px) saturate(180%);
+}
+#appSection .tabs button.active,
+#appSection button.green,
+#appSection button.red{
+  background:linear-gradient(135deg,rgba(37,99,235,.78),rgba(14,116,144,.66))!important;
+  color:#fff!important;border-color:rgba(255,255,255,.55)!important;
+}
+#appSection button.secondary{background:rgba(100,116,139,.30)!important;color:var(--text)!important}
+#appSection input:not([type=checkbox]),#appSection select,#appSection textarea{
+  background:rgba(255,255,255,.19)!important;
+  border:1px solid rgba(255,255,255,.55)!important;
+  border-radius:14px!important;
+  box-shadow:inset 0 2px 10px rgba(20,45,75,.06),inset 0 1px 0 rgba(255,255,255,.5)!important;
+  -webkit-backdrop-filter:blur(20px) saturate(170%);
+  backdrop-filter:blur(20px) saturate(170%);
+}
+#appSection .tablewrap{border:1px solid rgba(255,255,255,.34);border-radius:16px;overflow-x:auto;background:rgba(255,255,255,.075);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px)}
+#appSection table{border-collapse:separate;border-spacing:0}
+#appSection th{background:rgba(255,255,255,.20)!important;color:var(--text)!important}
+#appSection td{background:rgba(255,255,255,.075)!important}
+#appSection tr:hover td{background:rgba(255,255,255,.19)!important}
+#appSection .badge{box-shadow:inset 0 1px 0 rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.35)}
+body.dark #appSection{
+  --glass-edge:rgba(190,215,245,.22);
+  --glass-shadow:0 18px 48px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.12);
+}
+body.dark #appSection .card,
+body.dark #appSection .stat,
+body.dark #appSection .due-popup-box,
+body.dark #appSection .inspector-box,
+body.dark #appSection .due-detail{
+  background:linear-gradient(135deg,rgba(93,127,164,.23),rgba(22,39,60,.34))!important;
+  border-color:var(--glass-edge)!important;
+}
+body.dark #appSection .stat{background:linear-gradient(145deg,rgba(113,153,194,.25),rgba(30,48,72,.30))!important}
+body.dark #appSection .tabs button,
+body.dark #appSection .actions button,
+body.dark #appSection button:not(.auth-eye){
+  background:linear-gradient(135deg,rgba(124,160,199,.26),rgba(40,61,87,.30))!important;
+  color:#edf6ff!important;border-color:rgba(190,215,245,.22)!important
+}
+body.dark #appSection input:not([type=checkbox]),body.dark #appSection select,body.dark #appSection textarea{
+  background:rgba(13,28,47,.38)!important;color:#edf6ff!important;border-color:rgba(190,215,245,.23)!important
+}
+body.dark #appSection th{background:rgba(110,145,180,.22)!important;color:#e2e8f0!important}
+body.dark #appSection td{background:rgba(20,38,59,.20)!important}
+@media(max-width:650px){
+ #appSection .card{border-radius:18px!important}
+ #appSection .stat{border-radius:16px!important}
+ #appSection .tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+ #appSection .tabs button{width:100%;min-height:46px}
+}
+
 </style>
 </head>
 <body>
