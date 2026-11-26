@@ -523,9 +523,29 @@ function updateReceiptLimit(){const item=items.find(i=>i.id===$("receiptItem").v
 function resetForm(){$("editId").value="";$("itemName").value="";$("qty").value="";$("intervalValue").value="";$("intervalUnit").value="year";$("firstReceived").value="";$("lastReceived").value="";$("notes").value="";$("formTitle").textContent="➕ Add New Kit"}
 const LAST_VIEW_PREFIX="my-kitbook-last-view-v1:";
 let restoringLastView=false,lastViewSaveTimer=null;
-function saveLastView(){if(!currentUser||restoringLastView)return;const tab=["inventory","add","history","accounting","settings"].find(x=>!$(x+"Tab")?.classList.contains("hidden"))||"inventory";try{localStorage.setItem(LAST_VIEW_PREFIX+currentUser.id,JSON.stringify({tab:tab,scrollY:Math.max(0,window.scrollY||0)}))}catch(e){}}
-function restoreLastView(){if(!currentUser)return;let view=null;try{view=JSON.parse(localStorage.getItem(LAST_VIEW_PREFIX+currentUser.id)||"null")}catch(e){}const valid=["inventory","add","history","accounting","settings"];const tab=view&&valid.includes(view.tab)?view.tab:"inventory";restoringLastView=true;showTab(tab);requestAnimationFrame(()=>{window.scrollTo(0,Math.max(0,Number(view&&view.scrollY)||0));restoringLastView=false;saveLastView()})}
-function toggleSidebar(open){const side=$("appSidebar"),shade=$("sidebarShade");if(!side||!shade)return;side.classList.toggle("open",!!open);shade.classList.toggle("open",!!open);document.body.classList.toggle("sidebar-open",!!open)}
+function saveLastView(tabOverride){
+  if(!currentUser||restoringLastView)return;
+  const valid=["inventory","add","history","accounting","settings"];
+  const visible=valid.find(x=>{const panel=$(x+"Tab");return panel&&!panel.classList.contains("hidden")});
+  const tab=valid.includes(tabOverride)?tabOverride:(visible||"inventory");
+  try{
+    localStorage.setItem(LAST_VIEW_PREFIX+currentUser.id,JSON.stringify({tab,scrollY:Math.max(0,window.scrollY||0),savedAt:Date.now()}));
+  }catch(e){console.warn("Could not save last opened tab:",e)}
+}
+function restoreLastView(){
+  if(!currentUser)return;
+  const valid=["inventory","add","history","accounting","settings"];
+  let view=null;
+  try{view=JSON.parse(localStorage.getItem(LAST_VIEW_PREFIX+currentUser.id)||"null")}catch(e){}
+  const tab=view&&valid.includes(view.tab)?view.tab:"inventory";
+  restoringLastView=true;
+  showTab(tab);
+  requestAnimationFrame(()=>{
+    window.scrollTo(0,Math.max(0,Number(view&&view.scrollY)||0));
+    restoringLastView=false;
+    saveLastView(tab);
+  });
+}function toggleSidebar(open){const side=$("appSidebar"),shade=$("sidebarShade");if(!side||!shade)return;side.classList.toggle("open",!!open);shade.classList.toggle("open",!!open);document.body.classList.toggle("sidebar-open",!!open)}
 function showTab(tab){toggleSidebar(false);const shade=$("tabModalShade");if(shade)shade.classList.toggle("open",!!tab);document.body.classList.toggle("modal-open",!!tab);["inventory","add","history","accounting","settings"].forEach(x=>{const active=x===tab;$(x+"Tab").classList.toggle("hidden",!active);const b=$("tab"+x[0].toUpperCase()+x.slice(1));if(b)b.classList.toggle("active",active);const n=$("nav"+x[0].toUpperCase()+x.slice(1));if(n)n.classList.toggle("active",active)});if(!tab)return;if(tab==="history")loadHistory();if(tab==="inventory")renderItems();if(tab==="accounting")renderAccounting();const panel=$(tab+"Tab");if(panel&&!panel.querySelector(".popup-topbar")){const bar=document.createElement("div");bar.className="popup-topbar";bar.innerHTML=`<b>${({inventory:"📦 Inventory",add:"➕ Add Kit",history:"📋 Receipt History",accounting:"📊 Kit হিসাব",settings:"⚙️ Settings"})[tab]}</b><button type="button" onclick="showTab('')">✕ Close</button>`;panel.prepend(bar)}if(!restoringLastView)saveLastView()}
 window.addEventListener("scroll",()=>{if(!currentUser||restoringLastView)return;clearTimeout(lastViewSaveTimer);lastViewSaveTimer=setTimeout(saveLastView,180)},{passive:true});
 window.addEventListener("pagehide",saveLastView);
